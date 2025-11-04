@@ -3,7 +3,7 @@ function App() {
     <div >
       <div style={{justifyContent: 'center', alignItems: 'center', display: 'flex', height: '100vh', flexDirection: 'column'}}>
         <h1>
-          Hello World 
+          Hello World updated 
         </h1>
         <p>
           Theater Web Application
