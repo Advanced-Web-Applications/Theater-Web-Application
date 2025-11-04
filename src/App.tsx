@@ -1,3 +1,5 @@
+import Homepage from "./components/customer/Homepage"
+
 function App() {
   return (
     <div >
@@ -11,6 +13,7 @@ function App() {
         <p>
           Deployed on Azure
         </p>
+        <Homepage/>
       </div>
     </div>
   )
