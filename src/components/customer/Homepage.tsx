@@ -1,4 +1,3 @@
-import React from 'react'
 import '../../style/customer/homepage.css'
 
 export default function Homepage() {
