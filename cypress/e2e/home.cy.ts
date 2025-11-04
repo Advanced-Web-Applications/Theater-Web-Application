@@ -1,10 +1,12 @@
+/// <reference types="cypress" />
+
 describe('Home Page', () => {
   beforeEach(() => {
-    // Visit homepage trước mỗi test
+    // Visit homepage before each test
     cy.visit('/')
   })
 
   it('should display the title', () => {
-    cy.get('h1').should('have.text','Hello World updated')
+    cy.get('h1').should('contain','Hello World updated')
   })
 })

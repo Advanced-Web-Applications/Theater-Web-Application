@@ -3,16 +3,7 @@ import Homepage from "./components/customer/Homepage"
 function App() {
   return (
     <div >
-      <div style={{justifyContent: 'center', alignItems: 'center', display: 'flex', height: '100vh', flexDirection: 'column'}}>
-        <h1>
-          Hello World updated 
-        </h1>
-        <p>
-          Theater Web Application
-        </p>
-        <p>
-          Deployed on Azure
-        </p>
+      <div > 
         <Homepage/>
       </div>
     </div>
