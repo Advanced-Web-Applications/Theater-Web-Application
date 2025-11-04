@@ -8,6 +8,5 @@
     "e2e/**/*.ts",
     "e2e/**/*.js",
     "support/**/*.ts",
-    "support/**/*.js"
   ]
 }
