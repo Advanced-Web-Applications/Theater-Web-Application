@@ -1,0 +1,141 @@
+.header {
+  background-color: #1B2A40;
+  color: white;
+  padding: 4px 10px; 
+  text-align: center;
+  height: 6rem;
+  
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 180px);
+  gap: 10px;
+  padding: 10px;
+}
+
+.roomCard {
+  background-color: #1C2541;
+  padding: 10px;
+  text-align: center; 
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.auditoriumButton {
+  width: 80%;
+  position: absolute;
+  top: 100%; 
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column; 
+  gap: 5px;
+  opacity: 0;           
+  pointer-events: none; 
+  transition: opacity 0.2s ease; 
+}
+
+.roomCard:hover .auditoriumButton {
+  opacity: 1;           
+  pointer-events: auto; 
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.auditoriumButton button {
+  padding: 5px 10px;
+  border-radius: 20px;
+}
+
+.content {
+  color: white;
+  transition: opacity 0.2s ease;
+  font-size: 100px;
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.roomCard:hover .content {
+  opacity: 0; 
+}
+
+.setTimeBorder {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 10px 20px;
+  align-items: center;
+  background-color: #1C2541;
+  border-radius: 15px;
+  padding: 20px;
+  width: 300px;
+  margin: 20px auto;
+  color: white;
+}
+
+.saveButton {
+  color: white;
+  border: none;
+  padding: 10px 50px;
+  border-radius: 20px;
+  cursor: pointer;
+  text-align: center;
+  display: block;
+  margin: 20px auto;
+}
+
+.titleOfSelection {
+  text-align: center;
+  font-size: 17px;
+  color: white;
+}
+
+.saveBorder {
+    display: flex;
+    justify-content: center;
+}
+
+.availableSeat{
+  background-color: #36597C;
+}
+.unavailableSeat{
+  background-color: #FF0000;
+}
+
+.symbolForSeat {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.availableSeat,
+.unavailableSeat {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+  vertical-align: middle;
+  border-radius: 2px;
+}
+
+.gridForAllSeat {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 5px;
+}
+
+.seatSetting {
+  width: 20px;
+  height: 20px;
+}
+
+.timeTable {
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+  vertical-align: middle;
+  border-color: #36597C;
+}

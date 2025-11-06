@@ -1,16 +1,32 @@
+import "../../style/staff/staff.css"
+import { useNavigate } from 'react-router-dom'
 
+const auditoriumRooms = [
+  {auditoriumNumber:1 , name: '1'},
+  {auditoriumNumber:2 , name: '2'},
+  {auditoriumNumber:3 , name: '3'},
+  {auditoriumNumber:4 , name: '4'},
+]
 
-export default function StaffDashboard() {
+export default function StaffHomePage() {
+
+  const navigate = useNavigate();
   return (
     <div>
-        <div style={{backgroundColor:"#1B2A40", color:"white", padding:"4px 10px", textAlign:"center"}}>
+        <div className="header">
             <h1>Auditorium</h1>
         </div>
-        <div style={{display:"grid", gridTemplateColumns:"repeat(4, 1fr)", gap:"10px", padding:"10px"}}>
-            <div style={{backgroundColor:"#f0f0f0", padding:"10px", textAlign:"center"}}>1</div>
-            <div>2</div>
-            <div>3</div>
-            <div>4</div>
+        <div className="gridContainer">
+            {auditoriumRooms.map((room) => (
+                <div key={room.auditoriumNumber} className="roomCard">
+                    <div className="content">{room.name}</div>
+                    <div className="auditoriumButton">
+                        <button onClick={() => navigate('/StaffSetSeat')}>Set seat</button>
+                        <button onClick={() => navigate('/StaffSetTimes')}>Set times</button>
+                        <button onClick={() => navigate('/StaffSeeTable')}>See table</button>
+                    </div>
+                </div>
+            ))}
         </div>
     </div>
   )
