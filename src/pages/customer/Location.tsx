@@ -1,21 +1,32 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import { useNavigate, Route, Routes } from 'react-router-dom'
 import '../../style/customer/location.css'
 import Navbar from '../../components/customer/Navbar'
 import HomePage from './HomePage'
-import MovieDetails from './MovieDetails'
+// import data from '../../data.json'
+
+interface LocationType {
+  city: string
+}
 
 export default function Location() {
 
   const [activeLocation, setActiveLocation] = useState<string | null>(null)
-
-  const locations = ['Oulu', 'Turku', 'Helsinki Central']
+  const [locations, setLocations] = useState<LocationType[]>([])
 
   const navigate = useNavigate()
   const handleSelect = (location: string) => {
     setActiveLocation(location)
     navigate('/home', {state: {location}})
   }
+
+  useEffect(() => {
+    fetch('http://localhost:3000/api/customer/locations')
+      .then(res => res.json())
+      .then(data => setLocations(data)
+    ). catch (err => console.log('Error fetching locations: ', err))
+  })
+
   return (
     <>
       <Navbar/>
@@ -29,12 +40,12 @@ export default function Location() {
                     <div className='location-items'>
                         {locations.map(location => (
                           <div 
-                            key={location}
-                            data-test={`location-${location.toLowerCase()}`}
-                            className={`location-item ${activeLocation === location ? 'active' : ''}`}
-                            onClick={() => handleSelect(location)}
+                            key={location.city}
+                            data-test={`location-${location.city.toLowerCase()}`}
+                            className={`location-item ${activeLocation === location.city ? 'active' : ''}`}
+                            onClick={() => handleSelect(location.city)}
                           >
-                            {location}
+                            {location.city}
                           </div>
                         ))}
                     </div>
@@ -42,8 +53,7 @@ export default function Location() {
             </div>
           }
           />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/MovieDetails" element={<MovieDetails />} />
+        <Route path="/home/*" element={<HomePage />} />
       </Routes>
     </>
   )
