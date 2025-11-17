@@ -48,7 +48,7 @@
 }
 
 footer {
-  text-align: center;
+  text-align: left;
   padding: 1rem;
   background-color: #14294D;
   font-size: 0.9rem;
@@ -56,6 +56,7 @@ footer {
   width: 100%;
   border-top: 1px solid #1C2541;
 }
+
 
 @media (min-width: 768px) {
   .poster-grid {

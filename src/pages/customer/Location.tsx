@@ -3,7 +3,10 @@ import { useNavigate, Route, Routes } from 'react-router-dom'
 import '../../style/customer/location.css'
 import Navbar from '../../components/customer/Navbar'
 import HomePage from './HomePage'
-// import data from '../../data.json'
+import MovieDetails from './MovieDetails'
+import Ticket from './Ticket'
+
+const API_URL = import.meta.env.VITE_API_URL
 
 interface LocationType {
   city: string
@@ -21,11 +24,11 @@ export default function Location() {
   }
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/customer/locations')
+    fetch(`${API_URL}/api/customer/locations`)
       .then(res => res.json())
       .then(data => setLocations(data)
     ). catch (err => console.log('Error fetching locations: ', err))
-  })
+  }, [])
 
   return (
     <>
@@ -53,7 +56,10 @@ export default function Location() {
             </div>
           }
           />
-        <Route path="/home/*" element={<HomePage />} />
+
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/movie/:id" element={<MovieDetails />} />
+        <Route path="/ticket/" element={<Ticket />} />
       </Routes>
     </>
   )

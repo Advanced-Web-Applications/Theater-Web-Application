@@ -1,30 +1,45 @@
-import { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import MovieInfo from '../../components/customer/MovieInfo'
 import "../../style/customer/moviedetails.css"; 
 
+const API_URL = import.meta.env.VITE_API_URL
+
 
 interface Showtimes {
-  id: number;
   start_time: string;
 }
 
-const showtimes: Showtimes[] = [
-  { id: 1, start_time: "2025-03-10 07:48:37.557788" },
-  { id: 2, start_time: "2025-06-11 11:45:25.333333" },
-  { id: 3, start_time: "2025-11-21 21:20:37.588888" },
-  { id: 4, start_time: "2025-11-22 10:20:37.588888" },
-];
+interface MovieProps {
+  id: number
+  title: string
+  genre: string
+  duration: number
+  age_rating: string
+  description: string
+  poster_url: string
+}
 
 
 export default function MovieDetails() {
 
-  const { state } = useLocation()
+  const { id } = useParams()
+  
+  const location = useLocation()
   const navigate = useNavigate()
+  
+  const [movie, setMovie] = useState<MovieProps | null>(location.state?.movie || null)
 
+  const [showtimes, setShowtimes] = useState<Showtimes[]>([])
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
 
-  const groupedByDate = showtimes.reduce((acc: any, current) => {
+  useEffect(() => {
+    fetch(`${API_URL}/api/customer/showtimes/${id}`)
+    .then(res => res.json())
+    .then(data => setShowtimes(data))
+  }, [id])
+
+  const groupedByDate = showtimes.reduce((acc: any, current: any) => {
     const date = new Date(current.start_time)
     const dateKey = date.toDateString()
     if (!acc[dateKey]) acc[dateKey] = []
@@ -45,7 +60,7 @@ export default function MovieDetails() {
 
   return (
     <>
-      <MovieInfo/>
+      <MovieInfo movieId={id!} setMovie={setMovie}/>
       <div>
         <div className='dates-container'>
           {dates.map((dateStr) => (
@@ -60,12 +75,13 @@ export default function MovieDetails() {
           ))}
         </div>
 
-        {selectedDate && (
+        {selectedDate && movie && (
           <div className='showtimes-container'>
             {groupedByDate[selectedDate].map((slot: Showtimes) => (
               <div
-                key={slot.id}
+                key={slot.start_time}
                 className='showtime-item'
+                onClick={() => navigate('/ticket/', {state: {showtime: formatTime(slot.start_time), movie}})}
               >
                 {formatTime(slot.start_time)}
               </div>
