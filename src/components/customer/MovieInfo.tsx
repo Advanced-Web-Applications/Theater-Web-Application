@@ -27,7 +27,7 @@ export default function MovieInfo() {
       <div className='movie-header'>
         <img></img> 
         <div className='movie-text'>
-          <h1 className='movie-title'>{movie.title}</h1>
+          <h1 className='movie-title'>{movie[0].title}</h1>
 
           <div className='movie-info'>
             <p><strong>Genre: </strong>{movie[0].genre}</p>

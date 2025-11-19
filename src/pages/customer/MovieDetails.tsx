@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
 import MovieInfo from '../../components/customer/MovieInfo'
 import "../../style/customer/moviedetails.css"; 
 
@@ -18,9 +17,6 @@ const showtimes: Showtimes[] = [
 
 
 export default function MovieDetails() {
-
-  const { state } = useLocation()
-  const navigate = useNavigate()
 
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
 

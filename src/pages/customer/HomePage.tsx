@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, Route, Routes } from 'react-router-dom'
 import SearchBar from '../../components/customer/SearchBar'
 import MovieDetails from './MovieDetails'
@@ -15,9 +15,6 @@ interface MovieProps {
 
 
 export default function HomePage() {
-
-  const { state } = useLocation()
-  const location = state?.location || 'Unknown'
 
   const navigate = useNavigate()
 
