@@ -1,24 +1,41 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useLocation, useParams } from 'react-router-dom'
 import MovieInfo from '../../components/customer/MovieInfo'
 import "../../style/customer/moviedetails.css"; 
 
+const API_URL = import.meta.env.VITE_API_URL
 
 interface Showtimes {
   id: number;
   start_time: string;
 }
 
-const showtimes: Showtimes[] = [
-  { id: 1, start_time: "2025-03-10 07:48:37.557788" },
-  { id: 2, start_time: "2025-06-11 11:45:25.333333" },
-  { id: 3, start_time: "2025-11-21 21:20:37.588888" },
-  { id: 4, start_time: "2025-11-22 10:20:37.588888" },
-];
+interface MovieProps {
+  id: number
+  title: string
+  genre: string
+  duration: number
+  age_rating: string
+  description: string
+  poster_url: string
+}
 
 
 export default function MovieDetails() {
 
+  const { id } = useParams()
+
+  const location = useLocation()
+
+  const [_, setMovie] = useState<MovieProps | null>(location.state?.movie || null)
+  const [showtimes, setShowtimes] = useState<Showtimes[]>([])
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/customer/showtimes/${id}`)
+    .then(res => res.json())
+    .then(data => setShowtimes(data))
+  }, [id])
 
   const groupedByDate = showtimes.reduce((acc: any, current) => {
     const date = new Date(current.start_time)
@@ -39,9 +56,15 @@ export default function MovieDetails() {
   const formatTime = (timestamp: string) =>
     new Date(timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
 
+  const formatDuration = (duration: number) => {
+    const hour = Math.floor(duration/60)
+    const minutes = duration % 60
+    return `${hour}h${minutes.toString().padStart(2, '0')}`
+  }
+
   return (
     <>
-      <MovieInfo/>
+      <MovieInfo movieId={id!} setMovie={setMovie} formatDuration={formatDuration}/>
       <div>
         <div className='dates-container'>
           {dates.map((dateStr) => (
