@@ -16,9 +16,10 @@ interface MovieProps {
 interface MovieInfoProps {
   movieId: string
   setMovie: (movie: MovieProps) => void
+  formatDuration: (duration: number) => string;
 }
 
-export default function MovieInfo({movieId, setMovie }: MovieInfoProps) {
+export default function MovieInfo({movieId, setMovie, formatDuration }: MovieInfoProps) {
 
   const [movie, internalMovie] = useState<MovieProps | null>(null)
 
@@ -28,6 +29,8 @@ export default function MovieInfo({movieId, setMovie }: MovieInfoProps) {
         .then(data => { internalMovie(data); setMovie(data) })
         .catch(err => console.log('Error fetching movies: ', err))
     }, [movieId, setMovie])
+
+   
 
   return (
     <div className='movie-details'>
@@ -39,7 +42,7 @@ export default function MovieInfo({movieId, setMovie }: MovieInfoProps) {
 
             <div className='movie-info'>
               <p><strong>Genre: </strong>{movie.genre}</p>
-              <p><strong>Duration: </strong>{movie.duration}</p>
+              <p><strong>Duration: </strong>{formatDuration(movie.duration)}</p>
               <p><strong>Rated: </strong>{movie.age_rating}</p>
               <p><strong>Description: </strong>{movie.description}</p>
             </div>

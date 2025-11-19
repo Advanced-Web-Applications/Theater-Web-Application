@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate, Route, Routes, Outlet } from 'react-router-dom'
 import SearchBar from '../../components/customer/SearchBar'
-import MovieDetails from './MovieDetails'
 
 const API_URL = import.meta.env.VITE_API_URL
 
 
 interface MovieProps {
-    id: number
+  id: number
   title: string
   genre: string
   duration: number
@@ -29,14 +28,13 @@ export default function HomePage() {
 
   const { state } = useLocation()
   const city = state?.location || 'Unknown'
-    const passedCity = state?.location || ''   // e.g. "Oulu"
 
 
   const navigate = useNavigate()
 
   const [movies, setMovies] = useState<MovieProps[]>([])
   const [location, setLocation] = useState('')
-    const [currentLocation, setCurrentLocation] = useState<LocationProps | null>(null)
+  const [currentLocation, setCurrentLocation] = useState<LocationProps | null>(null)
 
 
   useEffect(() => {
@@ -45,15 +43,15 @@ export default function HomePage() {
         const locationReq = await fetch(`${API_URL}/api/customer/locations`)
         const locationData = await locationReq.json()
 
-        const moviesReq = await fetch(`${API_URL}/api/customer/movies`)
+        const moviesReq = await fetch(`${API_URL}/api/customer/location/movies?city=${city}`)
         const moviesData = await moviesReq.json()
 
         setLocation(locationData)
         setMovies(moviesData)
 
-        if (passedCity) {
+        if (city) {
           const match = locationData.find(
-            (loc: LocationProps) => loc.city.toLowerCase() === passedCity.toLowerCase()
+            (loc: LocationProps) => loc.city.toLowerCase() === city.toLowerCase()
           )
           setCurrentLocation(match || null)
         }
@@ -63,7 +61,7 @@ export default function HomePage() {
       }
     }  
     fetchData()
-  }, [passedCity])
+  }, [city])
 
   return (
     <>

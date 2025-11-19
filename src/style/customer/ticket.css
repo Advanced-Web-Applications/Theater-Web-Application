@@ -1,0 +1,199 @@
+.title {
+  text-align: center;
+}
+
+.ticket-page {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px;
+}
+
+.auditorium-container {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  padding: 3rem;
+  justify-content: space-around;
+}
+
+.legend {
+  display: flex;
+  margin-bottom: 1.3rem;
+  gap: 10px;
+  justify-content: center;
+}
+
+.legend div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.seat-layout {
+  width: fit-content;
+}
+
+.seat-grid {
+  display: grid;
+  gap: 0.4rem;
+  width: fit-content;
+  margin-bottom: 2rem;
+  transform: rotateX(180deg);
+}
+
+.seat {
+  width: 2rem;
+  height: 2rem;
+  background: #36597C;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: bold;
+  user-select: none;
+  transform: rotateX(180deg);
+}
+
+
+.seat.booked {
+  background: #ff4d4d;
+  cursor: not-allowed;
+}
+
+.seat.active {
+  background: #57F287;
+  color: #0C1B33;
+}
+
+.screen {
+  text-align: center;
+  margin-top: 20px;
+  background-color: #36597C;
+  border-radius: 10px;
+  width: 100%;
+}
+
+.available,
+.unavailable,
+.choosing {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 6px;
+}
+
+.available {
+  background-color: #36597C;
+}
+.unavailable {
+  background-color: #ff4d4d;
+}
+.choosing {
+  background-color: #57F287;
+}
+
+.counter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.counter-value {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+
+@media (min-width: 768px) {
+  .auditorium-container {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .legend {
+    flex-direction: column;
+    margin-right: 20px; 
+    margin-bottom: 0;
+  }
+
+  .seat-layout {
+    margin-right: 10rem;
+  }
+
+  .ticket-page {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-around;
+  }
+
+  /* LEFT SIDE — Movie & ticket details */
+  .ticket-details {
+    border: 1px solid #92EEFF;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  
+  .ticket-details p {
+    margin: 8px 0;
+    font-size: 16px;
+  }
+  
+  /* RIGHT SIDE — Choose tickets */
+  .choose-tickets {
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    border: 1px solid #92EEFF;
+  }
+  
+  .choose-tickets h2 {
+    margin-bottom: 20px;
+  }
+  
+  /* Counter rows */
+  .counter {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 15px 0;
+    font-size: 18px;
+  }
+  
+  /* Circle buttons */
+  .btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: #eeeeee;
+    color: #333;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .btn:hover {
+    background: #dddddd;
+  }
+  
+  .count {
+    font-size: 20px;
+    font-weight: 600;
+    width: 24px;
+    text-align: center;
+  }
+  
+  /* Total price */
+  .price {
+    margin-top: 25px;
+    font-size: 22px;
+    font-weight: bold;
+  }
+}
+

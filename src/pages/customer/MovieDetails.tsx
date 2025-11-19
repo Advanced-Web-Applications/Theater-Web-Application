@@ -7,6 +7,7 @@ const API_URL = import.meta.env.VITE_API_URL
 
 
 interface Showtimes {
+  id: number
   start_time: string;
 }
 
@@ -58,9 +59,20 @@ export default function MovieDetails() {
   const formatTime = (timestamp: string) =>
     new Date(timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
 
+  // Date for ticket details
+  const formatDate = (dateStr: string) =>
+    new Date(dateStr).toLocaleDateString('en-GB')
+
+  const formatDuration = (duration: number) => {
+    const hour = Math.floor(duration / 60)
+    const minutes = duration % 60
+    return `${hour}h${minutes.toString().padStart(2, '0')}.`
+  }
+   
+
   return (
     <>
-      <MovieInfo movieId={id!} setMovie={setMovie}/>
+      <MovieInfo movieId={id!} setMovie={setMovie} formatDuration={formatDuration}/>
       <div>
         <div className='dates-container'>
           {dates.map((dateStr) => (
@@ -81,7 +93,16 @@ export default function MovieDetails() {
               <div
                 key={slot.start_time}
                 className='showtime-item'
-                onClick={() => navigate('/ticket/', {state: {showtime: formatTime(slot.start_time), movie}})}
+                onClick={() => 
+                  navigate( '/ticket/', {
+                      state: {
+                        movie,
+                        showtime_id: slot.id,
+                        start_time: formatTime(slot.start_time),
+                        date: formatDate(selectedDate),
+                      }
+                    })
+                  }
               >
                 {formatTime(slot.start_time)}
               </div>
