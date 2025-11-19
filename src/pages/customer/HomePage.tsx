@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useLocation, useNavigate, Route, Routes } from 'react-router-dom'
+import { useNavigate, Route, Routes } from 'react-router-dom'
 import SearchBar from '../../components/customer/SearchBar'
 import MovieDetails from './MovieDetails'
 
