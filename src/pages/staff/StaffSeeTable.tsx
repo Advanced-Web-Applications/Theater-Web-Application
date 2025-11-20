@@ -1,54 +1,255 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 export default function StaffSeeTable() {
-  const [showTimes, setShowTimes] = useEffect<{movie: string; date: string; time: string}[]>([]);
-  const days = ["", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const { auditorium } = useParams();
 
-  const hours = [];
-  for (let i = 0;i <= 23; i++) {
-    hours.push(i);
-  }
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const [editableDate, setEditableDate] = useState("");
+  const [editableTime, setEditableTime] = useState<number | "">("");
+
+  const [selectedShow, setSelectedShow] = useState<{
+    id: number;
+    movie: string;
+    date: string;
+    time: number;
+  } | null>(null);
+
+  const hours = Array.from({ length: 12 }, (_, i) => i + 12);
+
+  const [showTimes, setShowTimes] = useState<
+    { id: number; movie: string; date: string; time: number }[]
+  >([]);
+
+  const [currentWeekStart, setCurrentWeekStart] = useState(() => {
+    const now = new Date();
+    const day = now.getDay() || 7;
+    const monday = new Date(now);
+    monday.setDate(now.getDate() - (day - 1));
+    monday.setHours(0, 0, 0, 0);
+    return monday;
+  });
 
   useEffect(() => {
-    const storedShowtimes = JSON.parse(localStorage.getItem("showtimes") || "[]");
-    console.log("Stored Showtimes:", storedShowtimes);
-  }, []);
+    fetch(`http://localhost:5000/api/staff/showtimes/${auditorium}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Fetched showtimes:", data);
 
-  const Header = () => {
-    const weeks = [];
-    weeks.push(<th key="time" className="timeTable">Time</th>);
-    for (let i = 1; i < days.length; i++) {
-      weeks.push(
-        <th key={i} className="timeTable">
-          {days[i]}
-        </th>
-      );
-    }
-    return <tr>{weeks}</tr>;
+        setShowTimes(
+          data.map((s: any) => {
+            const d = new Date(s.start_time);
+            return {
+              id: s.id,
+              movie: s.title,
+              date: s.start_time.split("T")[0],
+              time: d.getHours(),
+            };
+          })
+        );
+      })
+      .catch((err) => console.error("Error fetching showtimes:", err));
+  }, [auditorium]);
+
+  const handleSave = async () => {
+    if (!selectedShow) return;
+
+    await fetch(`http://localhost:5000/api/staff/showtimes/${selectedShow.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        date: editableDate,
+        time: editableTime,
+      }),
+    });
+
+    setShowTimes((prev) =>
+      prev.map((s) =>
+        s.id === selectedShow.id
+          ? { ...s, date: editableDate, time: editableTime as number }
+          : s
+      )
+    );
+
+    setModalOpen(false);
   };
 
-  const TimeBody = () => {
-    const timeRows = [];
-    for (let i = 0; i < hours.length; i++) {
-      const hour = hours[i];
+  const handleDelete = async () => {
+    if (!selectedShow) return;
+
+    await fetch(`http://localhost:5000/api/staff/showtimes/${selectedShow.id}`, {
+      method: "DELETE",
+    });
+
+    setShowTimes((prev) => prev.filter((s) => s.id !== selectedShow.id));
+
+    setModalOpen(false);
+  };
+
+  const weekDates = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(currentWeekStart);
+    d.setDate(currentWeekStart.getDate() + i);
+    return d;
+  });
+
+  const changeWeek = (offset: number) => {
+    const newStart = new Date(currentWeekStart);
+    newStart.setDate(currentWeekStart.getDate() + offset * 7);
+    setCurrentWeekStart(newStart);
+  };
+
+  const isToday = (date: Date) => {
+    const now = new Date();
+    return (
+      date.getFullYear() === now.getFullYear() &&
+      date.getMonth() === now.getMonth() &&
+      date.getDate() === now.getDate()
+    );
+  };
+
+  const Header = () => (
+    <tr>
+      <th className="timeTable">Time</th>
+      {weekDates.map((d, i) => (
+        <th
+          key={i}
+          className="timeTable"
+          style={{
+            backgroundColor: isToday(d) ? "#eeecc9ff" : "transparent",
+          }}
+        >
+          {d.toLocaleDateString("en-GB", {
+            weekday: "short",
+            month: "numeric",
+            day: "numeric",
+          })}
+        </th>
+      ))}
+    </tr>
+  );
+
+  const TimeBody = () =>
+    hours.map((hour) => {
       const tds = [];
+
       tds.push(
         <td key="time" className="timeTable">
           {hour}:00
         </td>
       );
-      for (let j = 1; j < days.length; j++) {
-        tds.push(<td key={j} className="timeTable"></td>);
-      }
-      timeRows.push(<tr key={i}>{tds}</tr>);
-    }
-    return timeRows;
-  };
+
+      weekDates.forEach((date, j) => {
+        let showHere = "";
+        let showData: {
+          id: number;
+          movie: string;
+          date: string;
+          time: number;
+        } | null = null;
+
+        for (const show of showTimes) {
+          const showDate = new Date(show.date);
+
+          if (
+            showDate.getFullYear() === date.getFullYear() &&
+            showDate.getMonth() === date.getMonth() &&
+            showDate.getDate() === date.getDate() &&
+            show.time === hour
+          ) {
+            showHere = show.movie;
+            showData = show;
+            break;
+          }
+        }
+
+        tds.push(
+          <td
+            key={j}
+            className={`timeTable ${
+              selectedShow &&
+              selectedShow.id === showData?.id
+                ? "selectedCell"
+                : ""
+            }`}
+            onClick={() => {
+              if (showData) {
+                setSelectedShow(showData);
+                setEditableDate(showData.date);
+                setEditableTime(showData.time);
+                setModalOpen(true);
+              }
+            }}
+          >
+            {showHere}
+          </td>
+        );
+      });
+
+      return <tr key={hour}>{tds}</tr>;
+    });
 
   return (
-    <table style={{ borderCollapse: "collapse", width: "100%" }}>
-      <thead>{Header()}</thead>
-      <tbody>{TimeBody()}</tbody>
-    </table>
+    <div className="scheduleContainer">
+      <div className="weekControls">
+        <button className="weekButton" onClick={() => changeWeek(-1)}>
+          《
+        </button>
+        <span className="yearLabel">{currentWeekStart.getFullYear()}</span>
+        <button className="weekButton" onClick={() => changeWeek(1)}>
+          》
+        </button>
+      </div>
+
+      <div className="tableWrapper">
+        <table className="scheduleTable">
+          <thead>{Header()}</thead>
+          <tbody>{TimeBody()}</tbody>
+        </table>
+      </div>
+
+      {modalOpen && selectedShow && (
+        <div className="modal">
+          <div
+            className="modalContent"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="editWord">{selectedShow.movie}</h2>
+            <h3 className="editWord">Edit table</h3>
+
+            <label>
+              Date:
+              <input
+                type="date"
+                value={editableDate}
+                onChange={(e) => setEditableDate(e.target.value)}
+              />
+            </label>
+
+            <label>
+              Time:
+              <input
+                type="time"
+                value={
+                  editableTime !== ""
+                    ? `${editableTime.toString().padStart(2, "0")}:00`
+                    : ""
+                }
+                onChange={(e) => {
+                  const hour = e.target.value.split(":")[0];
+                  setEditableTime(Number(hour));
+                }}
+              />
+            </label>
+            
+            <div className="AllbuttonStyle">
+              <button onClick={handleSave} className="buttonInTable">Save</button>
+              <button onClick={handleDelete} className="buttonInTable">Delete</button>
+              <button onClick={() => setModalOpen(false)} className="buttonInTable">Close</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

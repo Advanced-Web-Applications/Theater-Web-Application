@@ -1,33 +1,56 @@
-import "../../style/staff/staff.css"
-import { useNavigate } from 'react-router-dom'
+import { useParams } from "react-router-dom";
+import "../../style/staff/staff.css";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-const auditoriumRooms = [
-  {auditoriumNumber:1 , name: '1'},
-  {auditoriumNumber:2 , name: '2'},
-  {auditoriumNumber:3 , name: '3'},
-  {auditoriumNumber:4 , name: '4'},
-]
+type AuditoriumRoom = {
+  auditoriumNumber: number;
+  name: string;
+  totalSeats?: number;
+  seatsPerRow?: number;
+};
+
+type Theater = {
+  id: number;
+  name: string;
+  rooms: AuditoriumRoom[];
+};
 
 export default function StaffHomePage() {
-
+  const { id } = useParams();
+  const theaterId = Number(id);
+  const [currentTheater, setCurrentTheater] = useState<Theater | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/staff/theaters/${theaterId}`)
+      .then((res) => res.json())
+      .then((data) => setCurrentTheater(data))
+      .catch((err) => console.error(err));
+  }, [theaterId]);
+
+  if (!currentTheater) return <div>Loading...</div>;
+
+  const rooms = currentTheater.rooms || [];
+
   return (
     <div>
-        <div className="header">
-            <h1>Auditorium</h1>
-        </div>
-        <div className="gridContainer">
-            {auditoriumRooms.map((room) => (
-                <div key={room.auditoriumNumber} className="roomCard">
-                    <div className="content">{room.name}</div>
-                    <div className="auditoriumButton">
-                        <button onClick={() => navigate('/StaffSetSeat')}>Set seat</button>
-                        <button onClick={() => navigate('/StaffSetTimes')}>Set times</button>
-                        <button onClick={() => navigate('/StaffSeeTable')}>See table</button>
-                    </div>
-                </div>
-            ))}
-        </div>
+      <p className="theaterName">{currentTheater?.name}</p>
+      <div className="header">
+        <h1>Auditorium</h1>
+      </div>
+      <div className="gridContainer">
+        {rooms.map((room) => (
+          <div key={room.auditoriumNumber} className="roomCard">
+            <div className="content">{room.name}</div>
+            <div className="auditoriumButton">
+              <button onClick={() => navigate(`/StaffSetSeat/${id}/${room.auditoriumNumber}`)}>Set Seats</button>
+              <button onClick={() => navigate(`/StaffSeeTable/${id}/${room.auditoriumNumber}`)}>See Table</button>
+              <button onClick={() => navigate(`/StaffSetTimes/${id}/${room.auditoriumNumber}`)}>Set Times</button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
-  )
+  );
 }
