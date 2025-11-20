@@ -1,12 +1,90 @@
 .title {
-  text-align: center;
-}
+  font-size: 2em;
+  font-weight: 300; /* Lighter font weight for modern look */
+  margin-bottom: 20px;
+  text-align: center;}
 
 .ticket-page {
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  padding: 20px;
+  width: 100%;
+  max-width: 500px;
+  gap: 30px; /* Space between the two main boxes */
+}
+
+/* Movie Details Box */
+.ticket-details, .choose-tickets {
+    background-color: #1a2a3a; /* Slightly lighter dark background for the box */
+    border: 1px solid #2d445c; /* Subtle border for definition */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    width: 90%; /* Take up more space for the poster */
+    box-sizing: border-box;
+}
+
+.ticket-details img {
+    width: 100%;
+    max-width: 180px; /* Constrain the image width */
+    height: auto;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    align-self: center;/* Center the image within the details box */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+.ticket-details p {
+    margin: 5px 0;
+    font-size: 1em;
+    line-height: 1.6;
+}
+
+.ticket-details strong {
+    color: #90ee90; /* A soft green to highlight labels */
+    font-weight: normal;
+}
+
+
+
+/* Counter for tickets (Adult/Child) */
+.counter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid #2d445c; /* Separator line */
+}
+
+.counter span:first-child {
+    font-size: 1em;
+}
+
+.counter div {
+    /* Styles for the +/- buttons */
+    background-color: #3b5a7a; 
+    width: 28px;
+    height: 28px;
+    font-size: 1.4em;
+}
+
+.counter .count {
+    font-size: 1.1em;
+    margin: 0 15px;
+}
+
+/* Total Price */
+.price {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid #2d445c;
+    width: 100%;
+    text-align: center;
+    font-size: 1.4em;
+    color: #90ee90; /* Highlight the total price */
 }
 
 .auditorium-container {
@@ -93,18 +171,7 @@
   background-color: #57F287;
 }
 
-.counter {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-weight: 700;
-  cursor: pointer;
-}
 
-.counter-value {
-  font-size: 20px;
-  font-weight: 500;
-}
 
 
 @media (min-width: 768px) {
@@ -123,31 +190,29 @@
     margin-right: 10rem;
   }
 
-  .ticket-page {
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-around;
+  .title {
+    font-size: 2.5em; /* Restore larger title */
   }
 
-  /* LEFT SIDE — Movie & ticket details */
-  .ticket-details {
-    border: 1px solid #92EEFF;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  }
   
-  .ticket-details p {
-    margin: 8px 0;
-    font-size: 16px;
-  }
+    .ticket-details {
+      margin: 5px 0;
+      font-size: 1.1em;
+    }
+    
+    .ticket-details img {
+      max-width: 250px; /* Smaller image on mobile */
+      margin-bottom: 20px;
+    }
   
   /* RIGHT SIDE — Choose tickets */
   .choose-tickets {
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-    border: 1px solid #92EEFF;
+    width: 40%; /* Ticket box takes up less space */
+    min-width: 250px;
+    max-width: 350px;
+    padding: 25px;
+    /* Remove the align-items: center from mobile base to align content left */
+    align-self: auto;
   }
   
   .choose-tickets h2 {

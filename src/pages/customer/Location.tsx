@@ -27,6 +27,7 @@ export default function Location() {
 
   useEffect(() => {
     fetch(`${API_URL}/api/customer/locations`)
+    // fetch('https://theater-booking-b2afd3hagmc2hace.swedencentral-01.azurewebsites.net/api/customer/locations')
       .then(res => res.json())
       .then(data => setLocations(data)
     ). catch (err => console.log('Error fetching locations: ', err))

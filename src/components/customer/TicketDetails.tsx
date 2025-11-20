@@ -40,6 +40,7 @@ export default function TicketDetails({ movie, showtime_id, start_time, date }: 
         <div className='ticket-details'>
             {ticket && (
               <>
+                <img src={ticket.poster}></img>
                 <p><strong>Theater: </strong>{ticket.theater}</p>   
                 <p><strong>Auditorium: </strong>{ticket.auditorium}</p>   
                 <p><strong>Date: </strong>{date}</p>

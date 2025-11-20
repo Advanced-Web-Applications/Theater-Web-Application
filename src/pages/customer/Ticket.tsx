@@ -1,7 +1,7 @@
 import React from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import TicketDetails from '../../components/customer/TicketDetails'
-import SeatsTickets from '../../components/customer/SeatsTickets'
+import SeatsTickets from '../../components/customer/SeatsLayout'
 
 
 
