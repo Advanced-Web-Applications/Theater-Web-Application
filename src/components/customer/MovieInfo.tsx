@@ -26,7 +26,7 @@ export default function MovieInfo({movieId, setMovie, formatDuration }: MovieInf
   useEffect(() => {
       fetch(`${API_URL}/api/customer/movies/${movieId}`)
         .then(res => res.json())
-        .then(data => { internalMovie(data); setMovie(data)})
+        .then(data => { internalMovie(data); setMovie(data) })
         .catch(err => console.log('Error fetching movies: ', err))
     }, [movieId, setMovie])
 

@@ -4,10 +4,9 @@ import '../../style/customer/location.css'
 import Navbar from '../../components/customer/Navbar'
 import HomePage from './HomePage'
 import MovieDetails from './MovieDetails'
+import Ticket from './Ticket'
 
 const API_URL = import.meta.env.VITE_API_URL
-console.log(API_URL)
-console.log(import.meta.env)
 
 interface LocationType {
   city: string
@@ -57,8 +56,11 @@ export default function Location() {
             </div>
           }
           />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/movie/:id" element={<MovieDetails />} />
+          
+        <Route path='/home' element={<HomePage />} />
+        <Route path='/movie/:id' element={<MovieDetails />} />
+        <Route path='/ticket/' element={<Ticket />} />
+
       </Routes>
     </>
   )
