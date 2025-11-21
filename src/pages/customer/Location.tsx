@@ -5,8 +5,6 @@ import Navbar from '../../components/customer/Navbar'
 import HomePage from './HomePage'
 import MovieDetails from './MovieDetails'
 import Ticket from './Ticket'
-import CheckoutView from './CheckoutView'
-import SuccessView from './SuccessView'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -27,7 +25,6 @@ export default function Location() {
 
   useEffect(() => {
     fetch(`${API_URL}/api/customer/locations`)
-    // fetch('https://theater-booking-b2afd3hagmc2hace.swedencentral-01.azurewebsites.net/api/customer/locations')
       .then(res => res.json())
       .then(data => setLocations(data)
     ). catch (err => console.log('Error fetching locations: ', err))
@@ -63,8 +60,6 @@ export default function Location() {
         <Route path='/home' element={<HomePage />} />
         <Route path='/movie/:id' element={<MovieDetails />} />
         <Route path='/ticket/' element={<Ticket />} />
-        <Route path='/checkout' element={<CheckoutView/>}/>
-        <Route path='/success' element={<SuccessView/>}/>
       </Routes>
     </>
   )

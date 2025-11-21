@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "../../style/customer/homepage.css"; 
 
 export default function SearchBar() {

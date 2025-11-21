@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate, Route, Routes, Outlet } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import SearchBar from '../../components/customer/SearchBar'
 
 const API_URL = import.meta.env.VITE_API_URL
@@ -33,7 +33,7 @@ export default function HomePage() {
   const navigate = useNavigate()
 
   const [movies, setMovies] = useState<MovieProps[]>([])
-  const [location, setLocation] = useState('')
+  const [_, setLocation] = useState('')
   const [currentLocation, setCurrentLocation] = useState<LocationProps | null>(null)
 
 
