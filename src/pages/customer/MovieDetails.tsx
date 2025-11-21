@@ -5,7 +5,6 @@ import "../../style/customer/moviedetails.css";
 
 const API_URL = import.meta.env.VITE_API_URL
 
-
 interface Showtimes {
   id: number
   start_time: string;
@@ -24,13 +23,11 @@ interface MovieProps {
 
 export default function MovieDetails() {
 
-  const { id } = useParams()
-  
+  const { id } = useParams()  
   const location = useLocation()
   const navigate = useNavigate()
   
   const [movie, setMovie] = useState<MovieProps | null>(location.state?.movie || null)
-
   const [showtimes, setShowtimes] = useState<Showtimes[]>([])
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
 
@@ -41,6 +38,7 @@ export default function MovieDetails() {
   }, [id])
 
   const groupedByDate = showtimes.reduce((acc: any, current: any) => {
+
     const date = new Date(current.start_time)
     const dateKey = date.toDateString()
     if (!acc[dateKey]) acc[dateKey] = []
@@ -68,7 +66,6 @@ export default function MovieDetails() {
     const minutes = duration % 60
     return `${hour}h${minutes.toString().padStart(2, '0')}.`
   }
-   
 
   return (
     <>

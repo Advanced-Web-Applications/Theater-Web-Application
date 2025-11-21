@@ -5,6 +5,7 @@ import SearchBar from '../../components/customer/SearchBar'
 const API_URL = import.meta.env.VITE_API_URL
 
 
+
 interface MovieProps {
   id: number
   title: string
@@ -29,13 +30,11 @@ export default function HomePage() {
   const { state } = useLocation()
   const city = state?.location || 'Unknown'
 
-
   const navigate = useNavigate()
 
   const [movies, setMovies] = useState<MovieProps[]>([])
   const [_, setLocation] = useState('')
   const [currentLocation, setCurrentLocation] = useState<LocationProps | null>(null)
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,13 +52,13 @@ export default function HomePage() {
           const match = locationData.find(
             (loc: LocationProps) => loc.city.toLowerCase() === city.toLowerCase()
           )
-          setCurrentLocation(match || null)
-        }
 
+          setCurrentLocation(match)
+        }
       } catch (err) {
         console.log('Error fetching data: ', err)
       }
-    }  
+    }
     fetchData()
   }, [city])
 
@@ -88,7 +87,6 @@ export default function HomePage() {
           </>
         )}
       </footer>
-      
     </>
   )
 }

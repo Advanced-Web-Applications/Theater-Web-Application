@@ -56,10 +56,11 @@ export default function Location() {
             </div>
           }
           />
-
+          
         <Route path='/home' element={<HomePage />} />
         <Route path='/movie/:id' element={<MovieDetails />} />
         <Route path='/ticket/' element={<Ticket />} />
+
       </Routes>
     </>
   )

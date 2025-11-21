@@ -30,8 +30,6 @@ export default function MovieInfo({movieId, setMovie, formatDuration }: MovieInf
         .catch(err => console.log('Error fetching movies: ', err))
     }, [movieId, setMovie])
 
-   
-
   return (
     <div className='movie-details'>
       {movie && (

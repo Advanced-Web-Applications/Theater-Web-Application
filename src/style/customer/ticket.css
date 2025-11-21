@@ -145,7 +145,6 @@
 
 .seat-layout {
   width: fit-content;
-  overflow-x: auto;
 }
 
 .seat-grid {
@@ -191,8 +190,8 @@
 .available,
 .unavailable,
 .choosing {
-  width: 2rem;
-  height: 2rem;
+  width: 1.8rem;
+  height: 1.8rem;
   border-radius: 6px;
 }
 
@@ -206,7 +205,16 @@
   background-color: #57F287;
 }
 
+@media (max-width: 768px) {
+  .seat-layout {
+    width: fit-content;
+    overflow-x: auto;
+  }
 
+  .seat-layout::-webkit-scrollbar {
+    display: none;
+  }
+}
 
 
 @media (min-width: 768px) {
