@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import SearchBar from '../../components/customer/SearchBar'
 
 const API_URL = import.meta.env.VITE_API_URL
 
+
+
 interface MovieProps {
-    id: number
+  id: number
   title: string
   genre: string
   duration: number
@@ -19,7 +21,7 @@ interface LocationProps {
   city: string
   name: string
   address: string
-  phone: number
+  phone: string
 }
 
 
@@ -36,7 +38,7 @@ export default function HomePage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
+      try { 
         const locationReq = await fetch(`${API_URL}/api/customer/locations`)
         const locationData = await locationReq.json()
 
@@ -50,6 +52,7 @@ export default function HomePage() {
           const match = locationData.find(
             (loc: LocationProps) => loc.city.toLowerCase() === city.toLowerCase()
           )
+
           setCurrentLocation(match)
         }
       } catch (err) {

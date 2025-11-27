@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import MovieInfo from '../../components/customer/MovieInfo'
 import "../../style/customer/moviedetails.css"; 
 
 const API_URL = import.meta.env.VITE_API_URL
 
 interface Showtimes {
-  id: number;
+  id: number
   start_time: string;
 }
 
@@ -23,11 +23,11 @@ interface MovieProps {
 
 export default function MovieDetails() {
 
-  const { id } = useParams()
-
+  const { id } = useParams()  
   const location = useLocation()
-
-  const [_, setMovie] = useState<MovieProps | null>(location.state?.movie || null)
+  const navigate = useNavigate()
+  
+  const [movie, setMovie] = useState<MovieProps | null>(location.state?.movie || null)
   const [showtimes, setShowtimes] = useState<Showtimes[]>([])
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
 
@@ -37,7 +37,8 @@ export default function MovieDetails() {
     .then(data => setShowtimes(data))
   }, [id])
 
-  const groupedByDate = showtimes.reduce((acc: any, current) => {
+  const groupedByDate = showtimes.reduce((acc: any, current: any) => {
+
     const date = new Date(current.start_time)
     const dateKey = date.toDateString()
     if (!acc[dateKey]) acc[dateKey] = []
@@ -56,10 +57,14 @@ export default function MovieDetails() {
   const formatTime = (timestamp: string) =>
     new Date(timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
 
+  // Date for ticket details
+  const formatDate = (dateStr: string) =>
+    new Date(dateStr).toLocaleDateString('en-GB')
+
   const formatDuration = (duration: number) => {
-    const hour = Math.floor(duration/60)
+    const hour = Math.floor(duration / 60)
     const minutes = duration % 60
-    return `${hour}h${minutes.toString().padStart(2, '0')}`
+    return `${hour}h${minutes.toString().padStart(2, '0')}.`
   }
 
   return (
@@ -79,12 +84,22 @@ export default function MovieDetails() {
           ))}
         </div>
 
-        {selectedDate && (
+        {selectedDate && movie && (
           <div className='showtimes-container'>
             {groupedByDate[selectedDate].map((slot: Showtimes) => (
               <div
-                key={slot.id}
+                key={slot.start_time}
                 className='showtime-item'
+                onClick={() => 
+                  navigate( '/ticket/', {
+                      state: {
+                        movie,
+                        showtime_id: slot.id,
+                        start_time: formatTime(slot.start_time),
+                        date: formatDate(selectedDate),
+                      }
+                    })
+                  }
               >
                 {formatTime(slot.start_time)}
               </div>
