@@ -1,0 +1,22 @@
+{
+    "location": [
+        {"city": "Turku"},
+        {"city": "Oulu"},
+        {"city": "Helsinki Central"}
+    ],
+
+    "showtimes": [
+        {"id": 1, "start_time": "2025-03-10 07:48:37.557788"},
+        {"id": 2, "start_time": "2025-06-11 11:45:25.333333"},
+        {"id": 3, "start_time": "2025-11-21 21:20:37.588888"}
+    ],
+
+    "movies": [
+        {"id": 1, "title": "Flow", "description": "Cat is a solitary animal, but as its home is devastated by a great flood, he finds refuge on a boat populated by various species, and will have to team up with them despite their differences.", "genre": "Adventure, Animation, Fantasy", "duration": "1h25m", "age_rating": "P"},
+        {"id": 2, "title": "Assassin", "description": "A man dies as part of an experimental military program. A former black-ops soldier takes his place to find who killed him.", "genre": "Crime, Action, Sci-fi", "duration": "1h28m", "age_rating": "18+"},
+        {"id": 3, "title": "Inception", "description": "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O., but his tragic past may doom the project and his team to disaster.", "genre": "Action, Adventure, Psychological", "duration": "2h28m", "age_rating": "18+"},
+        {"id": 4, "title": "Joker", "description": "Arthur Fleck, a party clown and a failed stand-up comedian, leads an impoverished life with his ailing mother. However, when society shuns him and brands him as a freak, he decides to embrace the life of chaos in Gotham City.", "genre": "Tragedy, Crime, Thriller", "duration": "2h2m", "age_rating": "16+"},
+        {"id": 5, "title": "Kungfu panda", "description": "To everyone's surprise, including his own, Po, an overweight, clumsy panda, is chosen as protector of the Valley of Peace. His suitability will soon be tested as the valley's arch-enemy is on his way.", "genre": "Animal Adventure, Martial arts, Kung Fu", "duration": "1h32m", "age_rating": "R"}
+    ]
+
+}

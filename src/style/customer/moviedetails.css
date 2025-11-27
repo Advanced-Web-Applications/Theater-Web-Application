@@ -1,0 +1,55 @@
+.dates-container {
+  display: flex;
+  overflow-x: auto; /* enable horizontal scroll */
+  gap: 1rem;
+  padding: 1rem 0;
+  margin: 1rem 0;
+  background-color: #1C2541;
+}
+
+.dates-container::-webkit-scrollbar {
+  display: none;
+}
+
+img {
+  width: 50%;
+  border-radius: 0.7rem;
+}
+
+
+.date-item {
+  flex: 0 0 auto; /* prevent shrinking */
+  text-align: center;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.date-item:hover {
+  background-color: #1C2541;
+  border: 1px solid #92EEFF;
+}
+
+.date-item.selected {
+  color: white;
+  border: 1px solid #92EEFF;
+}
+
+.showtimes-container {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.showtime-item {
+  padding: 0.5rem 1rem;
+  background-color: #1C2541;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.showtime-item:hover {
+  background-color: #1C2541;
+  border: 1px solid #92EEFF;
+}

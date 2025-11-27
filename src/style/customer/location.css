@@ -1,0 +1,51 @@
+.location-div {
+    display: flex;
+    justify-content: center;
+    height: 75vh;
+    align-items: center;       
+}
+
+.location-card {
+    border-radius: 1rem;     
+    background-color: #1C2541; 
+    justify-content: center;
+    align-items: center;
+    color: #F4F6FA;              
+    padding: 2rem;            
+    text-align: center;       
+}
+
+.location-items { 
+    display: flex;
+    justify-content: center; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 10px; 
+    margin-top: 1rem; 
+}
+
+.location-item {
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #F4F6FA;
+    border: 1px solid #92EEFF;
+    border-radius: 0.3rem;
+    padding: 0.5rem 0;
+    width: 10rem;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+
+.location-item:hover {
+    background-color: #92EEFF;
+    color: #1C2541;
+}
+
+.active {
+    background-color: #92EEFF;
+    color: #0C1B33;
+}
+
