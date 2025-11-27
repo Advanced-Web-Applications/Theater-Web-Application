@@ -1,89 +1,93 @@
-import { useEffect, useState } from "react";
-import "../../style/staff/staff.css";
 import { useParams } from "react-router-dom";
+import { useState } from "react";
+import "../../style/staff/staff.css";
+import { useShowtimeSeats } from "../../components/staff/setSeat";
 
 export default function StaffSetSeat() {
-  const { id, auditorium } = useParams();
+  const { auditorium } = useParams();
+  const auditoriumId = Number(auditorium);
+  const [selectedDate, setSelectedDate] = useState<string>("");
 
-  const theaterName = id === "1" ? "Nova Oulu" : id === "2" ? "Kino Baltic Turku" : id === "3" ? "Elokuvateatteri Helsinki Central" : "Unknown Theater";
-    const theater = { theaterId: id, theaterName: theaterName, auditoriumId: auditorium };
+  const {
+    showtimes,
+    selectedShowtimeId,
+    setSelectedShowtimeId,
+    layout,
+    unavailable,
+    seatChanges,
+    toggleSeatStatus,
+    saveSeatStatus
+  } = useShowtimeSeats(auditoriumId, selectedDate);
 
-  const handleSave = () => {
-    const key = `seats_${id}_${auditorium}`;
-    localStorage.setItem(key, JSON.stringify(seats)); 
-    alert("Seat configuration saved successfully!");
-  };
+  function RoomGrid() {
+    if (!layout) return null;
 
-  const getSeatCount = (theaterId: string | undefined, auditoriumId: string | undefined,) => {
-    if (theaterId === "1") {
-      if (auditoriumId === "1") 
-        return 145;
-      if (auditoriumId === "2") 
-        return 87;
-      if (auditoriumId === "3") 
-        return 163;
-    }
-    if (theaterId === "2") {
-      if (auditoriumId === "1") 
-        return 192;
-      if (auditoriumId === "2") 
-        return 76;
-      if (auditoriumId === "3") 
-        return 134;
-      if (auditoriumId === "4") 
-        return 58;
-    }
-    if (theaterId === "3") {
-      if (auditoriumId === "1") 
-        return 178;
-      if (auditoriumId === "2") 
-        return 121;
-    }
-    return 50;
-  };
+    const seats = Array.from({ length: layout.total_seats }, (_, i) => i + 1);
 
-  const totalSeats = getSeatCount(id, auditorium);
-  const [seats, setSeats] = useState(Array(totalSeats).fill(true));
+    const getSeatColor = (seat: number) => {
+      const seatChange = seatChanges.find(s => s.seat_number === seat);
+      const isBooked = unavailable.includes(seat);
+      if (seatChange?.status === "maintenance") return "grey";
+      if (isBooked) return "#ff4d4d";
+      return "#36597C";
+    };
 
-  const toggleSeat = (i: number) => {
-    const updatedSeats = [...seats];
-    updatedSeats[i] = !updatedSeats[i];
-    setSeats(updatedSeats);
-  };
+    const getSeatClass = (seat: number) => {
+      const seatChange = seatChanges.find(s => s.seat_number === seat);
+      const isBooked = unavailable.includes(seat);
+      if (seatChange?.status === "maintenance") return "seat maintenance";
+      if (isBooked) return "seat booked";
+      return "seat available";
+    };
+
+    return (
+      <div className="seat-layout">
+        <div className="seat-grid" style={{ gridTemplateColumns: `repeat(${layout.seats_per_row}, 1fr)` }}>
+          {seats.map(seat => (
+            <div
+              key={seat}
+              className={getSeatClass(seat)}
+              onClick={() => toggleSeatStatus(seat)}
+              style={{
+                backgroundColor: getSeatColor(seat),
+                cursor: unavailable.includes(seat) ? "not-allowed" : "pointer"
+              }}
+            >
+              {seat}
+            </div>
+          ))}
+        </div>
+        <div className="screen">Screen</div>
+        <button className="save-button-for-seat" onClick={saveSeatStatus}>Save</button>
+      </div>
+    );
+  }
 
   return (
-    <div>
-      <h2 className="theaterName">
-        {theater.theaterName} — Auditorium {auditorium} 
-      </h2>
-
-      <div className="staffGoBackHeader">
-        <button className="goBackButton" onClick={() => { window.location.href = `/StaffHomePage/${id}`; }}>← Go back</button>
-      </div>
-
-      <div className="seatContainer">
-        <div className="symbolForSeat">
-          <div><span className="availableSeat"></span>Available</div>
-          <div><span className="unavailableSeat"></span>Unavailable</div>
+    <div className="auditorium-container">
+      <div className="date-time-selection">
+        <div style={{ marginBottom: 12 }}>
+          <label>Select date:</label>
+          <input type="date" value={selectedDate} onChange={e => setSelectedDate(e.target.value)} />
         </div>
-        <div className="seatRow">
-          <div className="exitStress">←Exit</div>
-          <div className="gridForAllSeat">
-            {seats.map((isAvailable, index) => (
+        <div className="time-grid">
+          {showtimes.length === 0
+            ? <div style={{ color: '#666' }}>No showtimes for this date</div>
+            : showtimes.map(s => (
               <div
-                key={index}
-                onClick={() => toggleSeat(index)}
-                className="seatSetting"
-                style={{ backgroundColor: isAvailable ? "#36597C" : "#FF0000" }}
-              ></div>
-            ))}
-          </div>
+                key={s.id}
+                className={`time-box ${selectedShowtimeId === s.id ? "selected" : ""}`}
+                onClick={() => setSelectedShowtimeId(s.id)}
+              >
+                {new Date(s.start_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                <br />
+                {s.title}
+              </div>
+            ))
+          }
         </div>
       </div>
-      <div className="screenView">Screen</div>
-      <div>
-        <button onClick={handleSave}>Save</button>
-      </div>
+      {layout && <RoomGrid />}
     </div>
   );
 }

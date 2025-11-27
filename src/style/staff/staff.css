@@ -1,23 +1,27 @@
 .staffNav {
   background-color: #1B2A40;
-  padding: 10px;
+  width: 100%;
+  height: 100px;
+  padding: 0; 
+  margin: 0; 
   display: flex;
-  gap: 20px;
-  margin: 0;
-  position: relative;
-  top : 0;
+  align-items: center;
 }
 
 .navLeft {
   display: flex;
   align-items: center;
+  height: 100%;
 }
 
 .navLogo {
-  width: 60px;
-  height: auto;
+  display: block;
+  width: auto;
+  height: 100%;
+  object-fit: contain; 
 }
 
+/*----------------------------------------------------------------------------------*/
 .header {
   background-color: #1B2A40;
   color: white;
@@ -32,7 +36,7 @@
 
 .theaterName {
   text-align: center;
-  font-size: 2rem; /* 32px 左右 */
+  font-size: 32px;
   color: white;
   margin: 20px 0;
   font-family: 'Times New Roman', Times, serif;
@@ -140,6 +144,8 @@
   border: none;
   font-size: 16px;
   cursor: pointer;
+  margin-top: 40px;
+  margin-left: -20px;
 }
 
 .setTimeBorder {
@@ -210,91 +216,124 @@ input[type="time"] {
 
 /*----------------------------------------------------------------------------------*/
 
-.availableSeat{
-  background-color: #36597C;
-}
-.unavailableSeat{
-  background-color: #FF0000;
+.auditorium-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center; 
+  padding: 3rem;
+  gap: 2rem;
+  flex-wrap: wrap; 
 }
 
-.symbolForSeat {
+.date-time-selection {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  margin-bottom: 15px;
-  align-items: flex-start;
-  margin-left: -185px;
+  gap: 1rem;
+  min-width: 180px;
 }
 
-.availableSeat,
-.unavailableSeat {
-  display: inline-block;
-  width: 15px;
-  height: 15px;
-  margin-right: 5px;
-  vertical-align: middle;
-  border-radius: 2px;
+.time-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 10px;
+  justify-items: center;
+  margin: 0 auto;
 }
 
-.seatContainer {
+.time-box {
+  padding: 8px 12px;
+  background-color: #000;
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.time-box.selected {
+  background-color: #4e78e1;
+  color: white;
+}
+
+.seat-layout {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  width: fit-content;
-  margin: 5px auto; 
-
+  flex: 1;
+  min-width: 300px;
 }
 
-.seatRow {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-
-.exitStress {
-  font-size: 18px;
-  color: white;
-  writing-mode: vertical-rl;
-  border: 2px solid #36597C;
-  padding: 1px;
-  width: auto;
-  height: auto;
-  letter-spacing: 20px;
-  font-family: 'Times New Roman', Times, serif;
-  justify-content: space-between;
-  flex-direction: column;
-  display: flex;
-  border-radius: 5px;
-}
-
-.gridForAllSeat {
+.seat-grid {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  gap: 5px;
+  gap: 0.4rem;
+  justify-content: center;
+  transform: rotateX(180deg);
 }
 
-.seatSetting {
-  width: 20px;
-  height: 20px;
+.seat {
+  width: 2rem;
+  height: 2rem;
+  background: #36597C;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  border-radius: 3px;
+  font-weight: bold;
+  user-select: none;
+  transform: rotateX(180deg);
 }
 
-.screenView {
+.seat.booked {
+  background: #ff4d4d;
+}
+
+.seat.active {
+  background: #ff4d4d;
+}
+
+.screen {
   text-align: center;
-  margin-bottom: 20px;
-  font-size: 18px;
+  margin-top: 2rem;
+  background-color: #36597C;
+  border-radius: 10px;
+  width: 50%;
+  padding: 0.5rem;
   color: white;
-  border: 2px solid #36597C;
-  padding-bottom: 5px;
-  padding: 2px 120px;
-  width: fit-content;
-  margin: 0 auto 20px;
-  border-radius: 5px;
+  font-weight: bold;
 }
 
+.available {
+  background-color: #36597C;
+}
+
+.unavailable {
+  background-color: #ff4d4d;
+}
+
+.save-button-for-seat {
+  display: block;
+  margin: 2rem auto 0 auto;
+}
+
+@media (max-width: 768px) {
+  .auditorium-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem;
+  }
+
+  .seat-layout {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .seat-layout::-webkit-scrollbar {
+    display: none;
+  }
+}
 /*----------------------------------------------------------------------------------*/
 
 
@@ -432,27 +471,6 @@ body {
   font-size: 14px;
   transition: 0.15s;
   color: white;
-}
-
-.AllbuttonStyle button:nth-of-type(1) {
-  background: #4a6fa5;
-}
-.AllbuttonStyle button:nth-of-type(1):hover {
-  background: #3d5b87;
-}
-
-.AllbuttonStyle button:nth-of-type(2) {
-  background: #c0392b;
-}
-.AllbuttonStyle button:nth-of-type(2):hover {
-  background: #a83226;
-}
-
-.AllbuttonStyle button:nth-of-type(3) {
-  background: #2f4154;
-}
-.AllbuttonStyle button:nth-of-type(3):hover {
-  background: #253646;
 }
 
 .editWord {

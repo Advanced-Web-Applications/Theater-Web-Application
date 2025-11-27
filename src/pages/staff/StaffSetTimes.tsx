@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "../../style/staff/staff.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 type Movie = {
   id: number;
   title: string;
@@ -15,13 +17,13 @@ export default function StaffSetTimes() {
   const [time, setTime] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/staff/movies")
+    fetch(`${API_URL}/api/staff/movies`)
       .then((res) => res.json())
       .then((data: Movie[]) => {
         setMovies(data);
         if (data.length > 0) setMovieId(data[0].id); 
       })
-      .catch((err) => console.error("Error fetching movies:", err));
+      .catch((err) => console.error("Cannot fetching movies:", err));
   }, []);
 
   const handleSave = async () => {
@@ -33,7 +35,7 @@ export default function StaffSetTimes() {
     const startTime = new Date(`${date}T${time}`).toISOString();
 
     try {
-      const res = await fetch("http://localhost:5000/api/staff/showtimes", {
+      const res = await fetch(`${API_URL}/api/staff/showtimes`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -43,7 +45,14 @@ export default function StaffSetTimes() {
         }),
       });
 
-      if (!res.ok) throw new Error("Failed to save showtime");
+      if (!res.ok){
+        if(res.status === 409) {
+          const data = await res.json();
+          alert(data.message);
+          return;
+        }
+        throw new Error("Failed to save showtimes");
+      }
 
       alert("Showtime saved!");
     } catch (err) {

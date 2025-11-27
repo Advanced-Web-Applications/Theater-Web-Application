@@ -14,9 +14,6 @@ export default function StaffNavBar() {
         </div>
 
         <Link to="/StaffHomePage/1">Staff HomePage</Link>
-        <Link to="/StaffSetTimes/1/1">Set Show Times</Link>
-        <Link to="/StaffSetSeat/1/1">Set Seats</Link>
-        <Link to="/StaffSeeTable/1/1">See Table</Link>
       </nav>
 
       <Routes>

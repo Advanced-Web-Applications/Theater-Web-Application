@@ -1,41 +1,23 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "../../style/staff/staff.css";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-
-type AuditoriumRoom = {
-  auditoriumNumber: number;
-  name: string;
-  totalSeats?: number;
-  seatsPerRow?: number;
-};
-
-type Theater = {
-  id: number;
-  name: string;
-  rooms: AuditoriumRoom[];
-};
+import { useTheater } from "../../components/staff/theaterData";
 
 export default function StaffHomePage() {
   const { id } = useParams();
   const theaterId = Number(id);
-  const [currentTheater, setCurrentTheater] = useState<Theater | null>(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetch(`http://localhost:5000/api/staff/theaters/${theaterId}`)
-      .then((res) => res.json())
-      .then((data) => setCurrentTheater(data))
-      .catch((err) => console.error(err));
-  }, [theaterId]);
+  const { theater: currentTheater, loading, error } = useTheater(theaterId);
 
-  if (!currentTheater) return <div>Loading...</div>;
+  if (loading) return <div>Loading</div>;
+  if (error) return <div>{error}</div>;
+  if (!currentTheater) return <div>No theater found</div>;
 
   const rooms = currentTheater.rooms || [];
 
   return (
     <div>
-      <p className="theaterName">{currentTheater?.name}</p>
+      <p className="theaterName">{currentTheater.name}</p>
       <div className="header">
         <h1>Auditorium</h1>
       </div>
@@ -45,8 +27,8 @@ export default function StaffHomePage() {
             <div className="content">{room.name}</div>
             <div className="auditoriumButton">
               <button onClick={() => navigate(`/StaffSetSeat/${id}/${room.auditoriumNumber}`)}>Set Seats</button>
-              <button onClick={() => navigate(`/StaffSeeTable/${id}/${room.auditoriumNumber}`)}>See Table</button>
               <button onClick={() => navigate(`/StaffSetTimes/${id}/${room.auditoriumNumber}`)}>Set Times</button>
+              <button onClick={() => navigate(`/StaffSeeTable/${id}/${room.auditoriumNumber}`)}>See Table</button>
             </div>
           </div>
         ))}

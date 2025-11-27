@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function StaffSeeTable() {
   const { auditorium } = useParams();
 
@@ -32,7 +34,7 @@ export default function StaffSeeTable() {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/staff/showtimes/${auditorium}`)
+    fetch(`${API_URL}/api/staff/showtimes/${auditorium}`)
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched showtimes:", data);
@@ -52,17 +54,27 @@ export default function StaffSeeTable() {
       .catch((err) => console.error("Error fetching showtimes:", err));
   }, [auditorium]);
 
+  const weekDates = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(currentWeekStart);
+    d.setDate(currentWeekStart.getDate() + i);
+    return d;
+  });
+
+
   const handleSave = async () => {
     if (!selectedShow) return;
 
-    await fetch(`http://localhost:5000/api/staff/showtimes/${selectedShow.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        date: editableDate,
-        time: editableTime,
-      }),
-    });
+    await fetch(
+      `${API_URL}/api/staff/showtimes/${selectedShow.id}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          date: editableDate,
+          time: editableTime,
+        }),
+      }
+    );
 
     setShowTimes((prev) =>
       prev.map((s) =>
@@ -78,20 +90,20 @@ export default function StaffSeeTable() {
   const handleDelete = async () => {
     if (!selectedShow) return;
 
-    await fetch(`http://localhost:5000/api/staff/showtimes/${selectedShow.id}`, {
-      method: "DELETE",
-    });
+    await fetch(
+      `${API_URL}/api/staff/showtimes/${selectedShow.id}`,
+      {
+        method: "DELETE",
+      }
+    );
 
-    setShowTimes((prev) => prev.filter((s) => s.id !== selectedShow.id));
+    setShowTimes((prev) =>
+      prev.filter((s) => s.id !== selectedShow.id)
+    );
 
     setModalOpen(false);
   };
 
-  const weekDates = Array.from({ length: 7 }, (_, i) => {
-    const d = new Date(currentWeekStart);
-    d.setDate(currentWeekStart.getDate() + i);
-    return d;
-  });
 
   const changeWeek = (offset: number) => {
     const newStart = new Date(currentWeekStart);
@@ -191,6 +203,14 @@ export default function StaffSeeTable() {
 
   return (
     <div className="scheduleContainer">
+      <div className="staffGoBackHeader">
+        <button
+          className="goBackButton"
+          onClick={() => (window.location.href = `/StaffHomePage/${auditorium}`)}
+        >
+          ← Go back
+        </button>
+      </div>
       <div className="weekControls">
         <button className="weekButton" onClick={() => changeWeek(-1)}>
           《
@@ -214,8 +234,7 @@ export default function StaffSeeTable() {
             className="modalContent"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="editWord">{selectedShow.movie}</h2>
-            <h3 className="editWord">Edit table</h3>
+            <h3>{selectedShow.movie}</h3>
 
             <label>
               Date:
@@ -241,12 +260,12 @@ export default function StaffSeeTable() {
                 }}
               />
             </label>
-            
-            <div className="AllbuttonStyle">
-              <button onClick={handleSave} className="buttonInTable">Save</button>
-              <button onClick={handleDelete} className="buttonInTable">Delete</button>
-              <button onClick={() => setModalOpen(false)} className="buttonInTable">Close</button>
-            </div>
+
+            <button onClick={handleSave}>Save</button>
+            <button onClick={handleDelete}>Delete</button>
+
+
+            <button onClick={() => setModalOpen(false)}>Close</button>
           </div>
         </div>
       )}
