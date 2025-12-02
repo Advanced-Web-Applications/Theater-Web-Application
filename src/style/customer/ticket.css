@@ -176,7 +176,7 @@
 }
 
 .seat.active {
-  background: #57F287;
+  background: #57F287 !important;
 }
 
 .screen {
