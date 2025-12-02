@@ -33,7 +33,6 @@ export default function Ticket() {
         />
       </div>
       <SeatsLayout showtime_id={showtime_id} adultTicket={adultTicket} childTicket={childTicket}/>
-      <h3 onClick={() => navigate('/checkout', {state: movie})}>Go to payment</h3>
     </div>
   )
 }
