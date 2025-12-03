@@ -14,6 +14,7 @@ export default function Checkout() {
     const childTicket = state?.childTicket
     const showtime_id = state?.showtime_id
     const email = state?.email
+    const activeSeats = state?.activeSeats
 
     const promise = useMemo(() => {
         return fetch(`${API_URL}/api/customer/create-checkout-session`, {
@@ -23,7 +24,9 @@ export default function Checkout() {
                 showtime_id: showtime_id,
                 adult_ticket: adultTicket,
                 child_ticket: childTicket,
-                email: email
+                email: email,
+                seat_numbers: activeSeats,
+                status: 'reserved',
             })
         })
             .then((res) => {

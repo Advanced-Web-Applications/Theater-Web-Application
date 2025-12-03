@@ -4,13 +4,13 @@
   font-weight: 400;
 
   color: #F4F6FA;
-  background-color: #0C1B33;
   width: 100%;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
 }
 
 body {

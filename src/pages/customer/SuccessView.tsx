@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router';
-import Barcode from "react-barcode";
+import '../../style/customer/ticket.css'
 
 const API_URL = import.meta.env.VITE_API_URL
 
-interface PaymentStatus {
-    id: string
-    payment_status: string
-    currency: string
-    amount_total: number
-    customer_email: string
+interface Ticket {
+  title: string
+  theater: string
+  auditorium: string
+  date: string
+  start_time: string
+  duration: string
+  seats: number[]
+  barcode: string
 } 
 
 export default function SuccessView() {
@@ -17,10 +20,9 @@ export default function SuccessView() {
     const navigate = useNavigate()
 
     const [searchParams, setSearchParams] = useSearchParams()
-    const [session, setSession] = useState<PaymentStatus | null>(null)
+    const [session, setSession] = useState<Ticket | null>(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
-
     const sessionId = searchParams.get('session_id')
 
     useEffect(() => {
@@ -36,6 +38,7 @@ export default function SuccessView() {
                     if (data.error) {
                         throw new Error(data.error)
                     }
+                    console.log(data)
                     setSession(data)
                     setLoading(false)
                 })
@@ -53,21 +56,53 @@ export default function SuccessView() {
     if (error) return <div>Error: {error}</div>;
     if (!session) return <div>No session found</div>;
 
+
+    const start = new Date(session.start_time)
+    const end = new Date(start.getTime() + Number(session.duration) * 60 * 1000)
+
+    const formatter = new Intl.DateTimeFormat("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+      timeZone: 'Europe/Paris',
+    });
+
+    const time = `${formatter.format(start)} - ${formatter.format(end)}`
+
+    const dateObj = new Date(session.start_time);
+    const day = dateObj.getUTCDate().toString().padStart(2, '0');
+
+    const monthNames = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+    const month = monthNames[dateObj.getUTCMonth()]
+
   return (
-    <div style={{ padding: '20px', textAlign: 'center' }}>
+    <div className='ticket'>
       <h1>Payment Successful!</h1>
-      <h3>This is your ticket!</h3>
-      <div style={{ marginTop: '20px', marginBottom: '20px', padding: '15px', backgroundColor: '#f0f8ff', color: 'black', borderRadius: '8px' }}>
-        <h3>Movie name</h3>
-        <p><strong>Theater:</strong> {session.id}</p>
-        <p><strong>Date:</strong> {session.payment_status}</p>
-        <p><strong>Total:</strong> {(session.amount_total / 100).toFixed(2)} {session.currency?.toUpperCase()}</p>
-        <p><strong>Customer Email:</strong> {session.customer_email}</p>
+      <div className='ticket-card'>
+        <div className='ticket-top'>
+          <div className='ticket-info'>
+            <div className='ticket-div'>
+              <h1 className='ticket-title'>{session.title}</h1>
+              <div className='ticket-date-box'>
+                <div className='ticket-date-day'>{day}</div>
+                <div className='ticket-date-month'>{month}</div>
+              </div>
+            </div>
+            <div className='ticket-detail'><strong>THEATER</strong><p>{session.theater}</p></div>
+            <div className='ticket-detail'><strong>AUDITORIUM</strong><p>{session.auditorium}</p></div>
+            <div className='ticket-detail'><strong>TIME</strong><p>{time}</p></div>
+            <div className='ticket-detail'><strong>SEAT(S)</strong><p>{session.seats.join(', ')}</p></div>
+          </div>
+          
+        </div>
+
+        <div className='ticket-bottom'>
+          <img src={`data:image/pnd;base64,${session.barcode}`}/>
+        </div>
+
       </div>
-      <Barcode value={session.id} height={80} width={0.7} displayValue={false}/>
       <button
         onClick={() => navigate('/')}
-        style={{ marginTop: '20px', padding: '10px 20px', fontSize: '16px', cursor: 'pointer' }}
       >
         Back to Start
       </button>

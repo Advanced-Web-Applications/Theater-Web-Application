@@ -1,0 +1,306 @@
+.title {
+  font-size: 2em;
+  font-weight: 300; /* Lighter font weight for modern look */
+  margin-bottom: 20px;
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.ticket-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 500px;
+  gap: 30px; /* Space between the two main boxes */
+}
+
+/* Movie Details Box */
+.ticket-details {
+    background-color: #1a2a3a; /* Slightly lighter dark background for the box */
+    border: 1px solid #2d445c; /* Subtle border for definition */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row; /* Keep vertical stacking for mobile */
+    align-items: center;
+}
+
+.choose-tickets {
+    background-color: #1a2a3a; /* Slightly lighter dark background for the box */
+    border: 1px solid #2d445c; /* Subtle border for definition */
+    padding: 1rem 2rem 0 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    width: 90%; /* Take up more space for the poster */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column; /* Keep vertical stacking for mobile */
+    align-items: center;
+}
+
+.ticket-details img {
+    width: 7.5rem;
+    height: auto;
+    border-radius: 6px;
+    align-self: center;/* Center the image within the details box */
+    display: block;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+.ticket-details p {
+    margin: 5px 0;
+    font-size: 1em;
+    line-height: 1.6;
+}
+
+.ticket-details strong {
+    color: #90ee90; /* A soft green to highlight labels */
+    font-weight: normal;
+}
+
+.ticket-center {
+  display: flex;
+  flex-direction: column; /* Optional: If you have other content above/below */
+  align-items: center; /* Centers children (including .ticket-page) horizontally */
+  margin: 0;
+}
+
+/* Counter for tickets (Adult/Child) */
+.counter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 1.5em 0;
+    border-bottom: 2px solid #2d445c; /* Separator line */
+}
+
+.counter span:first-child {
+    font-size: 1em;
+}
+
+.counter div {
+    /* Styles for the +/- buttons */
+    background-color: #3b5a7a; 
+    color: #f0f8ff;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.counter .count {
+    font-size: 1.1em;
+    margin: 0 15px;
+}
+
+/* Total Price */
+.price {
+    width: 100%;
+    text-align: center;
+    font-size: 1.4em;
+    color: #90ee90; /* Highlight the total price */
+}
+
+.auditorium-container {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  padding: 3rem;
+  justify-content: space-around;
+}
+
+.legend-payment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.payment {
+  margin-bottom: 2rem;
+  margin-right: 20px;
+}
+
+.legend {
+  display: flex;
+  margin-bottom: 1.3rem;
+  gap: 10px;
+  justify-content: center;
+}
+
+.legend div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.seat-layout {
+  width: fit-content;
+}
+
+.seat-grid {
+  display: grid;
+  gap: 0.4rem;
+  width: fit-content;
+  margin-bottom: 2rem;
+  transform: rotateX(180deg);
+}
+
+.seat {
+  width: 1.8rem;
+  height: 1.8rem;
+  background: #36597C;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: bold;
+  user-select: none;
+  transform: rotateX(180deg);
+}
+
+
+.seat.booked {
+  background: #ff4d4d;
+  cursor: not-allowed;
+}
+
+.seat.active {
+  background: #57F287 !important;
+}
+
+.screen {
+  text-align: center;
+  margin-top: 3rem;
+  background-color: #36597C;
+  border-radius: 10px;
+  width: 100%;
+}
+
+.available,
+.unavailable,
+.choosing {
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 6px;
+}
+
+.available {
+  background-color: #36597C;
+}
+.unavailable {
+  background-color: #ff4d4d;
+}
+.choosing {
+  background-color: #57F287;
+}
+
+@media (max-width: 768px) {
+  .seat-layout {
+    width: fit-content;
+    overflow-x: auto;
+  }
+
+  .seat-layout::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+
+@media (min-width: 768px) {
+  .auditorium-container {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .payment {
+    margin-top: 1.3rem;
+  }
+
+  .legend {
+    flex-direction: column;
+    margin-right: 20px; 
+    margin-bottom: 0;
+  }
+
+  .seat {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .seat-layout {
+    margin-right: 10rem;
+  }
+
+  .title {
+    font-size: 2.5em; /* Restore larger title */
+    margin-bottom: 4rem;
+  }
+
+  .ticket-page {
+        flex-direction: row; /* Change to row layout */
+        align-items: flex-start; /* Align items to the top */
+        width: 90%;
+        max-width: 1200px;
+        gap: 40px; /* More space on larger screens */
+    }
+
+  .ticket-details {
+    font-size: 1.1em;
+    display: flex;
+    justify-content: center;
+    width: auto;
+    align-items: center;
+  }
+  
+  .ticket-details img {
+    max-width: 250px; /* Smaller image on mobile */
+    margin: 1rem 2rem
+  }
+  
+  /* RIGHT SIDE — Choose tickets */
+  .choose-tickets {
+    width: 40%; /* Ticket box takes up less space */
+    /* Remove the align-items: center from mobile base to align content left */
+    align-self: auto;
+  }
+  
+  .choose-tickets h2 {
+    margin-bottom: 20px;
+  }
+  
+  /* Counter rows */
+  .counter {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 18px;
+  }
+  
+  
+  
+  .count {
+    font-size: 20px;
+    font-weight: 600;
+    width: 24px;
+    text-align: center;
+  }
+  
+  /* Total price */
+  .price {
+    margin-top: 25px;
+    font-size: 22px;
+    font-weight: bold;
+  }
+}
+

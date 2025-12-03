@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import '../../style/customer/ticket.css'
+import '../../style/customer/seats.css'
 import ConfirmPopUp from './ConfirmPopUp'
 
 const API_URL = import.meta.env.VITE_API_URL

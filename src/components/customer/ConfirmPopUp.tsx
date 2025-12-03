@@ -20,20 +20,6 @@ export default function ConfirmPopUp({showtime_id, adultTicket, childTicket, act
     
     const [email, setEmail] = useState('')
 
-    function handleSubmit() {
-        fetch(`${API_URL}/api/customer/booking`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                showtime_id: showtime_id,
-                seat_numbers: activeSeats,
-                status: 'booked',
-                email: email
-            })
-        })
-        navigate('/checkout',  {state: {email, showtime_id, adultTicket, childTicket}})
-    }
-
   return (
     <div className='popup-overlay'>
         <div className='popup-container'>
@@ -41,7 +27,7 @@ export default function ConfirmPopUp({showtime_id, adultTicket, childTicket, act
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
             <div>
                 <button onClick={onClose}>Cancel</button>
-                <button onClick={handleSubmit}>Go to payment</button>
+                <button onClick={() => navigate('/checkout',  {state: {email, showtime_id, adultTicket, childTicket, activeSeats}})}>Go to payment</button>
             </div>
         </div>
       </div>  
