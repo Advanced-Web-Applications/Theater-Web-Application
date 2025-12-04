@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import MovieInfo from '../../components/customer/MovieInfo'
 import "../../style/customer/moviedetails.css"; 
 
-const API_URL = import.meta.env.VITE_API_URL
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 interface Showtimes {
   id: number
@@ -32,7 +32,7 @@ export default function MovieDetails() {
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
 
   useEffect(() => {
-    fetch(`${API_URL}/api/customer/showtimes/${id}`, {headers: { 'Content-Type': 'application/json'}})
+    fetch(`${BACKEND_URL}/api/customer/showtimes/${id}`, {headers: { 'Content-Type': 'application/json'}})
     .then(res => res.json())
     .then(data => setShowtimes(data))
   }, [id])

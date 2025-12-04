@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router';
 import '../../style/customer/ticket.css'
 import { socket } from '../../services/socket'
 
-const API_URL = import.meta.env.VITE_API_URL
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 interface Ticket {
   title: string
@@ -30,7 +30,7 @@ export default function SuccessView() {
         if (sessionId) {
             const finalizeSeats = async () => {
               try {
-                const res = await fetch(`${API_URL}/api/customer/session-status?session_id=${sessionId}`, {headers: { 'Content-Type': 'application/json'}})
+                const res = await fetch(`${BACKEND_URL}/api/customer/session-status?session_id=${sessionId}`, {headers: { 'Content-Type': 'application/json'}})
                 if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`)
                 const data = await res.json()
                 setSession(data)

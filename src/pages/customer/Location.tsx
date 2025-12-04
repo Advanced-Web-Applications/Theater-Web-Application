@@ -8,7 +8,7 @@ import Ticket from './Ticket'
 import Checkout from './Checkout'
 import SuccessView from './SuccessView'
 
-const API_URL = import.meta.env.VITE_API_URL
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 interface LocationType {
   city: string
@@ -26,7 +26,7 @@ export default function Location() {
   }
 
   useEffect(() => {
-    fetch(`${API_URL}/api/customer/locations`, {headers: { 'Content-Type': 'application/json'}})
+    fetch(`${BACKEND_URL}/api/customer/locations`, {headers: { 'Content-Type': 'application/json'}})
       .then(res => res.json())
       .then(data => setLocations(data)
     ). catch (err => console.log('Error fetching locations: ', err))
