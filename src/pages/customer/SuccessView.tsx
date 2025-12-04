@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router';
 import '../../style/customer/ticket.css'
+import { socket } from '../../services/socket'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -27,30 +28,36 @@ export default function SuccessView() {
 
     useEffect(() => {
         if (sessionId) {
-            fetch(`${API_URL}/api/customer/session-status?session_id=${sessionId}`)
-                .then((res) => {
-                    if (!res.ok) {
-                        throw new Error(`HTTP error! status: ${res.status}`)
-                    }
-                    return res.json()
-                })
-                .then((data) => {
-                    if (data.error) {
-                        throw new Error(data.error)
-                    }
-                    console.log(data)
-                    setSession(data)
-                    setLoading(false)
-                })
-                .catch((err) => {
-                    setError(err.message)
-                    setLoading(false)
-                })
+            const finalizeSeats = async () => {
+              try {
+                const res = await fetch(`${API_URL}/api/customer/session-status?session_id=${sessionId}`)
+                if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`)
+                const data = await res.json()
+                setSession(data)
+
+                if (data.status === 'success') {
+                  socket.emit('bookSeat', {
+                    showtimeId: data.showtime_id,
+                    seatId: data.seats
+                  })
+                  socket.disconnect()
+                }
+              } catch (err) {
+                  console.error('Error finalize seats')
+              } finally {
+                setLoading(false)
+              }
+            }
+
+            finalizeSeats()
+
         } else {
             setError('No session ID provided')
             setLoading(false)
         }
     }, [sessionId])
+
+
 
     if (loading) return <div>Loading payment status...</div>;
     if (error) return <div>Error: {error}</div>;

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { socket } from '../../services/socket'
 import '../../style/customer/seats.css'
 import ConfirmPopUp from './ConfirmPopUp'
 
 const API_URL = import.meta.env.VITE_API_URL
-
 interface SeatsTicketsProps {
   showtime_id: number
   adultTicket: number
@@ -17,6 +17,11 @@ interface Layout {
   auditorium_id: number
 };
 
+interface Seat {
+    seat_number: number
+    status: 'available' | 'reserved' | 'booked'
+}
+
 
 export default function SeatsTickets({showtime_id, adultTicket, childTicket}: SeatsTicketsProps) {
 
@@ -24,7 +29,7 @@ export default function SeatsTickets({showtime_id, adultTicket, childTicket}: Se
 
     const [activeSeats, setActiveSeats] = useState<number[]>([])
     const [layout, setLayout] = useState<Layout | null>(null)
-    const [unavailable, setUnavailable] = useState<number[]>([])
+    const [seats, setSeats] = useState<Seat[]>([])
     const [showPopUp, setShowPopUp] = useState(false)
 
     const maxSelect = adultTicket + childTicket
@@ -34,13 +39,18 @@ export default function SeatsTickets({showtime_id, adultTicket, childTicket}: Se
             try {
                 const layoutReq = await fetch(`${API_URL}/api/customer/seats/showtimes/${showtime_id}`)
                 const layoutData = await layoutReq.json()
+                setLayout(layoutData)
 
+                
                 const unavailableReq = await fetch(`${API_URL}/api/customer/seats/showtimes/${showtime_id}/status`)
                 const unavailableData = await unavailableReq.json()
                 
+                const seatArray: Seat[] = Array.from({length: layoutData.total_seats}, (_, i) => ({
+                    seat_number: i + 1,
+                    status: unavailableData.some((u: { seat_number: number }) => u.seat_number === i + 1) ? 'booked' : 'available'
+                }))
+                setSeats(seatArray)
 
-                setLayout(layoutData)
-                setUnavailable(unavailableData.map((item: { seat_number: number }) => item.seat_number))
             } catch (err) {
                 console.log('Error fetching data: ', err)
             }
@@ -48,19 +58,47 @@ export default function SeatsTickets({showtime_id, adultTicket, childTicket}: Se
         fetchData()
     }, [])
 
-    function handleSeats(seat:number) {
-        setActiveSeats(prev => {
-            if (prev.length === 0) return [seat] 
-            if (prev.includes(seat)) return prev.filter(s => s !== seat) 
-            if (prev.length >= maxSelect) return prev
-            return [...prev, seat]
+    useEffect(() => {
+        socket.on('seatUpdate', ({ seatId, status }) => {
+            setSeats(prev =>
+                prev.map(seat =>
+                    seatId.includes(seat.seat_number)
+                        ? {...seat, status}
+                        : seat
+                )
+            )
+
+            if (status !== 'available') {
+                setActiveSeats(prev => prev.filter(s => !seatId.includes(s)))
+            }
         })
+
+        socket.on('seatRejected', (rejectedSeats: number[]) => {
+            alert('These seats are already taken: ' + rejectedSeats.join(', '))
+            setActiveSeats(prev => prev.filter(s => !rejectedSeats.includes(s)))
+        })
+
+        return () => {
+            socket.off('seatUpdate')
+            socket.off('seatRejected')
+        }
+    }, [])
+
+    function handleSeats(seatNumber:number) {
+        const seat = seats.find(s => s.seat_number === seatNumber)
+        if (!seat || seat.status !== 'available') return
+
+        if (activeSeats.includes(seatNumber)) {
+            setActiveSeats(prev => prev.filter(s => s !== seatNumber))
+            socket.emit('releaseSeats', { showtimeId: showtime_id, seatId: [seatNumber] })
+        } else {
+            if (activeSeats.length >= maxSelect) return
+            setActiveSeats(prev => [...prev, seatNumber])
+            socket.emit('selectSeats', { showtimeId: showtime_id, seatId: [seatNumber] })
+        }
     }
-    
+
     if (!layout) return <div>Loading...</div>;
-
-
-    const seats = Array.from({length: layout.total_seats}, (_, i) => i + 1)
 
   return (
     <>
@@ -77,7 +115,7 @@ export default function SeatsTickets({showtime_id, adultTicket, childTicket}: Se
                     </div>
                     <div>
                         <div className='choosing'></div>
-                        <p>Choosing</p>
+                        <p>Reserved</p>
                     </div>
                 </div>
                 <button className='payment' onClick={() => setShowPopUp(true)}>Confirm the selection</button>
@@ -91,13 +129,11 @@ export default function SeatsTickets({showtime_id, adultTicket, childTicket}: Se
                 }}
                 >
                 {seats.map(seat => {
-                    const isActive = activeSeats.includes(seat)
-                    const isUnavailable = unavailable.includes(seat)
-
+                    const isActive = activeSeats.includes(seat.seat_number)
                     return(
-                        <div key={seat} 
-                        className={`seat ${isActive ? "active" : ""} ${isUnavailable ? "booked" : ""}`}
-                        onClick={() => !isUnavailable &&  handleSeats(seat)}
+                        <div key={seat.seat_number} 
+                        className={`seat ${isActive ? "active" : ""} ${seat.status === 'booked' ? "booked" : seat.status === 'reserved' ? 'reserved' : ""}`}
+                        onClick={() => handleSeats(seat.seat_number)}
                         ></div>
                     )
                 })}
@@ -108,11 +144,11 @@ export default function SeatsTickets({showtime_id, adultTicket, childTicket}: Se
 
         {showPopUp && (
             <ConfirmPopUp 
-            adultTicket={adultTicket}
-            childTicket={childTicket}
-            activeSeats={activeSeats} 
-            onClose={() => setShowPopUp(false)}
-            showtime_id={showtime_id}/>
+                adultTicket={adultTicket}
+                childTicket={childTicket}
+                activeSeats={activeSeats} 
+                onClose={() => setShowPopUp(false)}
+                showtime_id={showtime_id}/>
         )}
     </>
   )
