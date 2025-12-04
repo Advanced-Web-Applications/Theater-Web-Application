@@ -39,10 +39,10 @@ export default function HomePage() {
   useEffect(() => {
     const fetchData = async () => {
       try { 
-        const locationReq = await fetch(`${API_URL}/api/customer/locations`)
+        const locationReq = await fetch(`${API_URL}/api/customer/locations`, {headers: { 'Content-Type': 'application/json'}})
         const locationData = await locationReq.json()
 
-        const moviesReq = await fetch(`${API_URL}/api/customer/location/movies?city=${city}`)
+        const moviesReq = await fetch(`${API_URL}/api/customer/location/movies?city=${city}`, {headers: { 'Content-Type': 'application/json'}})
         const moviesData = await moviesReq.json()
 
         setLocation(locationData)

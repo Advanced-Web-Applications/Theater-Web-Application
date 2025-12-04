@@ -30,7 +30,7 @@ export default function SuccessView() {
         if (sessionId) {
             const finalizeSeats = async () => {
               try {
-                const res = await fetch(`${API_URL}/api/customer/session-status?session_id=${sessionId}`)
+                const res = await fetch(`${API_URL}/api/customer/session-status?session_id=${sessionId}`, {headers: { 'Content-Type': 'application/json'}})
                 if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`)
                 const data = await res.json()
                 setSession(data)

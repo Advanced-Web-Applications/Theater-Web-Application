@@ -34,12 +34,12 @@ export default function SeatsTickets({showtime_id, adultTicket, childTicket}: Se
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const layoutReq = await fetch(`${API_URL}/api/customer/seats/showtimes/${showtime_id}`)
+                const layoutReq = await fetch(`${API_URL}/api/customer/seats/showtimes/${showtime_id}`, {headers: { 'Content-Type': 'application/json'}})
                 const layoutData = await layoutReq.json()
                 setLayout(layoutData)
 
                 
-                const unavailableReq = await fetch(`${API_URL}/api/customer/seats/showtimes/${showtime_id}/status`)
+                const unavailableReq = await fetch(`${API_URL}/api/customer/seats/showtimes/${showtime_id}/status`, {headers: { 'Content-Type': 'application/json'}})
                 const unavailableData = await unavailableReq.json()
                 
                 const seatArray: Seat[] = Array.from({length: layoutData.total_seats}, (_, i) => ({
