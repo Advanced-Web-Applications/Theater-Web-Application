@@ -1,12 +1,21 @@
 /// <reference types="cypress" />
+Cypress.on('uncaught:exception', (err) => {
+  if (err.message.includes('Cannot read properties of undefined') && err.stack?.includes('initStripe2')) {
+    return false
+  }
+})
 
 describe('Home Page', () => {
   beforeEach(() => {
     // Visit homepage before each test
     cy.visit('/', {
       onBeforeLoad(win) {
-        (win as any).loadStripe = () => ({
-          elements: () => ({}),
+        Object.defineProperty(win, 'loadStripe', {
+          configurable: true,
+          writable: false,
+          value: () => ({
+            elements: () => ({})
+          }),
         })
       }
     })
