@@ -5,7 +5,7 @@ describe('Home Page', () => {
     // Visit homepage before each test
     cy.visit('/', {
       onBeforeLoad(win) {
-        win.loadStripe = () => ({
+        (win as any).loadStripe = () => ({
           elements: () => ({}),
         })
       }

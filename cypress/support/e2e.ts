@@ -1,11 +1,14 @@
-// cypress/support/global.d.ts
-/// <reference types="cypress" />
+// Mock loadStripe globally for tests
+import * as stripeJs from '@stripe/stripe-js'
 
-declare global {
-  interface Window {
-    loadStripe?: () => any
-  }
+const originalLoadStripe = stripeJs.loadStripe
+// @ts-ignore
+stripeJs.loadStripe = (key: string) => {
+  return Promise.resolve({
+    elements: () => ({})
+  })
 }
+
 // ***********************************************************
 // This example support/e2e.ts is processed and
 // loaded automatically before your test files.
