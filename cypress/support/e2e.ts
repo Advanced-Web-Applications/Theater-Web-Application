@@ -1,3 +1,11 @@
+// cypress/support/global.d.ts
+/// <reference types="cypress" />
+
+declare global {
+  interface Window {
+    loadStripe?: () => any
+  }
+}
 // ***********************************************************
 // This example support/e2e.ts is processed and
 // loaded automatically before your test files.
