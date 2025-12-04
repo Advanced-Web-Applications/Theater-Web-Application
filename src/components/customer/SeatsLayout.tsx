@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { socket } from '../../services/socket'
 import '../../style/customer/seats.css'
 import ConfirmPopUp from './ConfirmPopUp'
@@ -24,8 +23,6 @@ interface Seat {
 
 
 export default function SeatsTickets({showtime_id, adultTicket, childTicket}: SeatsTicketsProps) {
-
-    const navigate = useNavigate()
 
     const [activeSeats, setActiveSeats] = useState<number[]>([])
     const [layout, setLayout] = useState<Layout | null>(null)

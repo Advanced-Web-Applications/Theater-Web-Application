@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import TicketDetails from '../../components/customer/TicketDetails'
 import SeatsLayout from '../../components/customer/SeatsLayout'
 import '../../style/customer/ticket.css'
@@ -8,7 +8,6 @@ import '../../style/customer/ticket.css'
 export default function Ticket() {
 
   const { state } = useLocation()
-  const navigate = useNavigate()
 
   const movie = state?.movie
   const showtime_id = state?.showtime_id

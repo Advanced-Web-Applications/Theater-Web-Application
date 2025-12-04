@@ -2,10 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../../style/customer/popup.css'
 
-
-const API_URL = import.meta.env.VITE_API_URL
-
-
 interface PopUpProps {
     showtime_id: number
     adultTicket: number
