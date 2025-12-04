@@ -3,7 +3,7 @@ import { socket } from '../../services/socket'
 import '../../style/customer/seats.css'
 import ConfirmPopUp from './ConfirmPopUp'
 
-const API_URL = import.meta.env.VITE_API_URL
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 interface SeatsTicketsProps {
   showtime_id: number
   adultTicket: number
@@ -34,12 +34,12 @@ export default function SeatsTickets({showtime_id, adultTicket, childTicket}: Se
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const layoutReq = await fetch(`${API_URL}/api/customer/seats/showtimes/${showtime_id}`, {headers: { 'Content-Type': 'application/json'}})
+                const layoutReq = await fetch(`${BACKEND_URL}/api/customer/seats/showtimes/${showtime_id}`, {headers: { 'Content-Type': 'application/json'}})
                 const layoutData = await layoutReq.json()
                 setLayout(layoutData)
 
                 
-                const unavailableReq = await fetch(`${API_URL}/api/customer/seats/showtimes/${showtime_id}/status`, {headers: { 'Content-Type': 'application/json'}})
+                const unavailableReq = await fetch(`${BACKEND_URL}/api/customer/seats/showtimes/${showtime_id}/status`, {headers: { 'Content-Type': 'application/json'}})
                 const unavailableData = await unavailableReq.json()
                 
                 const seatArray: Seat[] = Array.from({length: layoutData.total_seats}, (_, i) => ({

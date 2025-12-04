@@ -5,7 +5,7 @@ import {loadStripe} from '@stripe/stripe-js';
 import CheckoutForm from '../../components/customer/CheckoutForm';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY)
-const API_URL = import.meta.env.VITE_API_URL
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 export default function Checkout() {
 
@@ -17,7 +17,7 @@ export default function Checkout() {
     const activeSeats = state?.activeSeats
 
     const promise = useMemo(() => {
-        return fetch(`${API_URL}/api/customer/create-checkout-session`, {
+        return fetch(`${BACKEND_URL}/api/customer/create-checkout-session`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify({
