@@ -44,7 +44,7 @@
 .poster {
   width: 100%;
   aspect-ratio: 2 / 3;
-  border-radius: 0.7rem;
+  border-radius: 1rem;
 }
 
 footer {
@@ -54,13 +54,14 @@ footer {
   font-size: 0.9rem;
   line-height: 1.4;
   width: 100%;
+  margin-top: 1rem;
   border-top: 1px solid #1C2541;
 }
 
 
 @media (min-width: 768px) {
   .poster-grid {
-    grid-template-columns: repeat(auto-fit,minmax(10rem, 1fr));
+    grid-template-columns: repeat(auto-fit,minmax(10rem, 15rem));
   }
 
   .search-bar input {

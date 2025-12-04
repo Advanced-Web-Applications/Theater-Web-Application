@@ -37,10 +37,17 @@ export default function MovieDetails() {
     .then(data => setShowtimes(data))
   }, [id])
 
-  const groupedByDate = showtimes.reduce((acc: any, current: any) => {
+  const theaterTimezone = "Asia/Kuala_Lumpur"
 
-    const date = new Date(current.start_time)
-    const dateKey = date.toDateString()
+  const dateFormatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: theaterTimezone,
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric'
+  })
+
+  const groupedByDate = showtimes.reduce((acc: any, current: any) => {
+    const dateKey = dateFormatter.format(new Date(current.start_time))
     if (!acc[dateKey]) acc[dateKey] = []
     acc[dateKey].push(current)
     return acc
@@ -49,17 +56,17 @@ export default function MovieDetails() {
   const dates = Object.keys(groupedByDate)
 
   const formatDay = (dateStr: string) =>
-    new Date(dateStr).toLocaleDateString('en-US', {weekday: 'short'})
+    new Date(dateStr).toLocaleDateString('en-US', { weekday: 'short', timeZone: theaterTimezone })
 
   const formatDayNumMonth = (dateStr: string) =>
-    new Date(dateStr).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })
+    new Date(dateStr).toLocaleDateString('en-US', { day: 'numeric', month: 'short', timeZone: theaterTimezone })
 
   const formatTime = (timestamp: string) =>
-    new Date(timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
+    new Date(timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: theaterTimezone })
 
   // Date for ticket details
   const formatDate = (dateStr: string) =>
-    new Date(dateStr).toLocaleDateString('en-GB')
+    new Date(dateStr).toLocaleDateString('en-GB', { timeZone: theaterTimezone })
 
   const formatDuration = (duration: number) => {
     const hour = Math.floor(duration / 60)

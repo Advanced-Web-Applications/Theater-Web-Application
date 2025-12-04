@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import '../../style/customer/ticket.css'
+import '../../style/customer/seats.css'
 
 const API_URL = import.meta.env.VITE_API_URL
 

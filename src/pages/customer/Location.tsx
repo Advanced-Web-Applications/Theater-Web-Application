@@ -5,6 +5,8 @@ import Navbar from '../../components/customer/Navbar'
 import HomePage from './HomePage'
 import MovieDetails from './MovieDetails'
 import Ticket from './Ticket'
+import Checkout from './Checkout'
+import SuccessView from './SuccessView'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -60,7 +62,8 @@ export default function Location() {
         <Route path='/home' element={<HomePage />} />
         <Route path='/movie/:id' element={<MovieDetails />} />
         <Route path='/ticket/' element={<Ticket />} />
-
+        <Route path='/checkout/' element={<Checkout />} />
+        <Route path='/success/' element={<SuccessView />} />
       </Routes>
     </>
   )
