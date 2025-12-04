@@ -26,7 +26,7 @@ export default function Location() {
   }
 
   useEffect(() => {
-    fetch(`${API_URL}/api/customer/locations`)
+    fetch(`${API_URL}/api/customer/locations`, {headers: { 'Content-Type': 'application/json'}})
       .then(res => res.json())
       .then(data => setLocations(data)
     ). catch (err => console.log('Error fetching locations: ', err))

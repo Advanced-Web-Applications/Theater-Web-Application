@@ -32,7 +32,7 @@ export default function MovieDetails() {
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
 
   useEffect(() => {
-    fetch(`${API_URL}/api/customer/showtimes/${id}`)
+    fetch(`${API_URL}/api/customer/showtimes/${id}`, {headers: { 'Content-Type': 'application/json'}})
     .then(res => res.json())
     .then(data => setShowtimes(data))
   }, [id])
