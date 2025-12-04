@@ -5,6 +5,11 @@ import StaffHomePage from './pages/staff/StaffHomePage';
 import StaffSetTimes from './pages/staff/StaffSetTimes';
 import StaffSetSeat from './pages/staff/StaffSetSeat';
 import StaffSeeTable from './pages/staff/StaffSeeTable';
+import OwnerDashboard from './pages/owner/OwnerDashboard';
+import AddTheater from './pages/owner/AddTheater';
+import AddAuditorium from './pages/owner/AddAuditorium';
+import AddStaff from './pages/owner/AddStaff';
+import StaffList from './pages/owner/StaffList';
 
 function App() {
   return (
@@ -17,6 +22,12 @@ function App() {
         <Route path="/StaffSetTimes/:id/:auditorium" element={<StaffSetTimes />} />
         <Route path="/StaffSetSeat/:id/:auditorium" element={<StaffSetSeat />} />
         <Route path="/StaffSeeTable/:id/:auditorium" element={<StaffSeeTable />} />
+
+        <Route path="/OwnerDashboard" element={<OwnerDashboard />} />
+        <Route path="/AddTheater" element={<AddTheater />} />
+        <Route path="/AddAuditorium" element={<AddAuditorium />} />
+        <Route path="/AddStaff" element={<AddStaff />} />
+        <Route path="/StaffList" element={<StaffList />} />
       </Routes>
     </BrowserRouter>
   );
