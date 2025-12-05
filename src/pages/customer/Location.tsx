@@ -30,6 +30,9 @@ export default function Location() {
       .then(res => res.json())
       .then(data => setLocations(data)
     ). catch (err => console.log('Error fetching locations: ', err))
+
+    console.log("BACKEND_URL =", BACKEND_URL);
+
   }, [])
 
   return (
