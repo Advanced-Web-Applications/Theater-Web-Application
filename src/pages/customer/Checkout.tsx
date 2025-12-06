@@ -1,8 +1,9 @@
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom';
-import {CheckoutProvider} from '@stripe/react-stripe-js/checkout';
+// import {CheckoutProvider} from '@stripe/react-stripe-js/checkout';
+import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js'
 import {loadStripe} from '@stripe/stripe-js';
-import CheckoutForm from '../../components/customer/CheckoutForm';
+// import CheckoutForm from '../../components/customer/CheckoutForm';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY)
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
@@ -15,6 +16,8 @@ export default function Checkout() {
     const showtime_id = state?.showtime_id
     const email = state?.email
     const activeSeats = state?.activeSeats
+
+    const [clientSecret, setClientSecret] = useState<string | null>(null);
 
     const promise = useMemo(() => {
         console.log({
@@ -57,9 +60,15 @@ export default function Checkout() {
             })
     }, [])
 
+    useEffect(() => {
+    promise.then(secret => setClientSecret(secret));
+  }, [promise]);
+
+  if (!clientSecret) return <p>Loading checkout…</p>;
+
   return (
-    <CheckoutProvider stripe={stripePromise} options={{clientSecret: promise}}>
-      <CheckoutForm />
-    </CheckoutProvider>
+    <EmbeddedCheckoutProvider stripe={stripePromise} options={{clientSecret}}>
+      <EmbeddedCheckout />
+    </EmbeddedCheckoutProvider>
   )
 }
