@@ -63,7 +63,7 @@ export default function Location() {
         <Route path='/movie/:id' element={<MovieDetails />} />
         <Route path='/ticket/' element={<Ticket />} />
         <Route path='/checkout/' element={<Checkout />} />
-        <Route path='/success/' element={<SuccessView />} />
+        <Route path='/success' element={<SuccessView />} />
       </Routes>
     </>
   )
