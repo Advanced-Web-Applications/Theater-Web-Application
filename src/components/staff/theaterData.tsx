@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_BACKEND_URL;
 
-export type AuditoriumRoom = {
+export type AuditoriumRoom = { 
   auditoriumNumber: number;
   name: string;
   totalSeats?: number;

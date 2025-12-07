@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "../../style/staff/staff.css";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 export interface Layout {
   total_seats: number;
@@ -12,7 +12,9 @@ export interface Layout {
 export interface Showtime {
   id: number;
   start_time: string;
-  title: string;
+  movie_title: string;
+  end_time: string;
+  clean_end_time : string;
 }
 
 export interface SeatStatus {
