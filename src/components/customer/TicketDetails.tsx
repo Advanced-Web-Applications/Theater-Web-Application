@@ -4,6 +4,7 @@ import '../../style/customer/seats.css'
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 interface TicketDetailsProps {
+  city: string
   movie: {
     id: number
     title: string
@@ -24,7 +25,7 @@ interface Price {
 }
 
 
-export default function TicketDetails({ movie, showtime_id, start_time, date, adultTicket, childTicket, setAdultTicket, setChildTicket }: TicketDetailsProps) {
+export default function TicketDetails({ city, movie, showtime_id, start_time, date, adultTicket, childTicket, setAdultTicket, setChildTicket }: TicketDetailsProps) {
 
   const [ticket, setTicket] = useState<any>(null)
   const [price, setPrice] = useState<Price | null>(null)
@@ -36,7 +37,7 @@ export default function TicketDetails({ movie, showtime_id, start_time, date, ad
   }
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/api/customer/auditorium/showtimes/${showtime_id}/ticket`, {headers: { 'Content-Type': 'application/json'}})
+    fetch(`${BACKEND_URL}/api/customer/auditorium/showtimes/${showtime_id}/ticket?city=${city}`, {headers: { 'Content-Type': 'application/json'}})
       .then(res => res.json())
       .then(data => setTicket(data))
       .catch(err => console.error('Error fetching ticket: ',err))
