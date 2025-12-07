@@ -1,0 +1,16 @@
+{
+  "routes": [
+    {
+      "route": "/api/customer/locations",
+      "methods": [
+        "get"
+      ]
+    },
+    {
+      "navigationFallback": {
+        "rewrite": "/index.html",
+        "exclude": ["/images/*", "/css/*", "/js/*", "/favicon.ico"]
+      }
+    }
+  ]
+}
