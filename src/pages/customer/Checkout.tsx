@@ -18,6 +18,15 @@ export default function Checkout() {
     const [clientSecret, setClientSecret] = useState<string | null>(null);
 
     const promise = useMemo(() => {
+        console.log({
+              showtime_id,
+              adult_ticket: adultTicket,
+              child_ticket: childTicket,
+              email,
+              seat_numbers: activeSeats,
+              status: 'reserved',
+            });
+
         return fetch(`${BACKEND_URL}/api/customer/create-checkout-session`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
