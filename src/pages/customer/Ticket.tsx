@@ -13,6 +13,7 @@ export default function Ticket() {
   const showtime_id = state?.showtime_id
   const start_time = state?.start_time
   const date = state?.date
+  const city = state?.location
 
   const [adultTicket, setAdultTicket] = useState<number>(0)
   const [childTicket, setChildTicket] = useState<number>(0)
@@ -21,6 +22,7 @@ export default function Ticket() {
     <div>
       <div className='ticket-center'>
         <TicketDetails 
+          city={city}
           movie={movie} 
           start_time={start_time} 
           date={date} 

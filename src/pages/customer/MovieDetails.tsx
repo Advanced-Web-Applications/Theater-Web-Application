@@ -26,18 +26,22 @@ export default function MovieDetails() {
   const { id } = useParams()  
   const location = useLocation()
   const navigate = useNavigate()
+
+  const { state } = useLocation()
+  const city = state?.city
   
   const [movie, setMovie] = useState<MovieProps | null>(location.state?.movie || null)
   const [showtimes, setShowtimes] = useState<Showtimes[]>([])
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/api/customer/showtimes/${id}`, {headers: { 'Content-Type': 'application/json'}})
+    fetch(`${BACKEND_URL}/api/customer/showtimes/${id}?city=${city}`, {headers: { 'Content-Type': 'application/json'}})
     .then(res => res.json())
     .then(data => setShowtimes(data))
-  }, [id])
+    .catch(err => console.error('Error fetching filtered showtimes: ', err))
+  }, [id, city])
 
-  const theaterTimezone = "Asia/Kuala_Lumpur"
+  const theaterTimezone = "Europe/Paris"
 
   const dateFormatter = new Intl.DateTimeFormat('en-US', {
     timeZone: theaterTimezone,
@@ -101,6 +105,7 @@ export default function MovieDetails() {
                   navigate( '/ticket/', {
                       state: {
                         movie,
+                        city,
                         showtime_id: slot.id,
                         start_time: formatTime(slot.start_time),
                         date: formatDate(selectedDate),

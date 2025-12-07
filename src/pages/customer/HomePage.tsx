@@ -70,7 +70,7 @@ export default function HomePage() {
           <img key={movie.id} 
                 src={movie.poster_url} 
                 className="poster" 
-                onClick={() => navigate(`/movie/${movie.id}`, {state: movie})}></img>
+                onClick={() => navigate(`/movie/${movie.id}`, {state: {movie, city}})}></img>
           ))}
       </div>
 
