@@ -5,12 +5,10 @@
       "methods": [
         "get"
       ]
-    },
-    {
-      "navigationFallback": {
-        "rewrite": "/index.html",
-        "exclude": ["/images/*", "/css/*", "/js/*", "/favicon.ico"]
-      }
     }
-  ]
+  ],
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/images/*", "/css/*", "/js/*", "/favicon.ico"]
+  }
 }
