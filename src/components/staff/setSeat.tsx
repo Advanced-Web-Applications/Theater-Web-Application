@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import "../../style/staff/staff.css";
 
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
