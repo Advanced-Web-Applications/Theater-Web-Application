@@ -14,6 +14,13 @@ interface Theater {
   city: string;
 }
 
+interface ExistingAuditorium {
+  id: number;
+  name: string;
+  total_seats: number;
+  seats_per_row: number;
+}
+
 export default function AddAuditorium() {
   const [formData, setFormData] = useState<AuditoriumFormData>({
     theater_id: '',
@@ -23,26 +30,60 @@ export default function AddAuditorium() {
   });
 
   const [theaters, setTheaters] = useState<Theater[]>([]);
+  const [existingAuditoriums, setExistingAuditoriums] = useState<ExistingAuditorium[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Mock theaters data - will be replaced with real API call later
+  // Fetch theaters from API
   useEffect(() => {
-    // TODO: Fetch theaters from API when database is available
-    const mockTheaters: Theater[] = [
-      { id: 1, name: 'North Star Cinema Helsinki', city: 'Helsinki' },
-      { id: 2, name: 'North Star Cinema Espoo', city: 'Espoo' },
-      { id: 3, name: 'North Star Cinema Tampere', city: 'Tampere' },
-      { id: 4, name: 'North Star Cinema Turku', city: 'Turku' }
-    ];
-    setTheaters(mockTheaters);
+    const fetchTheaters = async () => {
+      try {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+        const response = await fetch(`${apiUrl}/api/owner/theaters`);
+        const data = await response.json();
+
+        if (data.success) {
+          setTheaters(data.data);
+        } else {
+          console.error('Failed to fetch theaters');
+        }
+      } catch (error) {
+        console.error('Error fetching theaters:', error);
+      }
+    };
+
+    fetchTheaters();
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
+
+    // Fetch existing auditoriums when theater is selected
+    if (name === 'theater_id') {
+      if (value) {
+        try {
+          const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+          const response = await fetch(`${apiUrl}/api/owner/auditoriums/${value}`);
+          const data = await response.json();
+
+          console.log('Fetched auditoriums:', data);
+
+          if (data.success) {
+            setExistingAuditoriums(data.data);
+          } else {
+            setExistingAuditoriums([]);
+          }
+        } catch (error) {
+          console.error('Error fetching auditoriums:', error);
+          setExistingAuditoriums([]);
+        }
+      } else {
+        setExistingAuditoriums([]);
+      }
+    }
   };
 
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,14 +98,30 @@ export default function AddAuditorium() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // TODO: API call will be implemented later when database is available
-    console.log('Form submitted:', formData);
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const response = await fetch(`${apiUrl}/api/owner/auditoriums`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    // Simulate API call
-    setTimeout(() => {
-      alert('Auditorium data prepared (API integration pending)');
+      const data = await response.json();
+
+      if (data.success) {
+        alert('Auditorium added successfully!');
+        handleReset();
+      } else {
+        alert(`Error: ${data.message}`);
+      }
+    } catch (error) {
+      console.error('Error adding auditorium:', error);
+      alert('Error adding auditorium. Please try again.');
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   const handleReset = () => {
@@ -128,6 +185,29 @@ export default function AddAuditorium() {
                     ))}
                   </select>
                 </div>
+
+                {/* Existing Auditoriums - Inline Display */}
+                {formData.theater_id && existingAuditoriums.length > 0 && (
+                  <div className="form-group full-width">
+                    <div className="existing-auditoriums-inline">
+                      <h3>
+                        <i className="bi bi-camera-reels"></i>
+                        Existing Auditoriums in this Theater
+                      </h3>
+                      <div className="auditoriums-inline-grid">
+                        {existingAuditoriums.map((auditorium) => (
+                          <div key={auditorium.id} className="auditorium-inline-card">
+                            <div className="auditorium-inline-name">{auditorium.name}</div>
+                            <div className="auditorium-inline-seats">
+                              <i className="bi bi-people"></i>
+                              {auditorium.total_seats} seats
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 <div className="form-group full-width">
                   <label htmlFor="name">Auditorium Name *</label>

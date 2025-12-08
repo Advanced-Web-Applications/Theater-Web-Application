@@ -197,6 +197,74 @@
   font-style: italic;
 }
 
+/* Existing Auditoriums - Inline Display */
+.existing-auditoriums-inline {
+  background: rgba(74, 158, 255, 0.05);
+  border: 1px solid rgba(74, 158, 255, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 10px;
+}
+
+.existing-auditoriums-inline h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #4A9EFF;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.existing-auditoriums-inline h3 i {
+  font-size: 16px;
+}
+
+.auditoriums-inline-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.auditorium-inline-card {
+  background: rgba(11, 25, 41, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.auditorium-inline-card:hover {
+  background: rgba(11, 25, 41, 0.8);
+  border-color: rgba(74, 158, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.auditorium-inline-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 0.5px;
+}
+
+.auditorium-inline-seats {
+  font-size: 13px;
+  color: #94A3B8;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.auditorium-inline-seats i {
+  font-size: 14px;
+  color: #4A9EFF;
+}
+
 /* Calculation Info */
 .calculation-info {
   margin-top: 20px;
@@ -344,6 +412,14 @@
   .btn-secondary {
     width: 100%;
     justify-content: center;
+  }
+
+  .auditoriums-inline-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .existing-auditoriums-inline {
+    padding: 15px;
   }
 }
 

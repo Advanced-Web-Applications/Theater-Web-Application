@@ -23,87 +23,35 @@ export default function StaffList() {
   const [theaters, setTheaters] = useState<Theater[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Mock data - will be replaced with real API call later
+  // Fetch data from API
   useEffect(() => {
-    // TODO: Fetch staff list from API when database is available
-    const mockTheaters: Theater[] = [
-      { id: 1, name: 'North Star Cinema Helsinki' },
-      { id: 2, name: 'North Star Cinema Espoo' },
-      { id: 3, name: 'North Star Cinema Tampere' },
-      { id: 4, name: 'North Star Cinema Turku' }
-    ];
+    const fetchData = async () => {
+      try {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
-    const mockStaff: Staff[] = [
-      {
-        id: 1,
-        username: 'Mika Virtanen',
-        email: 'mika.virtanen@northstar.fi',
-        phone: '+358 40 123 4567',
-        theater_name: 'North Star Cinema Helsinki',
-        theater_id: 1
-      },
-      {
-        id: 2,
-        username: 'Aino Korhonen',
-        email: 'aino.korhonen@northstar.fi',
-        phone: '+358 40 234 5678',
-        theater_name: 'North Star Cinema Helsinki',
-        theater_id: 1
-      },
-      {
-        id: 3,
-        username: 'Jari Nieminen',
-        email: 'jari.nieminen@northstar.fi',
-        phone: '+358 40 345 6789',
-        theater_name: 'North Star Cinema Espoo',
-        theater_id: 2
-      },
-      {
-        id: 4,
-        username: 'Sanna Mäkinen',
-        email: 'sanna.makinen@northstar.fi',
-        phone: '+358 40 456 7890',
-        theater_name: 'North Star Cinema Tampere',
-        theater_id: 3
-      },
-      {
-        id: 5,
-        username: 'Ville Laine',
-        email: 'ville.laine@northstar.fi',
-        phone: '+358 40 567 8901',
-        theater_name: 'North Star Cinema Turku',
-        theater_id: 4
-      },
-      {
-        id: 6,
-        username: 'Laura Koskinen',
-        email: 'laura.koskinen@northstar.fi',
-        phone: '+358 40 678 9012',
-        theater_name: 'North Star Cinema Helsinki',
-        theater_id: 1
-      },
-      {
-        id: 7,
-        username: 'Petri Rantanen',
-        email: 'petri.rantanen@northstar.fi',
-        phone: '+358 40 789 0123',
-        theater_name: 'North Star Cinema Espoo',
-        theater_id: 2
-      },
-      {
-        id: 8,
-        username: 'Hanna Lehtonen',
-        email: 'hanna.lehtonen@northstar.fi',
-        phone: '+358 40 890 1234',
-        theater_name: 'North Star Cinema Tampere',
-        theater_id: 3
+        // Fetch theaters
+        const theatersResponse = await fetch(`${apiUrl}/api/owner/theaters`);
+        const theatersData = await theatersResponse.json();
+
+        // Fetch staff
+        const staffResponse = await fetch(`${apiUrl}/api/owner/staff`);
+        const staffData = await staffResponse.json();
+
+        if (theatersData.success && staffData.success) {
+          setTheaters(theatersData.data);
+          setStaffList(staffData.data);
+          setFilteredStaff(staffData.data);
+        } else {
+          console.error('Failed to fetch data from API');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
       }
-    ];
+    };
 
-    setTheaters(mockTheaters);
-    setStaffList(mockStaff);
-    setFilteredStaff(mockStaff);
-    setLoading(false);
+    fetchData();
   }, []);
 
   // Filter staff based on search term and selected theater

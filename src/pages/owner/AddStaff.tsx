@@ -24,17 +24,28 @@ export default function AddStaff() {
 
   const [theaters, setTheaters] = useState<Theater[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [credentials, setCredentials] = useState({ email: '', password: '' });
 
-  // Mock theaters data - will be replaced with real API call later
+  // Fetch theaters from API
   useEffect(() => {
-    // TODO: Fetch theaters from API when database is available
-    const mockTheaters: Theater[] = [
-      { id: 1, name: 'North Star Cinema Helsinki', city: 'Helsinki' },
-      { id: 2, name: 'North Star Cinema Espoo', city: 'Espoo' },
-      { id: 3, name: 'North Star Cinema Tampere', city: 'Tampere' },
-      { id: 4, name: 'North Star Cinema Turku', city: 'Turku' }
-    ];
-    setTheaters(mockTheaters);
+    const fetchTheaters = async () => {
+      try {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+        const response = await fetch(`${apiUrl}/api/owner/theaters`);
+        const data = await response.json();
+
+        if (data.success) {
+          setTheaters(data.data);
+        } else {
+          console.error('Failed to fetch theaters');
+        }
+      } catch (error) {
+        console.error('Error fetching theaters:', error);
+      }
+    };
+
+    fetchTheaters();
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -49,16 +60,34 @@ export default function AddStaff() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // TODO: API call will be implemented later when database is available
-    // System will auto-generate password and create account with role 'staff'
-    console.log('Form submitted:', formData);
-    console.log('System will auto-generate password and email credentials to staff');
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const response = await fetch(`${apiUrl}/api/owner/staff`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    // Simulate API call
-    setTimeout(() => {
-      alert('Staff account will be created automatically (API integration pending)');
+      const data = await response.json();
+
+      if (data.success) {
+        setCredentials({
+          email: formData.email,
+          password: data.data.temporaryPassword
+        });
+        setShowModal(true);
+        handleReset();
+      } else {
+        alert(`Error: ${data.message}`);
+      }
+    } catch (error) {
+      console.error('Error creating staff:', error);
+      alert('Error creating staff account. Please try again.');
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   const handleReset = () => {

@@ -5,13 +5,15 @@ interface TheaterFormData {
   name: string;
   city: string;
   address: string;
+  phone: string;
 }
 
 export default function AddTheater() {
   const [formData, setFormData] = useState<TheaterFormData>({
     name: '',
     city: '',
-    address: ''
+    address: '',
+    phone: ''
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,21 +30,38 @@ export default function AddTheater() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // TODO: API call will be implemented later when database is available
-    console.log('Form submitted:', formData);
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const response = await fetch(`${apiUrl}/api/owner/theaters`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    // Simulate API call
-    setTimeout(() => {
-      alert('Theater data prepared (API integration pending)');
+      const data = await response.json();
+
+      if (data.success) {
+        alert('Theater added successfully!');
+        handleReset();
+      } else {
+        alert(`Error: ${data.message}`);
+      }
+    } catch (error) {
+      console.error('Error adding theater:', error);
+      alert('Error adding theater. Please try again.');
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   const handleReset = () => {
     setFormData({
       name: '',
       city: '',
-      address: ''
+      address: '',
+      phone: ''
     });
   };
 
@@ -105,6 +124,20 @@ export default function AddTheater() {
                     onChange={handleInputChange}
                     placeholder="Enter city (max 50 characters)"
                     maxLength={50}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="phone">Phone Number *</label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    placeholder="Enter phone number (max 20 characters)"
+                    maxLength={20}
                     required
                   />
                 </div>
