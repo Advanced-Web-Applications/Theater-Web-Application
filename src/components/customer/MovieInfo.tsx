@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import "../../style/customer/movieinfo.css"; 
 
-const API_URL = import.meta.env.VITE_API_URL
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 interface MovieProps {
   id: number
@@ -24,7 +24,9 @@ export default function MovieInfo({movieId, setMovie, formatDuration }: MovieInf
   const [movie, internalMovie] = useState<MovieProps | null>(null)
 
   useEffect(() => {
-      fetch(`${API_URL}/api/customer/movies/${movieId}`)
+      fetch(`${BACKEND_URL}/api/customer/movies/${movieId}`, {
+        headers: { 'Content-Type': 'application/json'}
+      })
         .then(res => res.json())
         .then(data => { internalMovie(data); setMovie(data) })
         .catch(err => console.log('Error fetching movies: ', err))

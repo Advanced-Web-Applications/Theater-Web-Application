@@ -5,8 +5,10 @@ import Navbar from '../../components/customer/Navbar'
 import HomePage from './HomePage'
 import MovieDetails from './MovieDetails'
 import Ticket from './Ticket'
+import Checkout from './Checkout'
+import SuccessView from './SuccessView'
 
-const API_URL = import.meta.env.VITE_API_URL
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 interface LocationType {
   city: string
@@ -24,10 +26,13 @@ export default function Location() {
   }
 
   useEffect(() => {
-    fetch(`${API_URL}/api/customer/locations`)
+    fetch(`${BACKEND_URL}/api/customer/locations`, {headers: { 'Content-Type': 'application/json'}})
       .then(res => res.json())
       .then(data => setLocations(data)
     ). catch (err => console.log('Error fetching locations: ', err))
+
+    console.log("BACKEND_URL =", BACKEND_URL);
+
   }, [])
 
   return (
@@ -60,7 +65,8 @@ export default function Location() {
         <Route path='/home' element={<HomePage />} />
         <Route path='/movie/:id' element={<MovieDetails />} />
         <Route path='/ticket/' element={<Ticket />} />
-
+        <Route path='/checkout/' element={<Checkout />} />
+        <Route path='/success' element={<SuccessView />} />
       </Routes>
     </>
   )

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import SearchBar from '../../components/customer/SearchBar'
 
-const API_URL = import.meta.env.VITE_API_URL
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 
 
@@ -39,10 +39,10 @@ export default function HomePage() {
   useEffect(() => {
     const fetchData = async () => {
       try { 
-        const locationReq = await fetch(`${API_URL}/api/customer/locations`)
+        const locationReq = await fetch(`${BACKEND_URL}/api/customer/locations`, {headers: { 'Content-Type': 'application/json'}})
         const locationData = await locationReq.json()
 
-        const moviesReq = await fetch(`${API_URL}/api/customer/location/movies?city=${city}`)
+        const moviesReq = await fetch(`${BACKEND_URL}/api/customer/location/movies?city=${city}`, {headers: { 'Content-Type': 'application/json'}})
         const moviesData = await moviesReq.json()
 
         setLocation(locationData)
@@ -70,7 +70,7 @@ export default function HomePage() {
           <img key={movie.id} 
                 src={movie.poster_url} 
                 className="poster" 
-                onClick={() => navigate(`/movie/${movie.id}`, {state: movie})}></img>
+                onClick={() => navigate(`/movie/${movie.id}`, {state: {movie, city}})}></img>
           ))}
       </div>
 

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import '../../style/customer/ticket.css'
+import '../../style/customer/seats.css'
 
-const API_URL = import.meta.env.VITE_API_URL
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 interface TicketDetailsProps {
+  city: string
   movie: {
     id: number
     title: string
@@ -24,7 +25,7 @@ interface Price {
 }
 
 
-export default function TicketDetails({ movie, showtime_id, start_time, date, adultTicket, childTicket, setAdultTicket, setChildTicket }: TicketDetailsProps) {
+export default function TicketDetails({ city, movie, showtime_id, start_time, date, adultTicket, childTicket, setAdultTicket, setChildTicket }: TicketDetailsProps) {
 
   const [ticket, setTicket] = useState<any>(null)
   const [price, setPrice] = useState<Price | null>(null)
@@ -36,14 +37,14 @@ export default function TicketDetails({ movie, showtime_id, start_time, date, ad
   }
 
   useEffect(() => {
-    fetch(`${API_URL}/api/customer/auditorium/showtimes/${showtime_id}/ticket`)
+    fetch(`${BACKEND_URL}/api/customer/auditorium/showtimes/${showtime_id}/ticket?city=${city}`, {headers: { 'Content-Type': 'application/json'}})
       .then(res => res.json())
       .then(data => setTicket(data))
       .catch(err => console.error('Error fetching ticket: ',err))
   }, [showtime_id])
 
   useEffect(() => {
-  fetch(`${API_URL}/api/customer/seats/price`)
+  fetch(`${BACKEND_URL}/api/customer/seats/price`, {headers: { 'Content-Type': 'application/json'}})
     .then(res => res.json())
     .then(data => setPrice(data))
     .catch(err => console.error('Error fetching price: ', err));

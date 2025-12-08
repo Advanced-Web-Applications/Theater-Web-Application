@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import MovieInfo from '../../components/customer/MovieInfo'
 import "../../style/customer/moviedetails.css"; 
 
-const API_URL = import.meta.env.VITE_API_URL
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 interface Showtimes {
   id: number
@@ -26,21 +26,32 @@ export default function MovieDetails() {
   const { id } = useParams()  
   const location = useLocation()
   const navigate = useNavigate()
+
+  const { state } = useLocation()
+  const city = state?.city
   
   const [movie, setMovie] = useState<MovieProps | null>(location.state?.movie || null)
   const [showtimes, setShowtimes] = useState<Showtimes[]>([])
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
 
   useEffect(() => {
-    fetch(`${API_URL}/api/customer/showtimes/${id}`)
+    fetch(`${BACKEND_URL}/api/customer/showtimes/${id}?city=${city}`, {headers: { 'Content-Type': 'application/json'}})
     .then(res => res.json())
     .then(data => setShowtimes(data))
-  }, [id])
+    .catch(err => console.error('Error fetching filtered showtimes: ', err))
+  }, [id, city])
+
+  const theaterTimezone = "Europe/Paris"
+
+  const dateFormatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: theaterTimezone,
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric'
+  })
 
   const groupedByDate = showtimes.reduce((acc: any, current: any) => {
-
-    const date = new Date(current.start_time)
-    const dateKey = date.toDateString()
+    const dateKey = dateFormatter.format(new Date(current.start_time))
     if (!acc[dateKey]) acc[dateKey] = []
     acc[dateKey].push(current)
     return acc
@@ -49,17 +60,17 @@ export default function MovieDetails() {
   const dates = Object.keys(groupedByDate)
 
   const formatDay = (dateStr: string) =>
-    new Date(dateStr).toLocaleDateString('en-US', {weekday: 'short'})
+    new Date(dateStr).toLocaleDateString('en-US', { weekday: 'short', timeZone: theaterTimezone })
 
   const formatDayNumMonth = (dateStr: string) =>
-    new Date(dateStr).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })
+    new Date(dateStr).toLocaleDateString('en-US', { day: 'numeric', month: 'short', timeZone: theaterTimezone })
 
   const formatTime = (timestamp: string) =>
-    new Date(timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
+    new Date(timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: theaterTimezone })
 
   // Date for ticket details
   const formatDate = (dateStr: string) =>
-    new Date(dateStr).toLocaleDateString('en-GB')
+    new Date(dateStr).toLocaleDateString('en-GB', { timeZone: theaterTimezone })
 
   const formatDuration = (duration: number) => {
     const hour = Math.floor(duration / 60)
@@ -94,6 +105,7 @@ export default function MovieDetails() {
                   navigate( '/ticket/', {
                       state: {
                         movie,
+                        city,
                         showtime_id: slot.id,
                         start_time: formatTime(slot.start_time),
                         date: formatDate(selectedDate),

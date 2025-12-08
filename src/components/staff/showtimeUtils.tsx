@@ -22,12 +22,35 @@ export const fetchShowTimes = async (auditorium: string | undefined): Promise<Sh
 
     return data.map((s: any) => {
       const d = new Date(s.start_time);
+
+      const formatter = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Europe/Paris',
+        hour: 'numeric',
+        minute: 'numeric',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour12: false
+      });
+
+      const parts = formatter.formatToParts(d);
+      
+      const getPart = (type: string) => parts.find(p => p.type === type)?.value;
+
+      const parisYear = getPart('year');
+      const parisMonth = getPart('month');
+      const parisDay = getPart('day');
+      const parisHour = parseInt(getPart('hour') || '0', 10);
+      const parisMinute = parseInt(getPart('minute') || '0', 10);
+
+      const parisDateString = `${parisYear}-${parisMonth}-${parisDay}`;
+
       return {
         id: s.id,
         movie: s.movie_title,
-        date: s.start_time.split("T")[0],
-        time: d.getHours(),
-        minute: d.getMinutes(),
+        date: parisDateString, 
+        time: parisHour,
+        minute: parisMinute,
         duration: s.duration || 120,
       };
     });
