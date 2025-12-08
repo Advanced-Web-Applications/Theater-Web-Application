@@ -1,0 +1,31 @@
+.staffNavBar {
+  background: #1C2541;
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+
+.staffNavTheaterName {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.staffNavPageTitle {
+  font-size: 1rem;
+  color: #F4F6FA;
+  font-weight: 600;
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .staffNavBar {
+    padding: 2rem 1rem;
+  }
+
+  .staffNavPageTitle {
+    font-size: 1.5rem;
+  }
+}

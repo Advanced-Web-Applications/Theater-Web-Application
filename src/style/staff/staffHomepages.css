@@ -1,0 +1,130 @@
+.staffPageContainer {
+  min-height: 100vh;
+  padding-bottom: 2rem;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 3rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.roomCard {
+  background: #1C2541;
+  border-radius: 12px;
+  height: 220px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.roomCard:hover {
+  transform: translateY(-5px);
+}
+
+.roomDefault {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.roomCard:hover .roomDefault {
+  opacity: 0;
+}
+
+.roomNumber {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.roomHover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 2rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.roomCard:hover .roomHover {
+  opacity: 1;
+}
+
+.actionButton {
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #14294D;
+  background: #C5F1F8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.actionButton:hover {
+  background: #6BD9E7; 
+}
+
+
+@media (max-width: 1024px) {
+  .search-button {
+    display: none;
+  }
+  
+  .gridContainer {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .poster-grid {
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .topHeader {
+    padding: 2rem 1rem;
+  }
+  
+  .pageTitle {
+    font-size: 1.5rem;
+  }
+  
+  .gridContainer {
+    grid-template-columns: 1fr;
+    padding: 2rem 1rem;
+  }
+  
+  .roomCard {
+    height: 200px;
+  }
+  
+  .roomNumber {
+    font-size: 2.5rem;
+  }
+}

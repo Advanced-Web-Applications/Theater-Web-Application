@@ -1,12 +1,20 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import "../../style/staff/staff.css";
+import "../../style/staff/setSeat.css";
 import { useShowtimeSeats } from "../../components/staff/setSeat";
+import { useTheater } from "../../components/staff/theaterData";
+import StaffNavBar from "../../components/staff/staffNavBar";
 
 export default function StaffSetSeat() {
-  const { auditorium } = useParams();
+  const { id, auditorium } = useParams();
+  const theaterId = Number(id);
   const auditoriumId = Number(auditorium);
-  const [selectedDate, setSelectedDate] = useState<string>("");
+
+  //get theater address
+  const { theater: currentTheater, loading, error } = useTheater(theaterId);
+
+  const today = new Date().toISOString().split("T")[0];
+  const [selectedDate, setSelectedDate] = useState<string>(today);
 
   const {
     showtimes,
@@ -18,6 +26,10 @@ export default function StaffSetSeat() {
     toggleSeatStatus,
     saveSeatStatus
   } = useShowtimeSeats(auditoriumId, selectedDate);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+  if (!currentTheater) return <div>No theater found</div>;
 
   function RoomGrid() {
     if (!layout) return null;
@@ -58,36 +70,47 @@ export default function StaffSetSeat() {
           ))}
         </div>
         <div className="screen">Screen</div>
-        <button className="save-button-for-seat" onClick={saveSeatStatus}>Save</button>
+        <button className="saveButtonSetSeat" onClick={saveSeatStatus}>Save</button>
+        <button
+          className="saveButtonSetSeat"
+          onClick={() => (window.location.href = `/StaffHomePage/${id}`)}
+        >
+          ← Go back
+        </button>
       </div>
     );
   }
 
   return (
-    <div className="auditorium-container">
-      <div className="date-time-selection">
-        <div style={{ marginBottom: 12 }}>
-          <label>Select date:</label>
-          <input type="date" value={selectedDate} onChange={e => setSelectedDate(e.target.value)} />
+    <div>
+      <StaffNavBar theater={currentTheater} title="Set Seats" />
+      <div className="auditorium-container">
+        
+        <div className="date-time-selection">
+          <div style={{ marginBottom: 12 }}>
+            <label>Select date:</label>
+            <input type="date" value={selectedDate} onChange={e => setSelectedDate(e.target.value)} />
+          </div>
+          <div className="time-grid">
+            {showtimes.length === 0
+              ? <div style={{ color: '#666' }}>No showtimes for this date</div>
+              : showtimes.map(s => (
+                <div
+                  key={s.id}
+                  className={`time-box ${selectedShowtimeId === s.id ? "selected" : ""}`}
+                  onClick={() => setSelectedShowtimeId(s.id)}
+                >
+                  {s.movie_title} 
+                  <br />
+                  {new Date(s.start_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12 : false })} 
+                </div>
+              ))
+            }
+          </div>
         </div>
-        <div className="time-grid">
-          {showtimes.length === 0
-            ? <div style={{ color: '#666' }}>No showtimes for this date</div>
-            : showtimes.map(s => (
-              <div
-                key={s.id}
-                className={`time-box ${selectedShowtimeId === s.id ? "selected" : ""}`}
-                onClick={() => setSelectedShowtimeId(s.id)}
-              >
-                {new Date(s.start_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                <br />
-                {s.title}
-              </div>
-            ))
-          }
-        </div>
+
+        {layout && <RoomGrid />}
       </div>
-      {layout && <RoomGrid />}
     </div>
   );
 }
