@@ -11,6 +11,8 @@ import AddAuditorium from './pages/owner/AddAuditorium';
 import AddStaff from './pages/owner/AddStaff';
 import EditStaff from './pages/owner/EditStaff';
 import StaffList from './pages/owner/StaffList';
+import AddMovie from './pages/owner/AddMovie';
+import PriceSetting from './pages/owner/PriceSetting';
 
 function App() {
   return (
@@ -27,9 +29,11 @@ function App() {
         <Route path="/OwnerDashboard" element={<OwnerDashboard />} />
         <Route path="/AddTheater" element={<AddTheater />} />
         <Route path="/AddAuditorium" element={<AddAuditorium />} />
+        <Route path="/AddMovie" element={<AddMovie />} />
         <Route path="/AddStaff" element={<AddStaff />} />
         <Route path="/EditStaff/:id" element={<EditStaff />} />
         <Route path="/StaffList" element={<StaffList />} />
+        <Route path="/PriceSetting" element={<PriceSetting />} />
       </Routes>
     </BrowserRouter>
   );

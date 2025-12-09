@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import OwnerNav from '../../components/navbars/OwnerNav';
 import '../../style/owner/addTheater.css';
 
 interface TheaterFormData {
@@ -67,21 +68,7 @@ export default function AddTheater() {
 
   return (
     <div className="add-theater-page">
-      {/* Header */}
-      <div className="page-header">
-        <div className="header-logo">
-          <i className="bi bi-star-fill"></i>
-          <span>NORTH STAR</span>
-        </div>
-        <div className="header-actions">
-          <button className="icon-btn" onClick={() => window.history.back()}>
-            <i className="bi bi-arrow-left"></i>
-          </button>
-          <button className="icon-btn">
-            <i className="bi bi-person-circle"></i>
-          </button>
-        </div>
-      </div>
+      <OwnerNav />
 
       {/* Main Content */}
       <div className="page-content">

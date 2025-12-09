@@ -11,6 +11,7 @@ import {
   Legend,
   Filler
 } from 'chart.js';
+import OwnerNav from '../../components/navbars/OwnerNav';
 import '../../style/owner/owner.css';
 
 // Register Chart.js components
@@ -45,45 +46,10 @@ interface DashboardData {
   statistics: Statistics;
 }
 
-// Mock data for testing when backend is not available
-const getMockData = (): DashboardData => {
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  const currentDate = new Date();
-  const currentMonth = currentDate.getMonth();
-  const currentYear = currentDate.getFullYear();
-
-  const monthlyRevenue: MonthlyRevenue[] = [];
-
-  for (let i = 11; i >= 0; i--) {
-    const monthIndex = (currentMonth - i + 12) % 12;
-    const year = currentMonth - i < 0 ? currentYear - 1 : currentYear;
-    const revenue = Math.floor(Math.random() * 50000) + 20000; // Random revenue between 20k-70k
-
-    monthlyRevenue.push({
-      month_name: months[monthIndex],
-      month_number: monthIndex + 1,
-      year: year,
-      revenue: revenue.toString(),
-      total_tickets: Math.floor(revenue / 15).toString()
-    });
-  }
-
-  return {
-    monthlyRevenue,
-    statistics: {
-      totalRevenue: 485250.50,
-      totalTicketsSold: 32350,
-      totalTheaters: 8,
-      totalMovies: 24
-    }
-  };
-};
-
 export default function OwnerDashboard() {
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [usingMockData, setUsingMockData] = useState(false);
 
   useEffect(() => {
     fetchDashboardData();
@@ -102,16 +68,13 @@ export default function OwnerDashboard() {
 
       if (result.success) {
         setDashboardData(result.data);
-        setUsingMockData(false);
+        setError(null);
       } else {
         throw new Error(result.message || 'Failed to load data');
       }
     } catch (err) {
-      // Use mock data if API fails
-      console.warn('API not available, using mock data:', err);
-      setDashboardData(getMockData());
-      setUsingMockData(true);
-      setError(null); // Clear error since we're using mock data
+      console.error('Error fetching dashboard data:', err);
+      setError(err instanceof Error ? err.message : 'Failed to load dashboard data');
     } finally {
       setLoading(false);
     }
@@ -120,7 +83,10 @@ export default function OwnerDashboard() {
   if (loading) {
     return (
       <div className="owner-dashboard">
-        <div className="loading">Loading dashboard...</div>
+        <OwnerNav />
+        <div className="dashboard-content">
+          <div className="loading">Loading dashboard...</div>
+        </div>
       </div>
     );
   }
@@ -128,7 +94,10 @@ export default function OwnerDashboard() {
   if (error) {
     return (
       <div className="owner-dashboard">
-        <div className="error">Error: {error}</div>
+        <OwnerNav />
+        <div className="dashboard-content">
+          <div className="error">Error: {error}</div>
+        </div>
       </div>
     );
   }
@@ -136,7 +105,10 @@ export default function OwnerDashboard() {
   if (!dashboardData) {
     return (
       <div className="owner-dashboard">
-        <div className="error">No data available</div>
+        <OwnerNav />
+        <div className="dashboard-content">
+          <div className="error">No data available</div>
+        </div>
       </div>
     );
   }
@@ -219,75 +191,50 @@ export default function OwnerDashboard() {
 
   return (
     <div className="owner-dashboard">
-      {/* Top Header */}
-      <div className="dashboard-header">
-        <div className="header-logo">
-          <i className="bi bi-star-fill"></i>
-          <span>NORTH STAR</span>
-        </div>
-        <div className="header-actions">
-          <button className="icon-btn">
-            <i className="bi bi-person-circle"></i>
-          </button>
-          <button className="icon-btn">
-            <i className="bi bi-list"></i>
-          </button>
-        </div>
-      </div>
+      <OwnerNav />
 
       {/* Main Content */}
       <div className="dashboard-content">
         {/* Statistics Cards Row */}
         <div className="stats-grid">
           <div className="stat-card">
-            <div className="stat-header">TICKETS SOLD</div>
+            <div className="stat-header">TOTAL TICKETS SOLD</div>
             <div className="stat-main">
               <div className="stat-number">{statistics.totalTicketsSold.toLocaleString()}</div>
-              <div className="stat-trend positive">
-                <i className="bi bi-arrow-up"></i> +18%
-              </div>
             </div>
-            <div className="stat-footer">Today</div>
+            <div className="stat-footer">All Time</div>
           </div>
 
           <div className="stat-card">
-            <div className="stat-header">AVG TICKET PRICE</div>
+            <div className="stat-header">TOTAL REVENUE</div>
             <div className="stat-main">
-              <div className="stat-number">
-                ${(statistics.totalRevenue / statistics.totalTicketsSold || 0).toFixed(2)}
-              </div>
-              <div className="stat-trend neutral">
-                <i className="bi bi-arrow-right"></i> ±0%
-              </div>
+              <div className="stat-number">${statistics.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
             </div>
-            <div className="stat-footer">Average</div>
+            <div className="stat-footer">All Time</div>
           </div>
 
           <div className="stat-card">
-            <div className="stat-header">OCCUPANCY RATE</div>
+            <div className="stat-header">TOTAL THEATERS</div>
             <div className="stat-main">
-              <div className="stat-number">68%</div>
-              <div className="stat-trend positive">
-                <i className="bi bi-arrow-up"></i> +5%
-              </div>
+              <div className="stat-number">{statistics.totalTheaters}</div>
             </div>
-            <div className="stat-footer">Average</div>
+            <div className="stat-footer">Active</div>
           </div>
 
           <div className="stat-card">
-            <div className="stat-header">ACTIVE SHOWTIMES</div>
+            <div className="stat-header">TOTAL MOVIES</div>
             <div className="stat-main">
               <div className="stat-number">{statistics.totalMovies}</div>
             </div>
-            <div className="stat-footer">Today</div>
+            <div className="stat-footer">Available</div>
           </div>
         </div>
 
         {/* Chart Section */}
         <div className="chart-section">
           <div className="chart-header">
-            <h2>CHART/TABLE</h2>
-            <p>Revenue Trend - Last 7 Days</p>
+            <h2>REVENUE OVERVIEW</h2>
+            <p>Monthly Revenue Trend - Last 12 Months</p>
           </div>
           <div className="chart-container">
             <Line data={chartData} options={chartOptions} />

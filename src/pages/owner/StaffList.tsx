@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import OwnerNav from '../../components/navbars/OwnerNav';
 import '../../style/owner/staffList.css';
 
 interface Staff {
@@ -134,12 +135,7 @@ export default function StaffList() {
   if (loading) {
     return (
       <div className="staff-list-page">
-        <div className="page-header">
-          <div className="header-logo">
-            <i className="bi bi-star-fill"></i>
-            <span>NORTH STAR</span>
-          </div>
-        </div>
+        <OwnerNav />
         <div className="loading">Loading staff list...</div>
       </div>
     );
@@ -147,21 +143,7 @@ export default function StaffList() {
 
   return (
     <div className="staff-list-page">
-      {/* Header */}
-      <div className="page-header">
-        <div className="header-logo">
-          <i className="bi bi-star-fill"></i>
-          <span>NORTH STAR</span>
-        </div>
-        <div className="header-actions">
-          <button className="icon-btn" onClick={() => window.history.back()}>
-            <i className="bi bi-arrow-left"></i>
-          </button>
-          <button className="icon-btn">
-            <i className="bi bi-person-circle"></i>
-          </button>
-        </div>
-      </div>
+      <OwnerNav />
 
       {/* Main Content */}
       <div className="page-content">

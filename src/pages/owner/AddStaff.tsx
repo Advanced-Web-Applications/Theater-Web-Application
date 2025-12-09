@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import OwnerNav from '../../components/navbars/OwnerNav';
 import '../../style/owner/addStaff.css';
 
 interface StaffFormData {
@@ -119,28 +120,14 @@ export default function AddStaff() {
 
   return (
     <div className="add-staff-page">
-      {/* Header */}
-      <div className="page-header">
-        <div className="header-logo">
-          <i className="bi bi-star-fill"></i>
-          <span>NORTH STAR</span>
-        </div>
-        <div className="header-actions">
-          <button className="icon-btn" onClick={() => window.history.back()}>
-            <i className="bi bi-arrow-left"></i>
-          </button>
-          <button className="icon-btn">
-            <i className="bi bi-person-circle"></i>
-          </button>
-        </div>
-      </div>
+      <OwnerNav />
 
       {/* Main Content */}
       <div className="page-content">
         <div className="form-container">
           <div className="form-header">
             <h1>Add New Staff</h1>
-            <p>Fill in the staff information below. System will automatically create account and send credentials via email.</p>
+            <p>Fill in the staff information below. System will automatically create account.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="staff-form">

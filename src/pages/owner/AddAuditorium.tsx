@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import OwnerNav from '../../components/navbars/OwnerNav';
 import '../../style/owner/addAuditorium.css';
 
 interface AuditoriumFormData {
@@ -135,21 +136,7 @@ export default function AddAuditorium() {
 
   return (
     <div className="add-auditorium-page">
-      {/* Header */}
-      <div className="page-header">
-        <div className="header-logo">
-          <i className="bi bi-star-fill"></i>
-          <span>NORTH STAR</span>
-        </div>
-        <div className="header-actions">
-          <button className="icon-btn" onClick={() => window.history.back()}>
-            <i className="bi bi-arrow-left"></i>
-          </button>
-          <button className="icon-btn">
-            <i className="bi bi-person-circle"></i>
-          </button>
-        </div>
-      </div>
+      <OwnerNav />
 
       {/* Main Content */}
       <div className="page-content">

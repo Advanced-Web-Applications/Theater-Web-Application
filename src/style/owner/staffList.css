@@ -143,6 +143,7 @@
   font-size: 15px;
   color: #FFFFFF;
   transition: all 0.2s;
+  box-sizing: border-box;
 }
 
 .search-box input:focus {
@@ -172,6 +173,7 @@
   cursor: pointer;
   transition: all 0.2s;
   min-width: 220px;
+  box-sizing: border-box;
 }
 
 .theater-filter:focus {
@@ -673,8 +675,26 @@
 }
 
 @media (max-width: 480px) {
+  .page-content {
+    padding: 10px;
+  }
+
   .title-section h1 {
     font-size: 20px;
+  }
+
+  .title-section p {
+    font-size: 12px;
+  }
+
+  .search-box input {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  .theater-filter select {
+    font-size: 14px;
+    padding: 10px 12px;
   }
 
   .staff-avatar i {
@@ -683,6 +703,15 @@
 
   .staff-card {
     flex-direction: column;
+    padding: 12px;
+  }
+
+  .staff-name {
+    font-size: 15px;
+  }
+
+  .detail-item {
+    font-size: 11px;
   }
 
   .staff-actions {

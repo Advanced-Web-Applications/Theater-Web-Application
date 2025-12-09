@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import OwnerNav from '../../components/navbars/OwnerNav';
 import '../../style/owner/editStaff.css';
 
 interface StaffFormData {
@@ -118,12 +119,7 @@ export default function EditStaff() {
   if (loading) {
     return (
       <div className="edit-staff-page">
-        <div className="page-header">
-          <div className="header-logo">
-            <i className="bi bi-star-fill"></i>
-            <span>NORTH STAR</span>
-          </div>
-        </div>
+        <OwnerNav />
         <div className="loading">Loading staff information...</div>
       </div>
     );
@@ -131,21 +127,7 @@ export default function EditStaff() {
 
   return (
     <div className="edit-staff-page">
-      {/* Header */}
-      <div className="page-header">
-        <div className="header-logo">
-          <i className="bi bi-star-fill"></i>
-          <span>NORTH STAR</span>
-        </div>
-        <div className="header-actions">
-          <button className="icon-btn" onClick={handleCancel}>
-            <i className="bi bi-arrow-left"></i>
-          </button>
-          <button className="icon-btn">
-            <i className="bi bi-person-circle"></i>
-          </button>
-        </div>
-      </div>
+      <OwnerNav />
 
       {/* Main Content */}
       <div className="page-content">

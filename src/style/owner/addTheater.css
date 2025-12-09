@@ -136,6 +136,8 @@
   color: #8B9AAA;
   letter-spacing: 0.5px;
   text-transform: uppercase;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .form-group input,
@@ -149,6 +151,8 @@
   color: #FFFFFF;
   font-family: 'Segoe UI', Arial, sans-serif;
   transition: all 0.2s;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-group input:focus,
@@ -379,6 +383,18 @@
 }
 
 @media (max-width: 480px) {
+  .page-content {
+    padding: 10px;
+  }
+
+  .form-container {
+    padding: 15px;
+  }
+
+  .form-section {
+    padding: 15px;
+  }
+
   .form-header h1 {
     font-size: 20px;
   }
@@ -387,13 +403,15 @@
     font-size: 14px;
   }
 
-  .form-section {
-    padding: 15px;
+  .form-group label {
+    font-size: 11px;
+    letter-spacing: 0.3px;
   }
 
   .form-group input,
-  .form-group textarea {
-    padding: 10px 14px;
+  .form-group textarea,
+  .form-group select {
+    padding: 10px 12px;
     font-size: 14px;
   }
 
