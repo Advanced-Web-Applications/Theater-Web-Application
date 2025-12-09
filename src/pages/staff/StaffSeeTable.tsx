@@ -1,28 +1,31 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import StaffNavBar from "../../components/staff/staffNavBar";
+import { useTheater } from "../../components/staff/theaterData";
+import type { ShowTime } from "../../components/staff/showtimeUtils";
+import "../../style/staff/staffSeeTable.css";
 
-const API_URL = import.meta.env.VITE_API_URL;
+import { 
+  fetchShowTimes, 
+  saveShowTime, 
+  deleteShowTime, 
+  getWeekDates,
+} from "../../components/staff/showtimeUtils";
+import { Header, TimeBody } from "../../components/staff/showtimeUtils";
 
 export default function StaffSeeTable() {
-  const { auditorium } = useParams();
+  const { id, auditorium } = useParams();
+  const { theater: currentTheater } = useTheater(Number(id));
 
+  const [showTimes, setShowTimes] = useState<ShowTime[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [selectedShow, setSelectedShow] = useState<ShowTime | null>(null);
 
   const [editableDate, setEditableDate] = useState("");
   const [editableTime, setEditableTime] = useState<number | "">("");
-
-  const [selectedShow, setSelectedShow] = useState<{
-    id: number;
-    movie: string;
-    date: string;
-    time: number;
-  } | null>(null);
-
-  const hours = Array.from({ length: 12 }, (_, i) => i + 12);
-
-  const [showTimes, setShowTimes] = useState<
-    { id: number; movie: string; date: string; time: number }[]
-  >([]);
+  const [editableMinute, setEditableMinute] = useState<number>(0);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [currentWeekStart, setCurrentWeekStart] = useState(() => {
     const now = new Date();
@@ -33,77 +36,64 @@ export default function StaffSeeTable() {
     return monday;
   });
 
+  const weekDates = getWeekDates(currentWeekStart);
+
   useEffect(() => {
-    fetch(`${API_URL}/api/staff/showtimes/${auditorium}`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Fetched showtimes:", data);
-
-        setShowTimes(
-          data.map((s: any) => {
-            const d = new Date(s.start_time);
-            return {
-              id: s.id,
-              movie: s.title,
-              date: s.start_time.split("T")[0],
-              time: d.getHours(),
-            };
-          })
-        );
-      })
-      .catch((err) => console.error("Error fetching showtimes:", err));
+    fetchShowTimes(auditorium).then(setShowTimes);
   }, [auditorium]);
-
-  const weekDates = Array.from({ length: 7 }, (_, i) => {
-    const d = new Date(currentWeekStart);
-    d.setDate(currentWeekStart.getDate() + i);
-    return d;
-  });
-
 
   const handleSave = async () => {
     if (!selectedShow) return;
 
-    await fetch(
-      `${API_URL}/api/staff/showtimes/${selectedShow.id}`,
-      {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          date: editableDate,
-          time: editableTime,
-        }),
-      }
-    );
+    setErrorMessage("");
+    setIsLoading(true);
 
-    setShowTimes((prev) =>
-      prev.map((s) =>
-        s.id === selectedShow.id
-          ? { ...s, date: editableDate, time: editableTime as number }
-          : s
-      )
-    );
+    if (editableTime === "" || editableTime < 0) {
+      setErrorMessage("Please select a valid time");
+      setIsLoading(false);
+      return;
+    }
 
-    setModalOpen(false);
+    const updatedShow: ShowTime = {
+      ...selectedShow,
+      date: editableDate,
+      time: editableTime as number,
+      minute: editableMinute,
+    };
+
+    const result = await saveShowTime(updatedShow);
+    
+    setIsLoading(false);
+    
+    if (result.success) {
+      setShowTimes((prev) =>
+        prev.map((s) => (s.id === updatedShow.id ? updatedShow : s))
+      );
+      setModalOpen(false);
+      setErrorMessage("");
+    } else {
+      setErrorMessage(result.message || "Failed to save showtime");
+    }
   };
 
   const handleDelete = async () => {
     if (!selectedShow) return;
 
-    await fetch(
-      `${API_URL}/api/staff/showtimes/${selectedShow.id}`,
-      {
-        method: "DELETE",
-      }
-    );
+    setErrorMessage("");
+    setIsLoading(true);
 
-    setShowTimes((prev) =>
-      prev.filter((s) => s.id !== selectedShow.id)
-    );
-
-    setModalOpen(false);
+    const result = await deleteShowTime(selectedShow.id);
+    
+    setIsLoading(false);
+    
+    if (result.success) {
+      setShowTimes((prev) => prev.filter((s) => s.id !== selectedShow.id));
+      setModalOpen(false);
+      setErrorMessage("");
+    } else {
+      setErrorMessage(result.message || "Failed to delete showtime");
+    }
   };
-
 
   const changeWeek = (offset: number) => {
     const newStart = new Date(currentWeekStart);
@@ -111,130 +101,72 @@ export default function StaffSeeTable() {
     setCurrentWeekStart(newStart);
   };
 
-  const isToday = (date: Date) => {
-    const now = new Date();
-    return (
-      date.getFullYear() === now.getFullYear() &&
-      date.getMonth() === now.getMonth() &&
-      date.getDate() === now.getDate()
-    );
+  const handleSelectShow = (show: ShowTime) => {
+    setSelectedShow(show);
+    setEditableDate(show.date);
+    setEditableTime(show.time);
+    setEditableMinute(show.minute);
+    setErrorMessage("");
+    setModalOpen(true);
   };
 
-  const Header = () => (
-    <tr>
-      <th className="timeTable">Time</th>
-      {weekDates.map((d, i) => (
-        <th
-          key={i}
-          className="timeTable"
-          style={{
-            backgroundColor: isToday(d) ? "#eeecc9ff" : "transparent",
-          }}
-        >
-          {d.toLocaleDateString("en-GB", {
-            weekday: "short",
-            month: "numeric",
-            day: "numeric",
-          })}
-        </th>
-      ))}
-    </tr>
-  );
-
-  const TimeBody = () =>
-    hours.map((hour) => {
-      const tds = [];
-
-      tds.push(
-        <td key="time" className="timeTable">
-          {hour}:00
-        </td>
-      );
-
-      weekDates.forEach((date, j) => {
-        let showHere = "";
-        let showData: {
-          id: number;
-          movie: string;
-          date: string;
-          time: number;
-        } | null = null;
-
-        for (const show of showTimes) {
-          const showDate = new Date(show.date);
-
-          if (
-            showDate.getFullYear() === date.getFullYear() &&
-            showDate.getMonth() === date.getMonth() &&
-            showDate.getDate() === date.getDate() &&
-            show.time === hour
-          ) {
-            showHere = show.movie;
-            showData = show;
-            break;
-          }
-        }
-
-        tds.push(
-          <td
-            key={j}
-            className={`timeTable ${
-              selectedShow &&
-              selectedShow.id === showData?.id
-                ? "selectedCell"
-                : ""
-            }`}
-            onClick={() => {
-              if (showData) {
-                setSelectedShow(showData);
-                setEditableDate(showData.date);
-                setEditableTime(showData.time);
-                setModalOpen(true);
-              }
-            }}
-          >
-            {showHere}
-          </td>
-        );
-      });
-
-      return <tr key={hour}>{tds}</tr>;
-    });
-
   return (
-    <div className="scheduleContainer">
-      <div className="staffGoBackHeader">
-        <button
-          className="goBackButton"
-          onClick={() => (window.location.href = `/StaffHomePage/${auditorium}`)}
-        >
-          ← Go back
-        </button>
-      </div>
-      <div className="weekControls">
-        <button className="weekButton" onClick={() => changeWeek(-1)}>
-          《
-        </button>
-        <span className="yearLabel">{currentWeekStart.getFullYear()}</span>
-        <button className="weekButton" onClick={() => changeWeek(1)}>
-          》
-        </button>
-      </div>
+    <div>
+      <StaffNavBar theater={currentTheater} title="See Table" />
 
-      <div className="tableWrapper">
-        <table className="scheduleTable">
-          <thead>{Header()}</thead>
-          <tbody>{TimeBody()}</tbody>
-        </table>
+      <div className="scheduleContainer">
+        <div className="staffGoBackHeader">
+          <button
+            className="goBackButton"
+            onClick={() => (window.location.href = `/StaffHomePage/${id}`)}
+          >
+            ← Go back
+          </button>
+        </div>
+
+        <div className="weekControls">
+          <button className="weekButton" onClick={() => changeWeek(-1)}>
+            《
+          </button>
+          <span className="yearLabel">{currentWeekStart.getFullYear()}</span>
+          <button className="weekButton" onClick={() => changeWeek(1)}>
+            》
+          </button>
+        </div>
+
+        <div className="tableWrapper">
+          <table className="scheduleTable">
+            <thead>
+              <Header weekDates={weekDates} />
+            </thead>
+            <tbody>
+              <TimeBody
+                showTimes={showTimes}
+                weekDates={weekDates}
+                onSelectShow={handleSelectShow}
+              />
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {modalOpen && selectedShow && (
-        <div className="modal">
-          <div
-            className="modalContent"
-            onClick={(e) => e.stopPropagation()}
-          >
+        <div className="modal" onClick={() => setModalOpen(false)}>
+          <div className="modalContent" onClick={(e) => e.stopPropagation()}>
             <h3>{selectedShow.movie}</h3>
+
+            {errorMessage && (
+              <div className="errorMessage" style={{
+                backgroundColor: "#fee",
+                color: "#c33",
+                padding: "10px",
+                borderRadius: "4px",
+                marginBottom: "15px",
+                border: "1px solid #fcc"
+              }}>
+                {errorMessage}
+              </div>
+            )}
 
             <label>
               Date:
@@ -242,30 +174,66 @@ export default function StaffSeeTable() {
                 type="date"
                 value={editableDate}
                 onChange={(e) => setEditableDate(e.target.value)}
+                disabled={isLoading}
               />
             </label>
 
             <label>
               Time:
-              <input
-                type="time"
-                value={
-                  editableTime !== ""
-                    ? `${editableTime.toString().padStart(2, "0")}:00`
-                    : ""
-                }
-                onChange={(e) => {
-                  const hour = e.target.value.split(":")[0];
-                  setEditableTime(Number(hour));
-                }}
-              />
+              <div className="timeSelector">
+                <select
+                  className="timeSelect"
+                  value={editableTime}
+                  onChange={(e) => setEditableTime(Number(e.target.value))}
+                  disabled={isLoading}
+                >
+                  <option value="">Hour</option>
+                  {Array.from({ length: 12 }, (_, i) => i + 12).map((h) => (
+                    <option key={h} value={h}>
+                      {h.toString().padStart(2, "0")}
+                    </option>
+                  ))}
+                </select>
+
+                <span className="timeSeparator">:</span>
+
+                <select
+                  className="timeSelect"
+                  value={editableMinute}
+                  onChange={(e) => setEditableMinute(Number(e.target.value))}
+                  disabled={isLoading}
+                >
+                  <option value="">Minute</option>
+                  {Array.from({ length: 60 }, (_, i) => (
+                    <option key={i} value={i}>
+                      {i.toString().padStart(2, "0")}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </label>
 
-            <button onClick={handleSave}>Save</button>
-            <button onClick={handleDelete}>Delete</button>
-
-
-            <button onClick={() => setModalOpen(false)}>Close</button>
+            <button 
+              className="modalSaveButton" 
+              onClick={handleSave}
+              disabled={isLoading}
+            >
+              {isLoading ? "Saving..." : "Save"}
+            </button>
+            <button 
+              className="modalDeleteButton" 
+              onClick={handleDelete}
+              disabled={isLoading}
+            >
+              {isLoading ? "Deleting..." : "Delete"}
+            </button>
+            <button 
+              className="modalCloseButton" 
+              onClick={() => setModalOpen(false)}
+              disabled={isLoading}
+            >
+              Close
+            </button>
           </div>
         </div>
       )}

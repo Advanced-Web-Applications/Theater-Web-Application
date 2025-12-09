@@ -1,0 +1,231 @@
+
+.setTimeContainer {
+  display: flex;
+  gap: 30px;
+  padding: 20px;
+  max-width: 1400px;
+  margin: 100px auto 20px;
+  align-items: flex-start;
+}
+
+.setTimeBorder {
+  flex: 0 0 400px;
+  min-width: 350px;
+  background-color: #1C2541;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.setTimeBorder label {
+  color: #ffffff;
+  display: block;
+  margin-bottom: 5px;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.titleOfSelection {
+  color: #ffffff;
+  font-size: 17px;
+}
+
+.movieSelect,
+.setTimeBorder input[type="date"],
+.setTimeBorder input[type="time"] {
+  background: #0f1825;
+  border: 1px solid #2d3e50;
+  color: #e0e6ed;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.movieSelect:focus,
+.setTimeBorder input:focus {
+  outline: none;
+  border-color: #4a90a4;
+  box-shadow: 0 0 0 2px rgba(74, 144, 164, 0.2);
+}
+
+.movieSelect option {
+  color: black;
+  background-color: white;
+}
+
+.saveButton {
+  background-color: #3A506B;
+  color: white;
+  border: none;
+  padding: 12px 40px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 20px;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.saveButton:hover {
+  background-color: #6BD9E7;
+  box-shadow: 0 4px 12px rgba(74, 144, 164, 0.4);
+}
+
+.saveButton:active {
+  transform: scale(0.98);
+}
+
+.existShowtimes {
+  flex: 1;
+  background: #1C2541;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  min-width: 400px;
+}
+
+.existShowtimes h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #ffffff;
+  font-size: 20px;
+  border-bottom: 3px solid #4a90a4;
+  padding-bottom: 12px;
+}
+
+.existShowtimes > p {
+  color: #8b9cb5;
+  font-style: italic;
+  text-align: center;
+  padding: 40px 20px;
+  margin: 0;
+}
+
+.noShowtimes {
+  background: #0f1825;
+  border: 2px dashed #2d3e50;
+  border-radius: 8px;
+  color: #6b7c93;
+}
+
+.showtimeList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.showtimeItem {
+  background: #243447;
+  padding: 18px;
+  border-radius: 8px;
+  border-left: 5px solid #4a90a4;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.showtimeDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.movieTime {
+  color: #79c2d6 !important;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 10px 15px;
+  background: rgba(74, 144, 164, 0.12);
+  border-radius: 6px;
+  display: block;
+  border-left: 3px solid #5eb3d1;
+}
+
+.cleanTime {
+  color: #7ec4a3;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 10px 15px;
+  background: rgba(126, 196, 163, 0.12);
+  border-radius: 6px;
+  display: block;
+  border-left: 3px solid #7ec4a3;
+}
+
+@media (max-width: 1024px) {
+  .setTimeContainer {
+    flex-direction: column;
+    margin: 80px 10px 20px;
+  }
+  
+  .setTimeBorder {
+    flex: 1;
+    width: 100%;
+    min-width: auto;
+  }
+  
+  .existShowtimes {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .setTimeBorder {
+    padding: 15px;
+  }
+
+  .saveButton {
+    padding: 10px 20px;
+  }
+
+  .staffGoBackHeader {
+    font-size: 12px;
+  }
+
+  .goBackButton {
+    font-size: 14px;
+  }
+}
+
+.timeSelector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.timeSelect {
+  flex: 1;
+  background: #0f1825;
+  border: 1px solid #2d3e50;
+  color: #e0e6ed;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-family: monospace;
+  text-align: center;
+  cursor: pointer;
+}
+
+.timeSelect:focus {
+  outline: none;
+  border-color: #4a90a4;
+  box-shadow: 0 0 0 2px rgba(74, 144, 164, 0.2);
+}
+
+.timeSelect option {
+  color: black;
+  background-color: white;
+}
+
+.timeSeparator {
+  color: #e0e6ed;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: monospace;
+}
