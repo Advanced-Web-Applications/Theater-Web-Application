@@ -4,6 +4,11 @@
     align-items: center;
 }
 
-.menu-icon {
+.user-icon {
     font-size: 2rem;
+}
+
+.logo {
+    height: 10rem;
+    width: auto;
 }

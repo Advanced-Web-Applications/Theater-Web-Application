@@ -7,6 +7,8 @@ import MovieDetails from './MovieDetails'
 import Ticket from './Ticket'
 import Checkout from './Checkout'
 import SuccessView from './SuccessView'
+import LoginPage from '../auth/LoginPage'
+import Signup from '../auth/Signup'
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
@@ -28,11 +30,8 @@ export default function Location() {
   useEffect(() => {
     fetch(`${BACKEND_URL}/api/customer/locations`, {headers: { 'Content-Type': 'application/json'}})
       .then(res => res.json())
-      .then(data => setLocations(data)
-    ). catch (err => console.log('Error fetching locations: ', err))
-
-    console.log("BACKEND_URL =", BACKEND_URL);
-
+      .then(data => setLocations(data))
+      .catch (err => console.log('Error fetching locations: ', err))
   }, [])
 
   return (
@@ -63,6 +62,8 @@ export default function Location() {
           />
           
         <Route path='/home' element={<HomePage />} />
+        <Route path='/login' element={<LoginPage />}/>
+        <Route path='/register' element={<Signup />}/>
         <Route path='/movie/:id' element={<MovieDetails />} />
         <Route path='/ticket/' element={<Ticket />} />
         <Route path='/checkout/' element={<Checkout />} />
