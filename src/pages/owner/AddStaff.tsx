@@ -99,6 +99,24 @@ export default function AddStaff() {
     });
   };
 
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText(credentials.email);
+  };
+
+  const handleCopyPassword = () => {
+    navigator.clipboard.writeText(credentials.password);
+  };
+
+  const handleCopyBoth = () => {
+    const text = `Email: ${credentials.email}\nPassword: ${credentials.password}`;
+    navigator.clipboard.writeText(text);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setCredentials({ email: '', password: '' });
+  };
+
   return (
     <div className="add-staff-page">
       {/* Header */}
@@ -230,6 +248,87 @@ export default function AddStaff() {
           </form>
         </div>
       </div>
+
+      {/* Success Modal */}
+      {showModal && (
+        <div className="modal-overlay" onClick={handleCloseModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <div className="modal-icon">
+                <i className="bi bi-check-circle-fill"></i>
+              </div>
+              <h2>Staff Account Created Successfully!</h2>
+              <p>Login credentials have been generated. Please share these with the staff member.</p>
+            </div>
+
+            <div className="modal-body">
+              <div className="credential-group">
+                <label>Email Address</label>
+                <div className="credential-row">
+                  <input
+                    type="text"
+                    value={credentials.email}
+                    readOnly
+                    className="credential-input"
+                  />
+                  <button
+                    type="button"
+                    className="copy-btn"
+                    onClick={handleCopyEmail}
+                    title="Copy email"
+                  >
+                    <i className="bi bi-clipboard"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div className="credential-group">
+                <label>Temporary Password</label>
+                <div className="credential-row">
+                  <input
+                    type="text"
+                    value={credentials.password}
+                    readOnly
+                    className="credential-input"
+                  />
+                  <button
+                    type="button"
+                    className="copy-btn"
+                    onClick={handleCopyPassword}
+                    title="Copy password"
+                  >
+                    <i className="bi bi-clipboard"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div className="modal-warning">
+                <i className="bi bi-exclamation-triangle-fill"></i>
+                <span>Please save these credentials securely. The password will not be shown again.</span>
+              </div>
+            </div>
+
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn-copy-all"
+                onClick={handleCopyBoth}
+              >
+                <i className="bi bi-files"></i>
+                Copy Both
+              </button>
+              <button
+                type="button"
+                className="btn-close-modal"
+                onClick={handleCloseModal}
+              >
+                <i className="bi bi-check-lg"></i>
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

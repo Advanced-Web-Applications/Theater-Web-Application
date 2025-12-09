@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../../style/owner/staffList.css';
 
 interface Staff {
@@ -16,12 +17,16 @@ interface Theater {
 }
 
 export default function StaffList() {
+  const navigate = useNavigate();
   const [staffList, setStaffList] = useState<Staff[]>([]);
   const [filteredStaff, setFilteredStaff] = useState<Staff[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTheater, setSelectedTheater] = useState<number | ''>('');
   const [theaters, setTheaters] = useState<Theater[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [staffToDelete, setStaffToDelete] = useState<Staff | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Fetch data from API
   useEffect(() => {
@@ -86,6 +91,44 @@ export default function StaffList() {
   const handleClearFilters = () => {
     setSearchTerm('');
     setSelectedTheater('');
+  };
+
+  const handleDeleteClick = (staff: Staff) => {
+    setStaffToDelete(staff);
+    setShowDeleteModal(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setShowDeleteModal(false);
+    setStaffToDelete(null);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!staffToDelete) return;
+
+    setIsDeleting(true);
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const response = await fetch(`${apiUrl}/api/owner/staff/${staffToDelete.id}`, {
+        method: 'DELETE',
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Remove staff from list
+        setStaffList(prev => prev.filter(s => s.id !== staffToDelete.id));
+        handleCloseDeleteModal();
+      } else {
+        alert(`Error: ${data.message}`);
+      }
+    } catch (error) {
+      console.error('Error deleting staff:', error);
+      alert('Error deleting staff. Please try again.');
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   if (loading) {
@@ -202,10 +245,18 @@ export default function StaffList() {
                   </div>
                 </div>
                 <div className="staff-actions">
-                  <button className="btn-action edit" title="Edit staff">
+                  <button
+                    className="btn-action edit"
+                    title="Edit staff"
+                    onClick={() => navigate(`/EditStaff/${staff.id}`)}
+                  >
                     <i className="bi bi-pencil"></i>
                   </button>
-                  <button className="btn-action delete" title="Delete staff">
+                  <button
+                    className="btn-action delete"
+                    title="Delete staff"
+                    onClick={() => handleDeleteClick(staff)}
+                  >
                     <i className="bi bi-trash"></i>
                   </button>
                 </div>
@@ -220,6 +271,68 @@ export default function StaffList() {
           </div>
         )}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && staffToDelete && (
+        <div className="modal-overlay" onClick={handleCloseDeleteModal}>
+          <div className="modal-content delete-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <div className="modal-icon delete-icon">
+                <i className="bi bi-exclamation-triangle-fill"></i>
+              </div>
+              <h2>Delete Staff Member?</h2>
+              <p>Are you sure you want to delete this staff member? This action cannot be undone.</p>
+            </div>
+
+            <div className="modal-body">
+              <div className="staff-info-card">
+                <div className="info-row">
+                  <span className="info-label">Name:</span>
+                  <span className="info-value">{staffToDelete.username}</span>
+                </div>
+                <div className="info-row">
+                  <span className="info-label">Email:</span>
+                  <span className="info-value">{staffToDelete.email}</span>
+                </div>
+                <div className="info-row">
+                  <span className="info-label">Theater:</span>
+                  <span className="info-value">{staffToDelete.theater_name}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn-cancel"
+                onClick={handleCloseDeleteModal}
+                disabled={isDeleting}
+              >
+                <i className="bi bi-x-lg"></i>
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn-delete-confirm"
+                onClick={handleConfirmDelete}
+                disabled={isDeleting}
+              >
+                {isDeleting ? (
+                  <>
+                    <i className="bi bi-hourglass-split"></i>
+                    Deleting...
+                  </>
+                ) : (
+                  <>
+                    <i className="bi bi-trash"></i>
+                    Delete Staff
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

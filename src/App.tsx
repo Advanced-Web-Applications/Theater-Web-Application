@@ -9,6 +9,7 @@ import OwnerDashboard from './pages/owner/OwnerDashboard';
 import AddTheater from './pages/owner/AddTheater';
 import AddAuditorium from './pages/owner/AddAuditorium';
 import AddStaff from './pages/owner/AddStaff';
+import EditStaff from './pages/owner/EditStaff';
 import StaffList from './pages/owner/StaffList';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Route path="/AddTheater" element={<AddTheater />} />
         <Route path="/AddAuditorium" element={<AddAuditorium />} />
         <Route path="/AddStaff" element={<AddStaff />} />
+        <Route path="/EditStaff/:id" element={<EditStaff />} />
         <Route path="/StaffList" element={<StaffList />} />
       </Routes>
     </BrowserRouter>
