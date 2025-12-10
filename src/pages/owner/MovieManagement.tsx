@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import OwnerNav from '../../components/navbars/OwnerNav';
 import '../../style/owner/movieManagement.css';
 
@@ -10,6 +11,7 @@ interface Movie {
   age_rating: string;
   description: string;
   poster_url: string;
+  trailer_url: string;
   status: 'upcoming' | 'now_showing' | 'ended' | 'archived';
   created_at: string;
 }
@@ -50,6 +52,7 @@ export default function MovieManagement() {
     fetchMovies();
     fetchGenres();
     fetchStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, statusFilter, genreFilter]);
 
   const fetchMovies = async () => {
@@ -175,6 +178,7 @@ export default function MovieManagement() {
           age_rating: editForm.age_rating,
           description: editForm.description,
           poster_url: editForm.poster_url,
+          trailer_url: editForm.trailer_url,
           status: editForm.status
         })
       });
@@ -360,12 +364,6 @@ export default function MovieManagement() {
                     {movie.description?.substring(0, 100)}
                     {movie.description?.length > 100 ? '...' : ''}
                   </p>
-
-                  <div className="movie-quick-status">
-                    <span className={getStatusBadgeClass(movie.status)}>
-                      {getStatusLabel(movie.status)}
-                    </span>
-                  </div>
                 </div>
               </div>
             ))
@@ -422,7 +420,7 @@ export default function MovieManagement() {
                           value={selectedMovie.status}
                           onChange={(e) => {
                             updateMovieStatus(selectedMovie.id, e.target.value);
-                            setSelectedMovie({ ...selectedMovie, status: e.target.value as any });
+                            setSelectedMovie({ ...selectedMovie, status: e.target.value as Movie['status'] });
                           }}
                           className="status-select-modal"
                         >
@@ -441,6 +439,11 @@ export default function MovieManagement() {
                       <div className="detail-row">
                         <label>POSTER URL:</label>
                         <span className="url-text">{selectedMovie.poster_url}</span>
+                      </div>
+
+                      <div className="detail-row">
+                        <label>TRAILER URL:</label>
+                        <span className="url-text">{selectedMovie.trailer_url || 'No trailer available'}</span>
                       </div>
                     </>
                   ) : (
@@ -521,6 +524,17 @@ export default function MovieManagement() {
                             value={editForm?.poster_url || ''}
                             onChange={(e) => handleEditChange('poster_url', e.target.value)}
                             className="form-input"
+                          />
+                        </div>
+
+                        <div className="form-group">
+                          <label>TRAILER URL:</label>
+                          <input
+                            type="text"
+                            value={editForm?.trailer_url || ''}
+                            onChange={(e) => handleEditChange('trailer_url', e.target.value)}
+                            className="form-input"
+                            placeholder="YouTube or video URL"
                           />
                         </div>
 
