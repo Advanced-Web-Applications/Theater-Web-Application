@@ -13,6 +13,7 @@ import EditStaff from './pages/owner/EditStaff';
 import StaffList from './pages/owner/StaffList';
 import AddMovie from './pages/owner/AddMovie';
 import PriceSetting from './pages/owner/PriceSetting';
+import MovieManagement from './pages/owner/MovieManagement';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route path="/EditStaff/:id" element={<EditStaff />} />
         <Route path="/StaffList" element={<StaffList />} />
         <Route path="/PriceSetting" element={<PriceSetting />} />
+        <Route path="/MovieManagement" element={<MovieManagement />} />
       </Routes>
     </BrowserRouter>
   );
