@@ -38,7 +38,7 @@ export default function AddAuditorium() {
   useEffect(() => {
     const fetchTheaters = async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+        const apiUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
         const response = await fetch(`${apiUrl}/api/owner/theaters`);
         const data = await response.json();
 
@@ -66,7 +66,7 @@ export default function AddAuditorium() {
     if (name === 'theater_id') {
       if (value) {
         try {
-          const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+          const apiUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
           const response = await fetch(`${apiUrl}/api/owner/auditoriums/${value}`);
           const data = await response.json();
 
@@ -100,7 +100,7 @@ export default function AddAuditorium() {
     setIsSubmitting(true);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const apiUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
       const response = await fetch(`${apiUrl}/api/owner/auditoriums`, {
         method: 'POST',
         headers: {

@@ -32,7 +32,7 @@ export default function AddTheater() {
     setIsSubmitting(true);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const apiUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
       const response = await fetch(`${apiUrl}/api/owner/theaters`, {
         method: 'POST',
         headers: {

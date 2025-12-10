@@ -57,7 +57,7 @@ export default function OwnerDashboard() {
 
   const fetchDashboardData = async () => {
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const apiUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
       const response = await fetch(`${apiUrl}/api/owner/dashboard-stats`);
 
       if (!response.ok) {

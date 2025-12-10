@@ -35,7 +35,7 @@ export default function EditStaff() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+        const apiUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
         // Fetch theaters
         const theatersResponse = await fetch(`${apiUrl}/api/owner/theaters`);
@@ -87,7 +87,7 @@ export default function EditStaff() {
     setIsSubmitting(true);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const apiUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
       const response = await fetch(`${apiUrl}/api/owner/staff/${id}`, {
         method: 'PUT',
         headers: {

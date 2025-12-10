@@ -33,7 +33,7 @@ export default function StaffList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+        const apiUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
         // Fetch theaters
         const theatersResponse = await fetch(`${apiUrl}/api/owner/theaters`);
@@ -110,7 +110,7 @@ export default function StaffList() {
     setIsDeleting(true);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const apiUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
       const response = await fetch(`${apiUrl}/api/owner/staff/${staffToDelete.id}`, {
         method: 'DELETE',
       });

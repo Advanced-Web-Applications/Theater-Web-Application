@@ -159,7 +159,7 @@ export default function AddMovie() {
     console.log('Submitting movie data:', formData);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const apiUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
       console.log('API URL:', `${apiUrl}/api/owner/movies`);
 
       const response = await fetch(`${apiUrl}/api/owner/movies`, {
