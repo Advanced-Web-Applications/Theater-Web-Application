@@ -1,4 +1,4 @@
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import '../../style/customer/navbar.css'
 
 
@@ -21,7 +21,7 @@ export default function Navbar() {
           {isLoggedIn ? (
             <span onClick={handleLogout}>Log Out</span>
           ) : (
-            <Link to='/login'>Log In</Link>
+            <i className="bi bi-list menu" onClick={() => navigate('/login')}></i>
           )}
         </div>
     </div>

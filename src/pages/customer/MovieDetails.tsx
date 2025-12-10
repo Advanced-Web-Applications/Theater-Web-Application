@@ -18,6 +18,7 @@ interface MovieProps {
   age_rating: string
   description: string
   poster_url: string
+  trailer_url: string
 }
 
 
@@ -63,7 +64,7 @@ export default function MovieDetails() {
     new Date(dateStr).toLocaleDateString('en-US', { weekday: 'short', timeZone: theaterTimezone })
 
   const formatDayNumMonth = (dateStr: string) =>
-    new Date(dateStr).toLocaleDateString('en-US', { day: 'numeric', month: 'short', timeZone: theaterTimezone })
+    new Date(dateStr).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: theaterTimezone })
 
   const formatTime = (timestamp: string) =>
     new Date(timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: theaterTimezone })
@@ -89,8 +90,8 @@ export default function MovieDetails() {
             onClick={() => setSelectedDate(dateStr)}
             className={`date-item ${selectedDate === dateStr ? 'selected' : ''}`}
             >
-              <div>{formatDay(dateStr)}</div>
-              <div>{formatDayNumMonth(dateStr)}</div>
+              <div>{formatDay(dateStr)} {formatDayNumMonth(dateStr)}</div>
+              <div></div>
             </div>
           ))}
         </div>

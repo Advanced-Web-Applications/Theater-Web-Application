@@ -20,7 +20,8 @@ export default function ConfirmPopUp({showtime_id, adultTicket, childTicket, act
     <div className='popup-overlay'>
         <div className='popup-container'>
             <h3>Enter your email to receive ticket</h3>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+            <div>Seat(s): {activeSeats.join(', ')}</div>
+            <input type="email" placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)}/>
             <div>
                 <button onClick={onClose}>Cancel</button>
                 <button onClick={() => navigate('/checkout',  {state: {email, showtime_id, adultTicket, childTicket, activeSeats}})}>Go to payment</button>

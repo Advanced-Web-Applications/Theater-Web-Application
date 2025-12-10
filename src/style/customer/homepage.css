@@ -37,31 +37,31 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   justify-items: center;
-  margin-bottom: auto;
-  margin-top: 2rem;
+  margin: 2rem 1rem;
+  max-width: 1200px;
 }
 
-.poster {
+.poster-grid img {
+  object-fit: cover;
   width: 100%;
   aspect-ratio: 2 / 3;
-  border-radius: 1rem;
 }
 
 footer {
   text-align: left;
   padding: 1rem;
-  background-color: #14294D;
+  background-color: #1c2541;
   font-size: 0.9rem;
   line-height: 1.4;
   width: 100%;
   margin-top: 1rem;
-  border-top: 1px solid #1C2541;
 }
 
 
 @media (min-width: 768px) {
-  .poster-grid {
-    grid-template-columns: repeat(auto-fit,minmax(10rem, 15rem));
+  .poster-grid {    
+    border-radius: 1.3rem;  
+    grid-template-columns: repeat(6, 1fr);
   }
 
   .search-bar input {

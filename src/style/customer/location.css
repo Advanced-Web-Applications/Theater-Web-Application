@@ -1,7 +1,7 @@
 .location-div {
     display: flex;
     justify-content: center;
-    height: 75vh;
+    height: 70vh;
     align-items: center;       
 }
 
@@ -13,7 +13,7 @@
     color: #F4F6FA;              
     padding: 2rem;            
     text-align: center;  
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);     
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);     
 }
 
 .location-items { 
@@ -21,7 +21,7 @@
     justify-content: center; 
     flex-direction: column; 
     align-items: center; 
-    gap: 10px; 
+    gap: 0.7rem; 
     margin-top: 1rem; 
 }
 
@@ -50,3 +50,24 @@
     color: #0C1B33;
 }
 
+@media (min-width: 768px) {
+    h2 {
+        font-size: 1.9rem;
+    }
+
+    .location-card {
+        height: 23rem;
+        width: 22rem;
+    }
+
+    .location-items {
+        gap: 1.7rem;
+        margin-top: 2rem
+    }
+
+    .location-item {
+        padding: 0.8rem 0;
+        width: 12rem;
+        font-size: 1.4rem;
+    }
+}

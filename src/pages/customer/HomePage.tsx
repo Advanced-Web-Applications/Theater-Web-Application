@@ -14,6 +14,7 @@ interface MovieProps {
   age_rating: string
   description: string
   poster_url: string
+  trailer_url: string
 }
 
 interface LocationProps {
@@ -64,12 +65,10 @@ export default function HomePage() {
 
   return (
     <>
-      <SearchBar/>
       <div className='poster-grid'>
           {movies.map(movie => (
           <img key={movie.id} 
                 src={movie.poster_url} 
-                className="poster" 
                 onClick={() => navigate(`/movie/${movie.id}`, {state: {movie, city}})}></img>
           ))}
       </div>
