@@ -1,0 +1,425 @@
+/* Add Theater Page - Matching Owner Dashboard Style */
+
+.add-theater-page {
+  min-height: 100vh;
+  background-color: #0B1929;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header - Same as Owner Dashboard */
+.page-header {
+  background-color: #132943;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #4A9EFF;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.header-logo i {
+  font-size: 24px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 5px;
+  transition: color 0.2s;
+}
+
+.icon-btn:hover {
+  color: #4A9EFF;
+}
+
+/* Main Content */
+.page-content {
+  flex: 1;
+  padding: 30px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Form Container */
+.form-container {
+  background: linear-gradient(135deg, #152d44 0%, #1f3a54 100%);
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Form Header */
+.form-header {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.form-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.form-header p {
+  font-size: 14px;
+  color: #94A3B8;
+  font-weight: 400;
+}
+
+/* Form Sections */
+.form-section {
+  background: rgba(11, 25, 41, 0.5);
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 25px;
+  border: 1px solid rgba(74, 158, 255, 0.1);
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #4A9EFF;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-title i {
+  font-size: 20px;
+}
+
+/* Form Grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #8B9AAA;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  background: rgba(11, 25, 41, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 15px;
+  color: #FFFFFF;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  transition: all 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #4A9EFF;
+  background: rgba(11, 25, 41, 0.8);
+  box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #64748B;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-group input[type="number"] {
+  appearance: textfield;
+}
+
+.form-group input[type="number"]::-webkit-inner-spin-button,
+.form-group input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Facilities Grid */
+.facilities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.facility-chip {
+  background: rgba(11, 25, 41, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.facility-chip:hover {
+  border-color: #4A9EFF;
+  background: rgba(74, 158, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.facility-chip.selected {
+  background: linear-gradient(135deg, rgba(74, 158, 255, 0.2) 0%, rgba(74, 158, 255, 0.3) 100%);
+  border-color: #4A9EFF;
+}
+
+.facility-chip i {
+  font-size: 20px;
+  color: #94A3B8;
+  transition: color 0.2s;
+}
+
+.facility-chip.selected i {
+  color: #4ADE80;
+}
+
+.facility-chip span {
+  font-size: 14px;
+  font-weight: 500;
+  color: #FFFFFF;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  text-transform: uppercase;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #4A9EFF 0%, #3B82F6 100%);
+  color: #FFFFFF;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(74, 158, 255, 0.4);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #94A3B8;
+  border: 2px solid rgba(148, 163, 184, 0.3);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: rgba(148, 163, 184, 0.1);
+  border-color: #94A3B8;
+  color: #FFFFFF;
+}
+
+.btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary i,
+.btn-secondary i {
+  font-size: 18px;
+}
+
+/* Demo Badge */
+.demo-badge {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #F59E0B;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .page-content {
+    padding: 20px;
+  }
+
+  .form-container {
+    padding: 30px;
+  }
+
+  .form-grid {
+    gap: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    padding: 12px 20px;
+  }
+
+  .header-logo {
+    font-size: 12px;
+  }
+
+  .header-logo i {
+    font-size: 20px;
+  }
+
+  .page-content {
+    padding: 15px;
+  }
+
+  .form-container {
+    padding: 25px;
+  }
+
+  .form-header h1 {
+    font-size: 24px;
+  }
+
+  .form-header p {
+    font-size: 12px;
+  }
+
+  .form-section {
+    padding: 20px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .facilities-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-content {
+    padding: 10px;
+  }
+
+  .form-container {
+    padding: 15px;
+  }
+
+  .form-section {
+    padding: 15px;
+  }
+
+  .form-header h1 {
+    font-size: 20px;
+  }
+
+  .section-title {
+    font-size: 14px;
+  }
+
+  .form-group label {
+    font-size: 11px;
+    letter-spacing: 0.3px;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .facility-chip {
+    padding: 12px 16px;
+  }
+
+  .facility-chip span {
+    font-size: 13px;
+  }
+}
