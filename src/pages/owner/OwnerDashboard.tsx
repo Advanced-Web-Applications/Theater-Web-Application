@@ -208,7 +208,7 @@ export default function OwnerDashboard() {
           <div className="stat-card">
             <div className="stat-header">TOTAL REVENUE</div>
             <div className="stat-main">
-              <div className="stat-number">${statistics.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+              <div className="stat-number">€{statistics.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
             </div>
             <div className="stat-footer">All Time</div>
           </div>

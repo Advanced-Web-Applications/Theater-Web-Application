@@ -9,6 +9,7 @@ export default function OwnerNav() {
 
   const navItems = [
     { path: '/OwnerDashboard', label: 'Dashboard', icon: 'bi-speedometer2' },
+    { path: '/MovieManagement', label: 'Manage Movies', icon: 'bi-collection-play' },
     { path: '/AddTheater', label: 'Add Theater', icon: 'bi-building' },
     { path: '/AddAuditorium', label: 'Add Auditorium', icon: 'bi-camera-reels' },
     { path: '/AddMovie', label: 'Add Movie', icon: 'bi-film' },
