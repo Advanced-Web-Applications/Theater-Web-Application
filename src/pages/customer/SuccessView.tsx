@@ -131,7 +131,7 @@ export default function SuccessView() {
         </div>
 
         <div className='ticket-bottom'>
-          <img src={`data:image/pnd;base64,${session.barcode}`}/>
+          <img className='barcode' src={`data:image/pnd;base64,${session.barcode}`}/>
         </div>
 
       </div>

@@ -11,8 +11,11 @@ export default function StaffNavBar({ theater, title }: StaffNavBarProps) {
 
   return (
     <div className="staffNavBar">
-      <h1 className="staffNavTheaterName">{theater.name}</h1>
-      <p className="staffNavPageTitle">{title}</p>
+      <img className="staffNavLogo" src="/logo.jpg" alt="Logo"/> 
+      <div className="staffNavTextBlock">
+        <h1 className="staffNavTheaterName">{theater.name}</h1>
+        <p className="staffNavPageTitle">{title}</p>
+      </div>
     </div>
   );
 }
