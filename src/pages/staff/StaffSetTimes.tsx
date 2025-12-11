@@ -31,6 +31,7 @@ export default function StaffSetTimes() {
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
+      timeZone: "Europe/Paris"
     });
   };
 
@@ -41,7 +42,7 @@ export default function StaffSetTimes() {
     }
 
     const time = `${hour.padStart(2, "0")}:${minute.padStart(2, "0")}`;
-    const startTime = new Date(`${date}T${time}`).toISOString();
+    const startTime = `${date}T${time}`;
 
     try {
       await saveShowtime(Number(movieId), Number(auditorium), startTime);
