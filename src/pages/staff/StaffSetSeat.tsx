@@ -49,9 +49,9 @@ export default function StaffSetSeat() {
     const getSeatClass = (seat: number) => {
       const seatChange = seatChanges.find(s => s.seat_number === seat);
       const isBooked = unavailable.includes(seat);
-      if (seatChange?.status === "maintenance") return "seat maintenance";
-      if (isBooked) return "seat booked";
-      return "seat available";
+      if (seatChange?.status === "maintenance") return "seatForStaff maintenance";
+      if (isBooked) return "seatForStaff unavailable";
+      return "seatForStaff available";
     };
 
     return (
