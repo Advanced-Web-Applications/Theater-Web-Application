@@ -34,6 +34,7 @@ jobs:
           start: npm run preview
           wait-on: 'http://localhost:4173'
           browser: chrome
+          config: baseUrl=http://localhost:4173
         env:
           # Nếu cần môi trường test riêng
           VITE_BACKEND_URL: https://your-test-backend.com
