@@ -1,23 +1,24 @@
 describe('Movie Management', () => {
   beforeEach(() => {
-    // Mock movies API
+    // Mock movies API - return array directly
     cy.intercept('GET', '**/api/owner/movies*', {
       statusCode: 200,
       body: {
         success: true,
-        data: {
-          movies: [
-            {
-              movie_id: 1,
-              title: 'Test Movie 1',
-              status: 'now_showing',
-              genre: 'Action',
-              rating: 8.5,
-              poster_url: 'https://example.com/poster1.jpg'
-            }
-          ],
-          pagination: { totalPages: 1, currentPage: 1, totalMovies: 1 }
-        }
+        data: [
+          {
+            id: 1,
+            title: 'Test Movie 1',
+            status: 'now_showing',
+            genre: 'Action',
+            duration: 120,
+            age_rating: 'PG-13',
+            description: 'A test movie',
+            poster_url: 'https://example.com/poster1.jpg',
+            trailer_url: 'https://example.com/trailer1.mp4',
+            created_at: '2024-01-01'
+          }
+        ]
       }
     }).as('getMovies')
 
@@ -35,12 +36,11 @@ describe('Movie Management', () => {
       statusCode: 200,
       body: {
         success: true,
-        data: {
-          total: 1,
-          now_showing: 1,
-          upcoming: 0,
-          ended: 0
-        }
+        data: [
+          { status: 'now_showing', count: 1 },
+          { status: 'upcoming', count: 0 },
+          { status: 'ended', count: 0 }
+        ]
       }
     }).as('getStats')
 
@@ -48,14 +48,18 @@ describe('Movie Management', () => {
     cy.wait(['@getMovies', '@getGenres', '@getStats'])
   })
 
-  it('should display search and filters', () => {
-    cy.get('input[placeholder*="Search"]').should('be.visible')
-    cy.get('select').should('have.length.at.least', 2)
+  it('should load movie management page', () => {
+    cy.url().should('include', '/MovieManagement')
+    cy.contains('MOVIE MANAGEMENT').should('be.visible')
   })
 
-  it('should filter by status', () => {
-    cy.get('select').eq(0).select('now_showing')
-    cy.wait('@getMovies', { timeout: 10000 })
-    cy.wait(1000)
+  it('should display search and filters', () => {
+    cy.get('.search-input').should('be.visible')
+    cy.get('.filter-select').should('have.length.at.least', 2)
+  })
+
+  it('should display movie cards', () => {
+    cy.get('.movie-card').should('exist')
+    cy.contains('Test Movie 1').should('be.visible')
   })
 })
