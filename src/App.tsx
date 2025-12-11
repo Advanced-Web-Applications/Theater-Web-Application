@@ -21,7 +21,8 @@ import Ticket from "./pages/customer/Ticket";
 import Checkout from "./pages/customer/Checkout";
 import SuccessView from "./pages/customer/SuccessView";
 import LoginPage from "./pages/auth/LoginPage";
-import Signup from "./pages/auth/Signup";
+import Signup from "./pages/auth/Signup"
+import ChangePassword from "./pages/customer/ChangePassword";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
           <Route path="/" element={<Location />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<Signup />} />
+          <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/movie/:id" element={<MovieDetails />} />
           <Route path="/ticket" element={<Ticket />} />

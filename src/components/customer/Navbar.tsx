@@ -9,21 +9,33 @@ export default function Navbar() {
   const token = localStorage.getItem('token')
   const isLoggedIn = Boolean(token)
 
-  function handleLogout() {
-    localStorage.removeItem('token')
-    localStorage.removeItem('selectedCity')
-    navigate('/')
-  }
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('selectedCity');
+    navigate('/');
+  };
 
   return (
     <div className='navbar'>
         <img className='logo' src='/logo.jpg' alt='Logo' onClick={() => navigate('/home', {replace: true, state: {location: localStorage.getItem('selectedCity')}})}/>
         <div>
           {isLoggedIn ? (
-            <span onClick={handleLogout}>Log Out</span>
+          location.pathname === '/change-password' ? (
+            <button className='logout-button' onClick={handleLogout}>
+              Logout
+            </button>
           ) : (
-            <i className="bi bi-person-circle menu" onClick={() => navigate('/login')}></i>
-          )}
+            <i
+              className='bi bi-person-circle menu'
+              onClick={() => navigate('/change-password')}
+            ></i>
+          )
+        ) : (
+          <i
+            className='bi bi-person-circle menu'
+            onClick={() => navigate('/login')}
+          ></i>
+        )}
         </div>
     </div>
   )
