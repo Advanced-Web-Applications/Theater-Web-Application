@@ -45,7 +45,7 @@ export default function ChangePassword() {
       setOldPassword('');
       setNewPassword('');
 
-      navigate('/')
+      navigate('/home')
     } catch (err) {
       console.error(err);
       alert('Error changing password');
