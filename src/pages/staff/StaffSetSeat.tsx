@@ -56,7 +56,7 @@ export default function StaffSetSeat() {
 
     return (
       <div className="seat-layout">
-        <div className="seat-grid" style={{ gridTemplateColumns: `repeat(${layout.seats_per_row}, 1fr)` }}>
+        <div className="seat-grid" style={{ gridTemplateColumns: `repeat(${layout.seats_per_row}, max-content)` }}>
           {seats.map(seat => (
             <div
               key={seat}

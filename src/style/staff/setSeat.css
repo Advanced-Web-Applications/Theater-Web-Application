@@ -1,4 +1,3 @@
-/* 主容器 */
 .auditorium-container {
   display: flex;
   gap: 30px;
@@ -10,7 +9,6 @@
   background-color: transparent;
 }
 
-/* 日期时间选择区域 */
 .date-time-selection {
   flex: 0 0 400px;
   min-width: 350px;
@@ -50,7 +48,6 @@
   box-shadow: 0 0 0 2px rgba(74, 144, 164, 0.2);
 }
 
-/* 时间选择网格 */
 .time-grid {
   display: flex;
   flex-direction: column;
@@ -77,7 +74,6 @@
   color: #fff;
 }
 
-/* 座位布局区域 */
 .seat-layout {
   flex: 1;
   min-width: 350px;
@@ -85,25 +81,39 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow-x: auto; 
 }
 
 .seat-grid {
   display: grid;
   gap: 0.6rem;
   justify-content: center;
+  
+  width: fit-content; 
+  margin: 0 auto;
+
+  transform: scaleY(-1); 
+  padding-bottom: 10px;
 }
 
 .seatForStaff {
-  width: 4rem;
-  height: 4rem;
+  width: 3rem;
+  height: 3rem;
+  
+  min-width: 3rem; 
+  min-height: 3rem;
+
   border-radius: 8px;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
+  color: #fff;
+
+  transform: scaleY(-1); 
 }
 
 .seatForStaff.booked,
@@ -124,11 +134,12 @@
 }
 
 .seatForStaff:active {
-  transform: none !important;
+  transform: scaleY(-1) scale(0.95) !important; 
 }
 
 .seatForStaff:hover {
   opacity: 0.9;
+  transform: scaleY(-1); 
 }
 
 .screen {
@@ -197,6 +208,8 @@
   .seatForStaff {
     width: 3.5rem;
     height: 3.5rem;
+    min-width: 3.5rem; 
+    min-height: 3.5rem;
     font-size: 1.1rem;
   }
 
@@ -245,6 +258,8 @@
   .seatForStaff {
     width: 2.5rem;
     height: 2.5rem;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
     font-size: 0.9rem;
   }
 
@@ -302,6 +317,8 @@
   .seatForStaff {
     width: 2.2rem;
     height: 2.2rem;
+    min-width: 2.2rem;
+    min-height: 2.2rem;
     font-size: 0.85rem;
   }
 
@@ -338,6 +355,8 @@
   .seatForStaff {
     width: 2rem;
     height: 2rem;
+    min-width: 2rem;
+    min-height: 2rem;
     font-size: 0.8rem;
   }
 
