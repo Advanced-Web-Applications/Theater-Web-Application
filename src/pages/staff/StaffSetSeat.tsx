@@ -49,14 +49,14 @@ export default function StaffSetSeat() {
     const getSeatClass = (seat: number) => {
       const seatChange = seatChanges.find(s => s.seat_number === seat);
       const isBooked = unavailable.includes(seat);
-      if (seatChange?.status === "maintenance") return "seat maintenance";
-      if (isBooked) return "seat booked";
-      return "seat available";
+      if (seatChange?.status === "maintenance") return "seatForStaff maintenance";
+      if (isBooked) return "seatForStaff unavailable";
+      return "seatForStaff available";
     };
 
     return (
       <div className="seat-layout">
-        <div className="seat-grid" style={{ gridTemplateColumns: `repeat(${layout.seats_per_row}, 1fr)` }}>
+        <div className="seat-grid" style={{ gridTemplateColumns: `repeat(${layout.seats_per_row}, max-content)` }}>
           {seats.map(seat => (
             <div
               key={seat}

@@ -48,6 +48,111 @@
   box-shadow: 0 0 0 2px rgba(74, 144, 164, 0.2);
 }
 
+.time-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.time-box {
+  background: #243447;
+  padding: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  border-left: 5px solid #4a90a4;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s;
+  text-align: center;
+  font-weight: 500;
+  color: #e0e6ed;
+}
+
+.time-box.selected {
+  background-color: #4e78e1;
+  border-left-color: #ffeb3b;
+  color: #fff;
+}
+
+.seat-layout {
+  flex: 1;
+  min-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-x: auto; 
+}
+
+.seat-grid {
+  display: grid;
+  gap: 0.6rem;
+  justify-content: center;
+  
+  width: fit-content; 
+  margin: 0 auto;
+
+  transform: scaleY(-1); 
+  padding-bottom: 10px;
+}
+
+.seatForStaff {
+  width: 3rem;
+  height: 3rem;
+  
+  min-width: 3rem; 
+  min-height: 3rem;
+
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #fff;
+
+  transform: scaleY(-1); 
+}
+
+.seatForStaff.booked,
+.seatForStaff.active {
+  background: #ff4d4d;
+}
+
+.seatForStaff.available {
+  background-color: #36597C;
+}
+
+.seatForStaff.maintenance {
+  background-color: grey;
+}
+
+.seatForStaff.unavailable {
+  background-color: #ff4d4d;
+}
+
+.seatForStaff:active {
+  transform: scaleY(-1) scale(0.95) !important; 
+}
+
+.seatForStaff:hover {
+  opacity: 0.9;
+  transform: scaleY(-1); 
+}
+
+.screen {
+  text-align: center;
+  margin-top: 2rem;
+  background-color: #36597C;
+  border-radius: 10px;
+  width: 100%;
+  padding: 0.5rem;
+  color: white;
+  font-weight: bold;
+}
+
 .saveButtonSetSeat {
   background-color: #3A506B;
   color: white;
@@ -69,95 +174,6 @@
 
 .saveButtonSetSeat:active {
   transform: scale(0.98);
-}
-
-.time-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-top: 10px;
-}
-
-.time-box {
-  background: #243447;
-  padding: 15px;
-  border-radius: 10px;
-  cursor: pointer;
-  border-left: 5px solid #4a90a4;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  transition: all 0.2s;
-  text-align: center;
-  font-weight: 500;
-  color: #e0e6ed;
-}
-
-.time-box.selected {
-  background-color: #4e78e1;
-  border-left-color: #ffeb3b;
-  color: #fff;
-}
-
-.seat-layout {
-  flex: 1;
-  min-width: 350px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.screen {
-  text-align: center;
-  margin-top: 2rem;
-  background-color: #36597C;
-  border-radius: 10px;
-  width: 100%;
-  padding: 0.5rem;
-  color: white;
-  font-weight: bold;
-}
-
-.seat-grid {
-  display: grid;
-  gap: 0.6rem;
-  justify-content: center;
-  
-}
-
-.seat {
-  width: 3rem;
-  height: 3rem; 
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  transform: scaleY(-1);
-}
-
-.seat.booked,
-.seat.active {
-  background: #ff4d4d;
-}
-
-.seat.available {
-  background-color: #36597C;
-}
-
-.seat.maintenance {
-  background-color: grey;
-}
-
-.seat.unavailable {
-  background-color: #ff4d4d;
-}
-
-.save-button-for-seat {
-  display: block;
-  margin: 2rem auto 0 auto;
 }
 
 @media (max-width: 1024px) {
@@ -189,10 +205,12 @@
     margin: 0 auto;
   }
 
-  .seat {
-    width: 2.8rem;
-    height: 2.8rem;
-    font-size: 0.95rem;
+  .seatForStaff {
+    width: 3.5rem;
+    height: 3.5rem;
+    min-width: 3.5rem; 
+    min-height: 3.5rem;
+    font-size: 1.1rem;
   }
 
   .saveButtonSetSeat {
@@ -237,9 +255,11 @@
     padding: 0 10px;
   }
 
-  .seat {
+  .seatForStaff {
     width: 2.5rem;
     height: 2.5rem;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
     font-size: 0.9rem;
   }
 
@@ -294,9 +314,11 @@
     padding: 0 5px;
   }
 
-  .seat {
+  .seatForStaff {
     width: 2.2rem;
     height: 2.2rem;
+    min-width: 2.2rem;
+    min-height: 2.2rem;
     font-size: 0.85rem;
   }
 
@@ -330,9 +352,11 @@
     font-size: 13px;
   }
 
-  .seat {
+  .seatForStaff {
     width: 2rem;
     height: 2rem;
+    min-width: 2rem;
+    min-height: 2rem;
     font-size: 0.8rem;
   }
 
