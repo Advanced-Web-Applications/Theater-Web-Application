@@ -14,6 +14,12 @@ export default function LoginPage() {
   async function handleSubmit(e: any) {
     e.preventDefault()
 
+    if (!email || !password) {
+      alert('Please enter both email and password.');
+      setSubmitting(false);
+      return;
+    }
+
     if (submitting) return;
     setSubmitting(true)
 
@@ -36,12 +42,12 @@ export default function LoginPage() {
       localStorage.setItem('token', data.token)
       localStorage.setItem('selectedCity', data.city)
 
-      if (data.role === 'customer') {
-        navigate('/home')
-      } if (data.role === 'staff') {
+      if (data.role === 'owner') {
+        navigate('/OwnerDashBoard')
+      } else if (data.role === 'staff') {
         navigate(`/StaffHomePage/${data.theater_id}`)
       } else {
-        navigate('/OwnerDashBoard')
+        navigate('/home')
       }
 
       setEmail('')
@@ -61,14 +67,14 @@ return (
 <h1 className="login-title">Log In</h1>
 
 
-<form className="login-form">
+<form className="login-form" onSubmit={handleSubmit}>
   <input type="email" placeholder="Email" className="input-field" value={email} onChange={e => setEmail(e.target.value)}/>
 
 
   <input type="password" placeholder="Password" className="input-field" value={password} onChange={e => setPassword(e.target.value)}/>
 
 
-  <button type="submit" className="login-button" onClick={handleSubmit} disabled={submitting}>{submitting ? 'Wait a second...' : 'Log In'}</button>
+  <button type="submit" className="login-button" disabled={submitting}>{submitting ? 'Wait a second...' : 'Log In'}</button>
 </form>
 
 
