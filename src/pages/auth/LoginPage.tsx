@@ -43,7 +43,7 @@ export default function LoginPage() {
       localStorage.setItem('selectedCity', data.city)
 
       if (data.role === 'owner') {
-        navigate('/OwnerDashBoard')
+        navigate('/OwnerDashboard')
       } else if (data.role === 'staff') {
         navigate(`/StaffHomePage/${data.theater_id}`)
       } else {

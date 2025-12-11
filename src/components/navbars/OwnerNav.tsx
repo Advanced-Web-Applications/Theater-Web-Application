@@ -23,6 +23,15 @@ export default function OwnerNav() {
     setIsMobileMenuOpen(false);
   };
 
+  const handleLogout = () => {
+    // Clear authentication data
+    localStorage.removeItem('token');
+    localStorage.removeItem('selectedCity');
+
+    // Navigate to login page
+    navigate('/login');
+  };
+
   return (
     <>
       {/* Top Header with Navigation */}
@@ -46,8 +55,12 @@ export default function OwnerNav() {
         </nav>
 
         <div className="owner-nav-actions">
-          <button className="owner-icon-btn">
-            <i className="bi bi-person-circle"></i>
+          <button
+            className="owner-icon-btn owner-logout-btn"
+            onClick={handleLogout}
+            title="Logout"
+          >
+            <i className="bi bi-box-arrow-right"></i>
           </button>
           <button
             className="owner-icon-btn owner-mobile-menu-btn"
@@ -71,6 +84,13 @@ export default function OwnerNav() {
               {item.label}
             </button>
           ))}
+          <button
+            className="owner-mobile-nav-link owner-logout-link"
+            onClick={handleLogout}
+          >
+            <i className="bi bi-box-arrow-right"></i>
+            Logout
+          </button>
         </div>
       )}
     </>
