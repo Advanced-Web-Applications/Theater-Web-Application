@@ -28,7 +28,7 @@ describe('Staff See Table - Edit & Delete Flow', () => {
       statusCode: 200,
       body: { message: 'Update successful' }
     }).as('updateShowtime');
-)
+    
     cy.intercept('DELETE', '**/api/staff/showtimes/999', {
       statusCode: 200,
       body: { message: 'Delete successful' }
@@ -51,7 +51,7 @@ describe('Staff See Table - Edit & Delete Flow', () => {
 
     cy.contains('.movieTitleInfo', 'Test Movie For Edit').should('be.visible');
 
-    //open Modal
+    // open Modal
     cy.contains('.movieTitleInfo', 'Test Movie For Edit').click();
     cy.get('.modal').should('be.visible');
 
@@ -91,7 +91,7 @@ describe('Staff See Table - Edit & Delete Flow', () => {
       expect(interception.request.url).to.include('/999');
     });
 
-    //close modal
+    // close modal
     cy.get('.modal').should('not.exist');
   });
 });
