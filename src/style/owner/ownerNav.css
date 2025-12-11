@@ -114,6 +114,20 @@
   transform: translateX(5px);
 }
 
+.owner-logout-link {
+  border-color: rgba(255, 68, 68, 0.3) !important;
+  margin-top: 8px;
+}
+
+.owner-logout-link i {
+  color: #FF4444 !important;
+}
+
+.owner-logout-link:hover {
+  background: rgba(255, 68, 68, 0.1) !important;
+  border-color: rgba(255, 68, 68, 0.5) !important;
+}
+
 .owner-nav-actions {
   display: flex;
   gap: 15px;
@@ -131,6 +145,10 @@
 
 .owner-icon-btn:hover {
   color: #4A9EFF;
+}
+
+.owner-logout-btn:hover {
+  color: #FF4444 !important;
 }
 
 .owner-mobile-menu-btn {
