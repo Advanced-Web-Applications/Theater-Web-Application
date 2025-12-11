@@ -11,6 +11,7 @@ interface MovieProps {
   age_rating: string
   description: string
   poster_url: string
+  trailer_url: string
 }
 
 interface MovieInfoProps {
@@ -44,7 +45,11 @@ export default function MovieInfo({movieId, setMovie, formatDuration }: MovieInf
               <p><strong>Genre: </strong>{movie.genre}</p>
               <p><strong>Duration: </strong>{formatDuration(movie.duration)}</p>
               <p><strong>Rated: </strong>{movie.age_rating}</p>
-              <p><strong>Description: </strong>{movie.description}</p>
+              <div className='description'>
+                <strong>Description: </strong>
+                <span>{movie.description}</span>
+              </div>
+              <p><strong>Trailer: </strong><a>{movie.trailer_url}</a></p>
             </div>
           </div>
         </div>    

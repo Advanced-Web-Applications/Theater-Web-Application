@@ -18,7 +18,7 @@ export default function StaffHomePage() {
 
   return (
     <div className="staffPageContainer">
-      <StaffNavBar theater={currentTheater} title="Auditorium" />
+      <StaffNavBar theater={currentTheater} title="Auditoriums" />
 
       <div className="gridContainer">
         {rooms.map((room) => (

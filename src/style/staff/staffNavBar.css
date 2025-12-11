@@ -1,7 +1,23 @@
 .staffNavBar {
   background: #1C2541;
-  padding: 2.5rem 2rem;
+  padding: 0rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.staffNavTextBlock {
+  flex: 2;
   text-align: center;
+}
+
+.staffNavLogo {
+  width: 80px;
+  height: auto;
+  left: 0;
+  flex-shrink: 0;
+  margin-left: 0;
 }
 
 .staffNavTheaterName {
@@ -20,12 +36,20 @@
   margin: 0;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .staffNavBar {
     padding: 2rem 1rem;
   }
 
+  .staffNavTheaterName{
+    font-size: 1.4rem;
+  }
+
   .staffNavPageTitle {
-    font-size: 1.5rem;
+    font-size: 1rem;
+  }
+
+  .staffNavLogo{
+    width: 60px;
   }
 }

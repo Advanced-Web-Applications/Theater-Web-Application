@@ -1,17 +1,17 @@
 // ***********************************************************
-// This example support/e2e.ts is processed and
-// loaded automatically before your test files.
-//
-// This is a great place to put global configuration and
-// behavior that modifies Cypress.
-//
-// You can change the location of this file or turn off
-// automatically serving support files with the
-// 'supportFile' configuration option.
-//
-// You can read more here:
-// https://on.cypress.io/configuration
+// This file is processed and loaded automatically before test files.
 // ***********************************************************
 
-// Import commands.js using ES2015 syntax:
 import './commands'
+import './auth-commands'
+
+// Ignore uncaught exceptions from app
+Cypress.on('uncaught:exception', (err, runnable) => {
+  return false
+})
+
+// Auto login as owner before each test (if needed)
+// Uncomment this when you add authentication to your app
+// beforeEach(() => {
+//   cy.mockAuth('owner')
+// })

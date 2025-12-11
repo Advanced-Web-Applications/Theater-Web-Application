@@ -68,7 +68,7 @@
   width: auto;
   border-collapse: collapse;
   table-layout: fixed;
-  min-width: auto;
+  min-width: 1480px;
   margin: 0 auto;
 }
 
@@ -95,7 +95,7 @@
 .scheduleTable thead .timeTable {
   background: #1C2541;
   font-weight: 600;
-  padding: 12px 8px;
+  padding: 13px 8px;
 }
 
 .todayColumn {
@@ -505,11 +505,10 @@
     min-width: 60px;
   }
 
-  /* 格子尺寸依然不变 */
   .timeTable {
     width: 120px;
-    min-width: 120px;
-    max-width: 120px;
+    min-width: 100px;
+    max-width: 100px;
     font-size: 11px;
   }
 
@@ -575,7 +574,7 @@
 @media (max-width: 768px) and (orientation: landscape) {
   .timeTable {
     width: 120px;
-    min-width: 120px;
+    min-width: 800px;
     max-width: 120px;
   }
 

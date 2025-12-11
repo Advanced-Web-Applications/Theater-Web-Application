@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import SearchBar from '../../components/customer/SearchBar'
+import '../../style/customer/homepage.css'
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
-
-
 
 interface MovieProps {
   id: number
@@ -14,6 +12,7 @@ interface MovieProps {
   age_rating: string
   description: string
   poster_url: string
+  trailer_url: string
 }
 
 interface LocationProps {
@@ -28,13 +27,13 @@ interface LocationProps {
 export default function HomePage() {
 
   const { state } = useLocation()
-  const city = state?.location || 'Unknown'
+  const city = state?.location || localStorage.getItem('selectedCity')
 
   const navigate = useNavigate()
 
   const [movies, setMovies] = useState<MovieProps[]>([])
   const [_, setLocation] = useState('')
-  const [currentLocation, setCurrentLocation] = useState<LocationProps | null>(null)
+  const [, setCurrentLocation] = useState<LocationProps | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,29 +63,13 @@ export default function HomePage() {
 
   return (
     <>
-      <SearchBar/>
       <div className='poster-grid'>
           {movies.map(movie => (
           <img key={movie.id} 
                 src={movie.poster_url} 
-                className="poster" 
                 onClick={() => navigate(`/movie/${movie.id}`, {state: {movie, city}})}></img>
           ))}
       </div>
-
-      <footer className="footer">
-       {currentLocation ? (
-          <>
-            <p><strong>{currentLocation.name}</strong></p>
-            <p>{currentLocation.address}</p>
-            <p><strong>Phone: </strong>{currentLocation.phone}</p>
-          </>
-        ) : (
-          <>
-            <p>Loading page...</p>
-          </>
-        )}
-      </footer>
     </>
   )
 }

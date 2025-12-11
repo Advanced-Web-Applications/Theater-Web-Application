@@ -1,4 +1,5 @@
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../../style/staff/setSeat.css";
 import { useShowtimeSeats } from "../../components/staff/setSeat";
@@ -6,6 +7,7 @@ import { useTheater } from "../../components/staff/theaterData";
 import StaffNavBar from "../../components/staff/staffNavBar";
 
 export default function StaffSetSeat() {
+  const navigate = useNavigate();
   const { id, auditorium } = useParams();
   const theaterId = Number(id);
   const auditoriumId = Number(auditorium);
@@ -73,7 +75,7 @@ export default function StaffSetSeat() {
         <button className="saveButtonSetSeat" onClick={saveSeatStatus}>Save</button>
         <button
           className="saveButtonSetSeat"
-          onClick={() => (window.location.href = `/StaffHomePage/${id}`)}
+          onClick={() => navigate(`/StaffHomePage/${id}`)}
         >
           ← Go back
         </button>

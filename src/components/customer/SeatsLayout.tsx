@@ -129,7 +129,7 @@ export default function SeatsTickets({showtime_id, adultTicket, childTicket}: Se
                     const isActive = activeSeats.includes(seat.seat_number)
                     return(
                         <div key={seat.seat_number} 
-                        className={`seat ${isActive ? "active" : ""} ${seat.status === 'booked' ? "booked" : seat.status === 'reserved' ? 'reserved' : ""}`}
+                        className={`c-seat ${isActive ? "active" : ""} ${seat.status === 'booked' ? "booked" : seat.status === 'reserved' ? 'reserved' : ""}`}
                         onClick={() => handleSeats(seat.seat_number)}
                         ></div>
                     )
