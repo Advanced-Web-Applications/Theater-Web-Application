@@ -1,9 +1,19 @@
 describe('Add Auditorium', () => {
   beforeEach(() => {
-    cy.intercept('GET', '**/api/owner/theaters').as('getTheaters')
+    // Mock theaters API
+    cy.intercept('GET', '**/api/owner/theaters', {
+      statusCode: 200,
+      body: {
+        success: true,
+        data: [
+          { theater_id: 1, name: 'Theater 1', city: 'New York' },
+          { theater_id: 2, name: 'Theater 2', city: 'Los Angeles' }
+        ]
+      }
+    }).as('getTheaters')
+
     cy.visit('/AddAuditorium')
-    cy.wait('@getTheaters', { timeout: 10000 })
-    cy.wait(1000)
+    cy.wait('@getTheaters')
   })
 
   it('should load add auditorium page', () => {
