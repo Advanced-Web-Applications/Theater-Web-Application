@@ -1,0 +1,47 @@
+name: Cypress E2E Tests (Simple)
+
+# Chạy khi push code hoặc tạo pull request
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout code từ repository
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Cài đặt Node.js
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # 3. Cài đặt dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. Chạy Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: npm run build
+          start: npm run preview
+          wait-on: 'http://localhost:4173'
+          browser: chrome
+        env:
+          # Nếu cần môi trường test riêng
+          VITE_BACKEND_URL: https://your-test-backend.com
+
+      # 5. Upload screenshots nếu test fail
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots

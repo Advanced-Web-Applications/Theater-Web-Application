@@ -1,0 +1,50 @@
+name: Cypress Tests (Manual Trigger)
+
+# Chỉ chạy khi người dùng trigger thủ công
+on:
+  workflow_dispatch:
+    inputs:
+      browser:
+        description: 'Browser to run tests'
+        required: true
+        default: 'chrome'
+        type: choice
+        options:
+          - chrome
+          - firefox
+          - edge
+
+jobs:
+  cypress-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build app
+        run: npm run build
+
+      - name: Run Cypress
+        uses: cypress-io/github-action@v6
+        with:
+          start: npm run preview
+          wait-on: 'http://localhost:4173'
+          browser: ${{ github.event.inputs.browser }}
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-results
+          path: |
+            cypress/screenshots
+            cypress/videos
