@@ -22,7 +22,7 @@ export default function Navbar() {
           {isLoggedIn ? (
             <span onClick={handleLogout}>Log Out</span>
           ) : (
-            <i className="bi bi-list menu" onClick={() => navigate('/login')}></i>
+            <i className="bi bi-person-circle menu" onClick={() => navigate('/login')}></i>
           )}
         </div>
     </div>
