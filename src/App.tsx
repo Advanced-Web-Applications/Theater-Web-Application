@@ -21,7 +21,8 @@ import Ticket from "./pages/customer/Ticket";
 import Checkout from "./pages/customer/Checkout";
 import SuccessView from "./pages/customer/SuccessView";
 import LoginPage from "./pages/auth/LoginPage";
-import Signup from "./pages/auth/Signup"
+import Signup from "./pages/auth/Signup";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -44,15 +45,52 @@ function App() {
         <Route path="/StaffSetSeat/:id/:auditorium" element={<StaffSetSeat />} />
         <Route path="/StaffSeeTable/:id/:auditorium" element={<StaffSeeTable />} />
 
-        <Route path="/OwnerDashboard" element={<OwnerDashboard />} />
-        <Route path="/AddTheater" element={<AddTheater />} />
-        <Route path="/AddAuditorium" element={<AddAuditorium />} />
-        <Route path="/AddMovie" element={<AddMovie />} />
-        <Route path="/AddStaff" element={<AddStaff />} />
-        <Route path="/EditStaff/:id" element={<EditStaff />} />
-        <Route path="/StaffList" element={<StaffList />} />
-        <Route path="/PriceSetting" element={<PriceSetting />} />
-        <Route path="/MovieManagement" element={<MovieManagement />} />
+        {/* Protected Owner Routes */}
+        <Route path="/OwnerDashboard" element={
+          <ProtectedRoute allowedRoles={['owner']}>
+            <OwnerDashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/AddTheater" element={
+          <ProtectedRoute allowedRoles={['owner']}>
+            <AddTheater />
+          </ProtectedRoute>
+        } />
+        <Route path="/AddAuditorium" element={
+          <ProtectedRoute allowedRoles={['owner']}>
+            <AddAuditorium />
+          </ProtectedRoute>
+        } />
+        <Route path="/AddMovie" element={
+          <ProtectedRoute allowedRoles={['owner']}>
+            <AddMovie />
+          </ProtectedRoute>
+        } />
+        <Route path="/AddStaff" element={
+          <ProtectedRoute allowedRoles={['owner']}>
+            <AddStaff />
+          </ProtectedRoute>
+        } />
+        <Route path="/EditStaff/:id" element={
+          <ProtectedRoute allowedRoles={['owner']}>
+            <EditStaff />
+          </ProtectedRoute>
+        } />
+        <Route path="/StaffList" element={
+          <ProtectedRoute allowedRoles={['owner']}>
+            <StaffList />
+          </ProtectedRoute>
+        } />
+        <Route path="/PriceSetting" element={
+          <ProtectedRoute allowedRoles={['owner']}>
+            <PriceSetting />
+          </ProtectedRoute>
+        } />
+        <Route path="/MovieManagement" element={
+          <ProtectedRoute allowedRoles={['owner']}>
+            <MovieManagement />
+          </ProtectedRoute>
+        } />
       </Routes>
     </BrowserRouter>
   );
