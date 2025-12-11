@@ -26,15 +26,10 @@
   background-color: #6BD9E7;
 }
 
-@media (max-width: 1024px) {
-  .search-button {
-    display: none;
-  }
-}
 
 .poster-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 1rem;
   justify-items: center;
   margin: 2rem 1rem;
@@ -45,6 +40,7 @@
   object-fit: cover;
   width: 100%;
   aspect-ratio: 2 / 3;
+  border-radius: 0.5rem
 }
 
 footer {
@@ -57,11 +53,24 @@ footer {
   margin-top: 1rem;
 }
 
+@media (max-width: 1024px) {
+  .search-button {
+    display: none;
+  }
+}
+
+@media(min-width: 768px) and (max-width: 1024px) {
+    .poster-grid {
+      margin: 2rem 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+}
 
 @media (min-width: 768px) {
   .poster-grid {    
     border-radius: 1.3rem;  
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    margin: 2rem auto;
   }
 
   .search-bar input {

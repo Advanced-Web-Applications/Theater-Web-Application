@@ -4,7 +4,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* dim background */
+    background: rgba(0, 0, 0, 0.5); 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -15,14 +15,13 @@
     background: #1a2340;
     padding: 1rem 2.3rem 2rem 2rem;
     border-radius: 10px;
-    width: 300px;
     max-width: 90%;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     text-align: center;
 }
 
 .popup-container h3 {
-    margin-bottom: 1rem;
+    margin: 1rem 0;
     font-size: 1.2rem;
 }
 
@@ -34,7 +33,7 @@
     background-color: #C5F1F8;
     border-radius: 5px;
     font-size: 1rem;
-    color: azure;
+    color: rgb(40, 35, 89);
 }
 
 .input-field:focus {
@@ -62,5 +61,11 @@
 
 .popup-container input::placeholder {
     color: #707885;
+}
+
+@media (min-width: 768px) {
+    .popup-container {
+        width: 25rem;
+    }
 }
 

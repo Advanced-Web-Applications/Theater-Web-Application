@@ -7,7 +7,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 export default function LoginPage() {
   const navigate = useNavigate()
 
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
@@ -17,7 +17,7 @@ export default function LoginPage() {
     if (submitting) return;
     setSubmitting(true)
 
-    const user = { username, password }
+    const user = { email, password }
 
     try {
       const res = await fetch(`${BACKEND_URL}/api/auth/login`, {
@@ -34,15 +34,19 @@ export default function LoginPage() {
       }
 
       localStorage.setItem('token', data.token)
+      localStorage.setItem('selectedCity', data.city)
 
       if (data.role === 'customer') {
         navigate('/home')
       } if (data.role === 'staff') {
         navigate(`/StaffHomePage/${data.theater_id}`)
+      } else {
+        navigate('/OwnerDashBoard')
       }
 
-      setUsername('')
+      setEmail('')
       setPassword('')
+
 
     } catch (err) {
       console.error('Error login: ', err)
@@ -58,7 +62,7 @@ return (
 
 
 <form className="login-form">
-  <input type="text" placeholder="Username" className="input-field" value={username} onChange={e => setUsername(e.target.value)}/>
+  <input type="email" placeholder="Email" className="input-field" value={email} onChange={e => setEmail(e.target.value)}/>
 
 
   <input type="password" placeholder="Password" className="input-field" value={password} onChange={e => setPassword(e.target.value)}/>

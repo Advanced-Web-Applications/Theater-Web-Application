@@ -11,12 +11,13 @@ export default function Navbar() {
 
   function handleLogout() {
     localStorage.removeItem('token')
+    localStorage.removeItem('selectedCity')
     navigate('/')
   }
 
   return (
     <div className='navbar'>
-        <img className='logo' src='/logo.jpg' alt='Logo'/>
+        <img className='logo' src='/logo.jpg' alt='Logo' onClick={() => navigate('/home', {replace: true, state: {location: localStorage.getItem('selectedCity')}})}/>
         <div>
           {isLoggedIn ? (
             <span onClick={handleLogout}>Log Out</span>

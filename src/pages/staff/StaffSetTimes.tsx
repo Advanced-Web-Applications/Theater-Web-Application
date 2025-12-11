@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "../../style/staff/setTime.css";
 import { useTheater } from "../../components/staff/theaterData";// navigation bar theater info
 import StaffNavBar from "../../components/staff/staffNavBar";
 import { useShowtimeAPI } from "../../components/staff/useShowtimeAPI";
 
 export default function StaffSetTimes() {
+  const navigate = useNavigate();
   const { id, auditorium } = useParams();
   const theaterId = Number(id);
 
@@ -31,6 +32,7 @@ export default function StaffSetTimes() {
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
+      timeZone: "Europe/Paris"
     });
   };
 
@@ -41,7 +43,7 @@ export default function StaffSetTimes() {
     }
 
     const time = `${hour.padStart(2, "0")}:${minute.padStart(2, "0")}`;
-    const startTime = new Date(`${date}T${time}`).toISOString();
+    const startTime = `${date}T${time}`;
 
     try {
       await saveShowtime(Number(movieId), Number(auditorium), startTime);
@@ -124,7 +126,7 @@ export default function StaffSetTimes() {
 
             <button
               className="saveButton"
-              onClick={() => (window.location.href = `/StaffHomePage/${id}`)}
+              onClick={() => navigate(`/StaffHomePage/${id}`)}
             >
               ← Go back
             </button>

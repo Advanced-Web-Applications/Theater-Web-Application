@@ -1,8 +1,9 @@
 .location-div {
     display: flex;
     justify-content: center;
-    height: 70vh;
-    align-items: center;       
+    height: 100vh;
+    align-items: flex-start;
+    padding-top: 11rem;       
 }
 
 .location-card {
@@ -56,17 +57,16 @@
     }
 
     .location-card {
-        height: 23rem;
-        width: 22rem;
+        width: 25rem;
     }
 
     .location-items {
-        gap: 1.7rem;
+        gap: 1.5rem;
         margin-top: 2rem
     }
 
     .location-item {
-        padding: 0.8rem 0;
+        padding: 0.5rem 0;
         width: 12rem;
         font-size: 1.4rem;
     }
