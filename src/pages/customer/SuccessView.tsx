@@ -51,13 +51,13 @@ export default function SuccessView() {
               return;
 
             } else if (data.status === 'unpaid') {
-              setError('Payment if processing.')
+              setError('Payment is processing.')
             } else {
               setError('Payment failed. Please try again.')
             }
 
           } catch (err) {
-              console.error('Error finalize seats')
+              console.error('Error finalize seats: ', err)
           } finally {
             setLoading(false)
           }

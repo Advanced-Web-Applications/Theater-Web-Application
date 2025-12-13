@@ -26,54 +26,253 @@
   background-color: #6BD9E7;
 }
 
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #C5F1F8;
+  margin: 2rem 0;
+
+  /* Optional: letter spacing */
+  letter-spacing: 0.5px;
+}
+
+.section-title::before,
+.section-title::after {
+  content: "";
+  flex: 1;
+  height: 2px;           /* line thickness */
+  background-color: #C5F1F8;
+  margin: 0 1rem;        /* space between text and line */
+}
 
 .poster-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 1rem;
-  justify-items: center;
-  margin: 2rem 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem auto;
   max-width: 1200px;
+  justify-items: center;
 }
 
-.poster-grid img {
-  object-fit: cover;
+.movie-card-now {
+  background-color: #92EEFF1A;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 0.5rem;
+}
+
+.poster-wrapper {
+  width: 93%;   
+  aspect-ratio: 2/3;         
+  display: flex;           
+  justify-content: center;
+  align-items: center;     
+  margin-top: 0.5rem;  
+  margin-bottom: 1rem;
+}
+
+.poster-wrapper img {
+  width: 100%;
+  height: auto;     
+  display: block;
+  border-radius: 0.4rem;
+}
+
+.name {
+  text-align: center;
+  font-size: 1.7rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.movie-info-bottom {
+  width: 100%;
+  color: #F4F6FA;
+  gap: 0.25rem;    
+}
+
+
+.details-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  color: #F4F6FA;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.detail-item i {
+  font-size: 1rem;
+  color: #C5F1F8;
+}
+
+.age-rating {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.duration {
+  margin: 0;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+
+.upcoming-carousel {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.upcoming-viewport {
+  overflow: hidden;
+  width: 100%;
+}
+
+.upcoming-grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 25%; /* 👈 4 cards per view */
+  gap: 1rem;
+  scroll-behavior: smooth;
+}
+
+.upcoming-card {
+  cursor: pointer;
+  text-align: center;
+}
+
+.upcoming-card {
   width: 100%;
   aspect-ratio: 2 / 3;
-  border-radius: 0.5rem
+  overflow: hidden;
+  border-radius: 0.5rem;
 }
 
-footer {
-  text-align: left;
-  padding: 1rem;
-  background-color: #1c2541;
-  font-size: 0.9rem;
-  line-height: 1.4;
+.upcoming-card img {
   width: 100%;
-  margin-top: 1rem;
+  height: 100%;
+  object-fit: cover;
 }
 
-@media (max-width: 1024px) {
+.scroll-btn.left {
+  left: -2rem;
+}
+
+.scroll-btn.right {
+  right: -2rem;
+}
+
+
+
+
+/* Scroll buttons */
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(28, 37, 65, 0.8);
+  color: #fff;
+  border: none;
+  font-size: 2rem;
+  padding: 0.2rem 0.6rem;
+  cursor: pointer;
+  border-radius: 0.3rem;
+  z-index: 10;
+  transition: background-color 0.2s;
+}
+
+.scroll-btn:hover {
+  background-color: rgba(28, 37, 65, 1);
+}
+
+.scroll-btn.left {
+  left: 0;
+}
+
+.scroll-btn.right {
+  right: 0;
+}
+
+/* Hide scrollbar */
+.upcoming-grid::-webkit-scrollbar {
+  display: none;
+}
+
+
+@media (max-width: 767px) {
+  .poster-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+
+  .upcoming-grid {
+    grid-auto-columns: 50%; 
+  }
+
+  .movie-card-now {
+    width: 100%;
+  }
+
+  .movie-title {
+    font-size: 0.95rem;
+  }
+
   .search-button {
     display: none;
   }
 }
 
-@media(min-width: 768px) and (max-width: 1024px) {
-    .poster-grid {
-      margin: 2rem 1rem;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    }
-}
-
-@media (min-width: 768px) {
-  .poster-grid {    
-    border-radius: 1.3rem;  
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    margin: 2rem auto;
+@media (min-width: 768px) and (max-width: 1024px) {
+  .poster-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    margin: 2rem 1rem;
+    gap: 1.2rem;
   }
 
-  .search-bar input {
-    width: 200px;
+  .movie-card-now {
+    height: 28rem;
+  }
+
+  .movie-title {
+    font-size: 1rem;
+  }
+
+  .name {
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+
+  .search-button {
+    display: none;
+  }
+}
+
+@media (min-width: 1025px) {
+  .poster-grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    max-width: 1200px;
+    margin: 2rem auto;
+    gap: 1.5rem;
+  }
+
+  .movie-title {
+    font-size: 1.05rem;
   }
 }

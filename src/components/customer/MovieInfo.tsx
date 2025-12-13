@@ -33,13 +33,18 @@ export default function MovieInfo({movieId, setMovie, formatDuration }: MovieInf
         .catch(err => console.log('Error fetching movies: ', err))
     }, [movieId, setMovie])
 
+    function embedTrailerUrl(url: string) {
+      const videoId = url.split('v=')[1]?.split('&'[0])
+      return `https://www.youtube.com/embed/${videoId}`
+    }
+
   return (
     <div className='movie-details'>
       {movie && (
         <div className='movie-header'>
           <img src={movie.poster_url}></img> 
           <div className='movie-text'>
-            <h1 className='movie-title'>{movie.title}</h1>
+            <h1 className='movie-name'>{movie.title}</h1>
 
             <div className='movie-info'>
               <p><strong>Genre: </strong>{movie.genre}</p>
@@ -49,7 +54,18 @@ export default function MovieInfo({movieId, setMovie, formatDuration }: MovieInf
                 <strong>Description: </strong>
                 <span>{movie.description}</span>
               </div>
-              <p><strong>Trailer: </strong><a>{movie.trailer_url}</a></p>
+              <div className='trailer'>
+                <p><strong>Trailer: </strong></p>
+                <iframe
+                  width="560"
+                  height="315"
+                  src={embedTrailerUrl(movie.trailer_url)}
+                  title="Movie trailer"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
             </div>
           </div>
         </div>    

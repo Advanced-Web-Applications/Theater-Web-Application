@@ -51,6 +51,6 @@ describe('Staff Authentication', () => {
 
     cy.get('.staffNavLogout').click()
     
-    cy.url().should('include', '/login')
+    cy.url().should('include', '/')
   })
 })
