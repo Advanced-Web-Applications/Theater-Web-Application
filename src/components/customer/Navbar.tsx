@@ -17,8 +17,9 @@ export default function Navbar() {
 
   return (
     <div className='navbar'>
-        <img className='logo' src='/logo.jpg' alt='Logo' onClick={() => navigate('/home', {replace: true, state: {location: localStorage.getItem('selectedCity')}})}/>
-        <div>
+        <img className='logo' src='/logo.jpg' alt='Logo' onClick={() => navigate('/', {replace: true, state: {location: localStorage.getItem('selectedCity')}})}/>
+        <div className='home'>
+          <i className='bi bi-house menu' onClick={() => navigate('/home')}></i>
           {isLoggedIn ? (
           location.pathname === '/change-password' ? (
             <button className='logout-button' onClick={handleLogout}>
