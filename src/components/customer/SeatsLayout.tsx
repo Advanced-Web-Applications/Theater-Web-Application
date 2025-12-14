@@ -58,21 +58,25 @@ export default function SeatsTickets({showtime_id, adultTicket, childTicket}: Se
    useEffect(() => {
     socket.emit('joinShowtime', { showtimeId: showtime_id })
 
-    socket.on('seatUpdate', ({ seatId, status, socketId }) => {
+    socket.on('seatUpdate', ({ seatId, status, socketId, success }) => {
+        console.log('seatUpdate received:', { seatId, status, socketId, success })
         setSeats(prev =>
         prev.map(seat => {
             if (!seatId.includes(seat.seat_number)) return seat
 
             if (status === 'reserved') {
-            return {
-                ...seat,
-                status:
-                socketId === socket.id
-                    ? 'choosing' 
-                    : 'reserved'     
+                return {
+                    ...seat,
+                    status:
+                    socketId === socket.id
+                        ? 'choosing' 
+                        : 'reserved'     
+                }
             }
-            }
-            return { ...seat, status }
+            if (status === 'available') return { ...seat, status: 'available' }
+            if (status === 'booked') return { ...seat, status: 'booked' }
+
+            return seat
         })
         )
 
@@ -121,15 +125,15 @@ export default function SeatsTickets({showtime_id, adultTicket, childTicket}: Se
             <div className='legend-payment'>
                 <div className="legend">
                     <div>
-                        <div className='available'></div>
+                        <div className='free'></div>
                         <p>Available</p>
                     </div>
                     <div>
-                        <div className='booked'></div>
+                        <div className='unavailable'></div>
                         <p>Unvailable</p>
                     </div>
                     <div>
-                        <div className='choosing'></div>
+                        <div className='me-choose'></div>
                         <p>Reserved</p>
                     </div>
                 </div>
