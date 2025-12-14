@@ -55,32 +55,47 @@ export default function SeatsTickets({showtime_id, adultTicket, childTicket}: Se
         fetchData()
     }, [])
 
-    useEffect(() => {
-        socket.emit('joinShowtime', { showtime_id })
-        socket.on('seatUpdate', ({ seatId, status }) => {
-            setSeats(prev =>
-                prev.map(seat =>
-                    seatId.includes(seat.seat_number)
-                        ? {...seat, status}
-                        : seat
-                )
-            )
+   useEffect(() => {
+    socket.emit('joinShowtime', { showtimeId: showtime_id })
 
-            if (status !== 'available') {
-                setActiveSeats(prev => prev.filter(s => !seatId.includes(s)))
+    socket.on('seatUpdate', ({ seatId, status, socketId }) => {
+        setSeats(prev =>
+        prev.map(seat => {
+            if (!seatId.includes(seat.seat_number)) return seat
+
+            if (status === 'reserved') {
+            return {
+                ...seat,
+                status:
+                socketId === socket.id
+                    ? 'choosing' 
+                    : 'reserved'     
             }
+            }
+            return { ...seat, status }
         })
+        )
 
-        socket.on('seatRejected', (rejectedSeats: number[]) => {
-            alert('These seats are already taken: ' + rejectedSeats.join(', '))
-            setActiveSeats(prev => prev.filter(s => !rejectedSeats.includes(s)))
-        })
-
-        return () => {
-            socket.off('seatUpdate')
-            socket.off('seatRejected')
+        if (status === 'reserved' && socketId !== socket.id) {
+        setActiveSeats(prev => prev.filter(s => !seatId.includes(s)))
         }
+
+        if (status === 'booked') {
+        setActiveSeats(prev => prev.filter(s => !seatId.includes(s)))
+        }
+    })
+
+    socket.on('seatRejected', ({ seatId }) => {
+        alert('These seats are already taken: ' + seatId.join(', '))
+        setActiveSeats(prev => prev.filter(s => !seatId.includes(s)))
+    })
+
+    return () => {
+        socket.off('seatUpdate')
+        socket.off('seatRejected')
+    }
     }, [showtime_id])
+
 
     function handleSeats(seatNumber:number) {
         const seat = seats.find(s => s.seat_number === seatNumber)
