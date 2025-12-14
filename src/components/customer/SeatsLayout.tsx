@@ -56,6 +56,7 @@ export default function SeatsTickets({showtime_id, adultTicket, childTicket}: Se
     }, [])
 
     useEffect(() => {
+        socket.emit('joinShowtime', { showtime_id })
         socket.on('seatUpdate', ({ seatId, status }) => {
             setSeats(prev =>
                 prev.map(seat =>
@@ -79,7 +80,7 @@ export default function SeatsTickets({showtime_id, adultTicket, childTicket}: Se
             socket.off('seatUpdate')
             socket.off('seatRejected')
         }
-    }, [])
+    }, [showtime_id])
 
     function handleSeats(seatNumber:number) {
         const seat = seats.find(s => s.seat_number === seatNumber)
@@ -87,11 +88,11 @@ export default function SeatsTickets({showtime_id, adultTicket, childTicket}: Se
 
         if (activeSeats.includes(seatNumber)) {
             setActiveSeats(prev => prev.filter(s => s !== seatNumber))
-            socket.emit('releaseSeats', { showtimeId: showtime_id, seatId: [seatNumber] })
+            socket.emit('releaseSeat', { showtimeId: showtime_id, seatId: [seatNumber] })
         } else {
             if (activeSeats.length >= maxSelect) return
             setActiveSeats(prev => [...prev, seatNumber])
-            socket.emit('selectSeats', { showtimeId: showtime_id, seatId: [seatNumber] })
+            socket.emit('selectSeat', { showtimeId: showtime_id, seatId: [seatNumber] })
         }
     }
 
