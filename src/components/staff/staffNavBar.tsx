@@ -20,7 +20,7 @@ export default function StaffNavBar({ theater, title }: StaffNavBarProps) {
         <p className="staffNavPageTitle">{title}</p>
       </div>
 
-      <button className="staffNavLogout" onClick={() => navigate("/login")}>
+      <button className="staffNavLogout" onClick={() => {navigate("/"), localStorage.removeItem("token")}}>
         Log out
       </button>
     </div>

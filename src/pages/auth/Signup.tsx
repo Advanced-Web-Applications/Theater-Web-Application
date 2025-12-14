@@ -45,13 +45,29 @@ export default function LoginPage() {
     const newUser = { email, username, password, city }
 
     try {
+      const url = `${BACKEND_URL}/api/auth/register`;
+      console.log('Posting to:', url);
+      console.log('Payload:', newUser);
+
       const res = await fetch(`${BACKEND_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newUser)
       })
 
-      const data = await res.json()
+      console.log('Response status:', res.status);
+      console.log('Response headers:', Array.from(res.headers.entries()));
+
+      let data: any;
+      try {
+        data = await res.json();
+        console.log('Response JSON:', data);
+      } catch (jsonErr) {
+        console.error('Failed to parse JSON:', jsonErr);
+        const text = await res.text();
+        console.log('Response text:', text);
+        throw new Error('Invalid JSON response from server');
+      }
 
       if (!res.ok) {
         alert(data.message || 'Register failed')
@@ -63,8 +79,6 @@ export default function LoginPage() {
 
       if (data.role === 'customer') {
         navigate('/home', { state: { location: city } })
-      } else if (data.role === 'staff') {
-        navigate(`/StaffHomePage/${data.theater_id}`)
       }
 
       setEmail('')
