@@ -33,10 +33,14 @@ export default function MovieInfo({movieId, setMovie, formatDuration }: MovieInf
         .catch(err => console.log('Error fetching movies: ', err))
     }, [movieId, setMovie])
 
-    function embedTrailerUrl(url: string) {
-      const videoId = url.split('v=')[1]?.split('&'[0])
-      return `https://www.youtube.com/embed/${videoId}`
-    }
+    function embedTrailerUrl(url?: string): string | undefined {
+  if (!url) return undefined
+    const videoId = url.split('v=')[1]?.split('&')[0]
+    return videoId ? `https://www.youtube.com/embed/${videoId}` : undefined
+  }
+
+  const embedUrl = embedTrailerUrl(movie?.trailer_url)
+
 
   return (
     <div className='movie-details'>
@@ -56,15 +60,25 @@ export default function MovieInfo({movieId, setMovie, formatDuration }: MovieInf
               </div>
               <div className='trailer'>
                 <p><strong>Trailer: </strong></p>
-                <iframe
-                  width="560"
-                  height="315"
-                  src={embedTrailerUrl(movie.trailer_url)}
-                  title="Movie trailer"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
+                {embedUrl ? (
+                  <iframe
+                    width="560"
+                    height="315"
+                    src={embedUrl}
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : (
+                  <a
+                    href={movie.trailer_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Watch trailer on YouTube
+                  </a>
+                )}
               </div>
             </div>
           </div>
