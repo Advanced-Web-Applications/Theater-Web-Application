@@ -166,7 +166,12 @@
 }
 
 
-.c-seat.booked .c-seat-reserved {
+.c-seat.booked {
+  background: #ff4d4d;
+  cursor: not-allowed;
+}
+
+.c-seat.reserved {
   background: #ff4d4d;
   cursor: not-allowed;
 }
@@ -183,21 +188,22 @@
   width: 100%;
 }
 
-.available,
-.booked,
-.choosing {
+.free,
+.unavailable,
+.me-choose {
   width: 1.8rem;
   height: 1.8rem;
   border-radius: 6px;
 }
 
-.available {
+
+.free {
   background-color: #36597C;
 }
-.booked {
+.unavailable {
   background-color: #ff4d4d;
 }
-.choosing {
+.me-choose {
   background-color: #57F287;
 }
 
