@@ -83,7 +83,7 @@ export default function SuccessView() {
           <p>{error}</p>
           <p>Please contact support if the issue persists.</p>
         </div>
-        <button onClick={() => navigate('/')}>
+        <button onClick={() => navigate('/home')}>
           Back to Start
         </button>
       </div>

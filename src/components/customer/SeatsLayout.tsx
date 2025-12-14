@@ -18,7 +18,7 @@ interface Layout {
 
 interface Seat {
     seat_number: number
-    status: 'available' | 'reserved' | 'booked'
+    status: 'available' | 'reserved' | 'booked' | 'choosing'
 }
 
 
@@ -80,7 +80,7 @@ export default function SeatsTickets({showtime_id, adultTicket, childTicket}: Se
         setActiveSeats(prev => prev.filter(s => !seatId.includes(s)))
         }
 
-        if (status === 'booked') {
+        if (status === 'available' || status === 'booked') {
         setActiveSeats(prev => prev.filter(s => !seatId.includes(s)))
         }
     })
@@ -99,7 +99,9 @@ export default function SeatsTickets({showtime_id, adultTicket, childTicket}: Se
 
     function handleSeats(seatNumber:number) {
         const seat = seats.find(s => s.seat_number === seatNumber)
-        if (!seat || seat.status !== 'available') return
+        if (!seat) return
+
+        if (seat.status === 'booked' || seat.status === 'reserved') return
 
         if (activeSeats.includes(seatNumber)) {
             setActiveSeats(prev => prev.filter(s => s !== seatNumber))
@@ -123,7 +125,7 @@ export default function SeatsTickets({showtime_id, adultTicket, childTicket}: Se
                         <p>Available</p>
                     </div>
                     <div>
-                        <div className='unavailable'></div>
+                        <div className='booked'></div>
                         <p>Unvailable</p>
                     </div>
                     <div>
@@ -142,10 +144,9 @@ export default function SeatsTickets({showtime_id, adultTicket, childTicket}: Se
                 }}
                 >
                 {seats.map(seat => {
-                    const isActive = activeSeats.includes(seat.seat_number)
                     return(
                         <div key={seat.seat_number} 
-                        className={`c-seat ${isActive ? "active" : ""} ${seat.status === 'booked' ? "booked" : seat.status === 'reserved' ? 'reserved' : ""}`}
+                        className={`c-seat ${seat.status}`}
                         onClick={() => handleSeats(seat.seat_number)}
                         ></div>
                     )
